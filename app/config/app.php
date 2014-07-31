@@ -130,6 +130,7 @@ return array(
         'Codesleeve\LaravelStapler\LaravelStaplerServiceProvider',
         'Barryvdh\Debugbar\ServiceProvider',
         'Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider',
+        'Insight\Core\RepositoryServiceProvider',
 	),
 
 	/*

@@ -28,4 +28,23 @@ return array(
 
 	'pagination' => 'pagination::slider-3',
 
+
+    /*
+	|--------------------------------------------------------------------------
+	| Default Layout
+	|--------------------------------------------------------------------------
+	|
+	| This view will be used to as the default view layout.
+	|
+	*/
+
+    'layout' => [
+        'default' => 'layouts.default',
+        'admin'   => 'layouts.neon',
+        'customer'  => [
+            '36s'       => 'layouts.neon',
+            'emrill'    => 'layouts.emrill',
+        ],
+    ],
+
 );

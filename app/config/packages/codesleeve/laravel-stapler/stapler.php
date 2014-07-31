@@ -60,7 +60,8 @@ return [
 	|
 	*/
 
-	'default_url' => '/:attachment/:style/missing.png',
+	//'default_url' => '/:attachment/:style/missing.png',
+    'default_url' => '/system/Insight/user.jpeg',
 
 	/*
 	|--------------------------------------------------------------------------

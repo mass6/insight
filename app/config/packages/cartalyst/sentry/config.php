@@ -95,7 +95,8 @@ return array(
 		|
 		*/
 
-		'model' => 'Cartalyst\Sentry\Groups\Eloquent\Group',
+        'model' => 'Insight\Permissions\Group',
+		//'model' => 'Cartalyst\Sentry\Groups\Eloquent\Group',
 
 	),
 
@@ -120,7 +121,8 @@ return array(
 		|
 		*/
 
-		'model' => 'Cartalyst\Sentry\Users\Eloquent\User',
+		'model' => 'Insight\Users\User',
+//		'model' => 'Cartalyst\Sentry\Users\Eloquent\User',
 
 		/*
 		|--------------------------------------------------------------------------

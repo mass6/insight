@@ -13,6 +13,19 @@ class BaseController extends Controller {
 		{
 			$this->layout = View::make($this->layout);
 		}
+
+        View::share([
+            'currentUser' => Sentry::getUser(),
+            'layout'      => $this->getLayout(),
+            'defaultLayout' => Config::get('view.layout.default', 'layouts.default')
+        ]);
 	}
+
+    public function getLayout()
+    {
+        $company = Session::get('company', '36s');
+        $layout = Config::get('view.layout.customer.' . $company, Config::get('view.layout.default', 'layouts.default'));
+        return $layout;
+    }
 
 }

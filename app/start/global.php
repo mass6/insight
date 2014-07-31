@@ -46,8 +46,18 @@ Log::useFiles(storage_path().'/logs/laravel.log');
 |
 */
 
+App::error(function(Laracasts\Validation\FormValidationException $exception, $code)
+{
+    Log::info('there was a validation error caught');
+    return Redirect::back()->withInput()->withErrors($exception->getErrors());
+});
+
 App::error(function(Exception $exception, $code)
 {
+    if ($exception instanceof \Symfony\Component\HttpKernel\Exception\NotFoundHttpException)
+    {
+        Log::error('NotFoundHttpException Route: ' . Request::url() );
+    }
 	Log::error($exception);
 });
 
@@ -79,3 +89,15 @@ App::down(function()
 */
 
 require app_path().'/filters.php';
+
+
+/*
+|--------------------------------------------------------------------------
+| Repository Bindings
+|--------------------------------------------------------------------------
+|
+|
+|
+*/
+
+App::bind('Insight\Users\UserRepositoryInterface', 'Insight\Users\UserRepository');

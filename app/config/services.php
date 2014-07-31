@@ -20,7 +20,7 @@ return array(
 	),
 
 	'mandrill' => array(
-		'secret' => '',
+		'secret' => getenv('MANDRILL_KEY'),
 	),
 
 	'stripe' => array(
