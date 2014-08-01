@@ -67,8 +67,6 @@
     <div class="login-form">
 
         <div class="login-content">
-            <p>UserID: {{ $user['id'] }} | Token: {{ $token }}</p>
-
             @if (isset($errors))
                 @if ( count($errors) )
                     <div class="errors alert alert-danger">

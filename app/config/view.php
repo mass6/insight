@@ -34,17 +34,32 @@ return array(
 	| Default Layout
 	|--------------------------------------------------------------------------
 	|
-	| This view will be used to as the default view layout.
+	| This will be used to assign the default template layout.
 	|
 	*/
 
     'layout' => [
-        'default' => 'layouts.default',
+        'default' => 'layouts.neon',
         'admin'   => 'layouts.neon',
         'customer'  => [
             '36s'       => 'layouts.neon',
             'emrill'    => 'layouts.emrill',
         ],
     ],
+
+    /*
+	|--------------------------------------------------------------------------
+	| Dashboard
+	|--------------------------------------------------------------------------
+	|
+	| This assigns the dashboard to each customer/group.
+	|
+	*/
+
+    'dashboard' => [
+        '36s' => 'Dashboard01',
+        'emrill' => 'Dashboard10',
+        'chicago' => 'Dashboard10',
+    ]
 
 );

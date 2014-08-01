@@ -7,6 +7,8 @@
     <link rel="stylesheet" href="{{ URL::asset('css/main.css') }}"/>
 
     <script src="{{ URL::asset('js/jquery-1.11.0.min.js') }}"></script>
+    @yield('links')
+
 </head>
 <body>
 @include('layouts.partials.nav-default')
@@ -19,5 +21,8 @@
 
 <script src="//code.jquery.com/jquery.js"></script>
 <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+
+@include('layouts.partials._footerlinks')
+
 </body>
 </html>

@@ -728,6 +728,8 @@ var public_vars = public_vars || {};
 						format: attrDefault($this, 'format', 'dd/mm/yyyy'),
 						startDate: attrDefault($this, 'startDate', ''),
 						endDate: attrDefault($this, 'endDate', ''),
+                        autoclose: true,
+                        todayHighlight: true,
 						daysOfWeekDisabled: attrDefault($this, 'disabledDays', ''),
 						startView: attrDefault($this, 'startView', 0),
 						rtl: rtl()
@@ -1261,7 +1263,7 @@ var public_vars = public_vars || {};
 		{
 			var $this = $(el),
 				$num = $this.find('.num'),
-				
+
 				start = attrDefault($num, 'start', 0),
 				end = attrDefault($num, 'end', 0),
 				prefix = attrDefault($num, 'prefix', ''),
@@ -1289,6 +1291,41 @@ var public_vars = public_vars || {};
 							}
 						});
 						
+						tile_stats.destroy()
+					});
+				}
+			}
+
+            var $this = $(el),
+				$val = $this.find('.val'),
+
+				start = attrDefault($val, 'start', 0),
+				end = attrDefault($val, 'end', 0),
+				prefix = attrDefault($val, 'prefix', ''),
+				postfix = attrDefault($val, 'postfix', ''),
+				duration = attrDefault($val, 'duration', 1000),
+				delay = attrDefault($val, 'delay', 1000);
+
+			if(start < end)
+			{
+				if(typeof scrollMonitor == 'undefined')
+				{
+                    $val.html(prefix + end + postfix);
+				}
+				else
+				{
+					var tile_stats = scrollMonitor.create( el );
+
+					tile_stats.fullyEnterViewport(function(){
+
+						var o = {curr: start};
+
+						TweenLite.to(o, duration/1000, {curr: end, ease: Power1.easeInOut, delay: delay/1000, onUpdate: function()
+							{
+                                $val.html(prefix + Math.round(o.curr) + postfix);
+							}
+						});
+
 						tile_stats.destroy()
 					});
 				}

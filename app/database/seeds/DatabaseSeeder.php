@@ -5,7 +5,7 @@ class DatabaseSeeder extends Seeder {
     /**
      * @var array
      */
-    protected $tables = ['groups', 'users', 'permissions'];
+    protected $tables = ['groups', 'users', 'profiles', 'permissions'];
 
     /**
      * @var array

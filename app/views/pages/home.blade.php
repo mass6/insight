@@ -6,10 +6,12 @@
 <div class="jumbotron">
     <h1>Welcome to Insight!</h1>
     <p>{{ link_to_route('login_path', 'Log in', null, ['class' => 'btn btn-primary']) }} to get started</p>
-    <p>{{ $currentUser }}</p>
-    <p>Company: {{ Session::get('company', 'none') }}</p>
-    <p>Layout: {{ $layout }}</p>
-    <p>SuperUser: {{ $currentUser->isSuperUser() ? 'true' : 'false' }}</p>
+    @if (Sentry::check())
+        <p>{{ $currentUser }}</p>
+        <p>Company: {{ $currentUser->company }}</p>
+        <p>Layout: {{ $layout }}</p>
+        <p>SuperUser: {{ $currentUser->isSuperUser() ? 'true' : 'false' }}</p>
+    @endif
 
 </div>
 

@@ -23,9 +23,17 @@ class BaseController extends Controller {
 
     public function getLayout()
     {
-        $company = Session::get('company', '36s');
-        $layout = Config::get('view.layout.customer.' . $company, Config::get('view.layout.default', 'layouts.default'));
-        return $layout;
+        if (Sentry::check()) {
+            $company = Sentry::getUser()->company;
+            $layout = Config::get('view.layout.customer.' . $company, Config::get('view.layout.default', 'layouts.default'));
+
+            if (! file_exists(__DIR__ . '/../app/views/layouts/' . $layout . '.blade.php')) {
+                $layout = Config::get('view.layout.default', 'layouts.default');
+            }
+            return $layout;
+        } else {
+            return Config::get('view.layout.default', 'layouts.default');
+        }
     }
 
 }

@@ -99,18 +99,25 @@
     </div>
 </div>
 
-<!-- Submit button -->
-<div class="form-group">
-    {{ Form::label('', '', ['class' => 'col-sm-3 control-label']) }}
-    <div class="col-sm-5">
-        {{ Form::submit(isset($submit)?$submit:'Submit', ['class' => 'form-control btn btn-primary']) }}
+<!-- if creating new user -->
+@if($submit === 'Submit')
+    <!-- Send_email Form Input -->
+    <div class="form-group">
+        {{ Form::label('send_email', 'Send welcome email:', ['class' => 'col-sm-3 control-label']) }}
+        <div class="col-sm-5">
+            {{ Form::checkbox('send_email', 'send_email', false, ['class' => 'form-control']) }}
+        </div>
     </div>
-</div>
+@endif
 
-<!-- Cancel button -->
+
+<!-- Buttons -->
 <div class="form-group">
     {{ Form::label('', '', ['class' => 'col-sm-3 control-label']) }}
     <div class="col-sm-5">
+<!-- Submit button -->
+        {{ Form::submit(isset($submit)?$submit:'Submit', ['class' => 'form-control btn btn-primary']) }}
+<!-- Cancel button -->
         {{ link_to_route('admin.users.index', 'Cancel', null, array('class'=>'form-control btn btn-warning')) }}
     </div>
 </div>

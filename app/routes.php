@@ -22,8 +22,13 @@ Route::get('/test', function(){
     }
 });
 
+Route::get('/report/{report}', 'ReportController@getReport');
 
 Event::listen('Insight.Sessions.Events.*', 'Insight\Listeners\ActivityLogger@whenUserLoggedIn');
+
+Event::listen('Insight.Users.Events.UserUpdated', function($event){
+    Log::info('_____SEND EMAIL:_______  = ' . $event->user->send_email);
+});
 
 // Home page
 Route::get('/', [
@@ -54,6 +59,30 @@ Route::patch('password-verify-update/{user}/{token}', ['as' => 'password.verify_
  * Profile
  */
 Route::resource('profiles', 'ProfilesController', ['only' => ['index', 'show', 'update']]);
+
+
+/**
+ * Dashboards
+ */
+Route::get('dashboard', ['as' => 'dashboards.home', 'uses' => 'DashboardsController@home']);
+
+/**
+ * Portal
+ */
+Route::get('portal/ajax/{report}', 'PortalController@getAjaxReport');
+Route::get('portal/users', ['as' => 'portal.users', 'uses' => 'PortalController@getUsers']);
+Route::get('portal/contracts', ['as' => 'portal.contracts', 'uses' => 'PortalController@getContracts']);
+Route::get('portal/products', ['as' => 'portal.products', 'uses' => 'PortalController@getProducts']);
+Route::get('portal/doa', ['as' => 'portal.doa', 'uses' => 'PortalController@getDoa']);
+Route::get('portal/approvals', ['as' => 'portal.approvals', 'uses' => 'PortalController@getApprovals']);
+Route::get('portal/approval-statistics', ['as' => 'portal.approvals.statistics', 'uses' => 'PortalController@getApprovalStatistics']);
+Route::get('portal/orders/search', ['as' => 'portal.orders.search', 'uses' => 'PortalController@searchRouter']);
+Route::get('portal/orders/search/{searchTerm}', ['as' => 'portal.orders.search_term', 'uses' => 'PortalController@searchOrder']);
+Route::get('portal/orders/{period}', ['as' => 'portal.orders.period', 'uses' => 'PortalController@getOrders']);
+Route::get('portal/orders/details/{id}', ['as' => 'portal.orders.details', 'uses' => 'PortalController@getOrderDetails']);
+Route::get('portal/orders', function(){
+    return Redirect::route('portal.orders.period',['period'=>'today']);
+});
 
 /**
  * Admin

@@ -6,6 +6,7 @@
  */
 
 use Faker\Factory as Faker;
+use Insight\Users\Profile;
 
 class UsersTableSeeder extends Seeder {
 
@@ -21,6 +22,8 @@ class UsersTableSeeder extends Seeder {
             'activated' => true,
             'permissions' => ['superuser' => 1]
         ]);
+
+        $adminUser->profile()->save(new Profile);
 
 //        $faker = Faker::create();
 //

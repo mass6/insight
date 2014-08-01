@@ -67,15 +67,14 @@
     <div class="login-form">
 
         <div class="login-content">
-            @include('flash::message')
             @if (isset($errors))
-            @if ( count($errors) )
-            <div class="errors alert alert-danger">
-                @foreach ($errors->all('<li>:message</li>') as $message)
-                {{ $message }}
-                @endforeach
-            </div>
-            @endif
+                @if ( count($errors) )
+                    <div class="errors alert alert-danger">
+                        @foreach ($errors->all('<li>:message</li>') as $message)
+                            {{ $message }}
+                        @endforeach
+                    </div>
+                @endif
             @endif
 
             <div class="form-login-error">

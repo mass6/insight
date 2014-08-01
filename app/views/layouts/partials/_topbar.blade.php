@@ -5,6 +5,7 @@
 
 <ul class="user-info pull-left pull-none-xsm">
 
+    @if(Sentry::check())
     <!-- Profile Info -->
     <li class="profile-info dropdown"><!-- add class "pull-right" if you want to place this from right -->
 
@@ -27,6 +28,7 @@
             </li>
         </ul>
     </li>
+    @endif
 
 </ul>
 

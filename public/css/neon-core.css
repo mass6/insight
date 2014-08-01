@@ -6695,6 +6695,8 @@ textareatable .replace-inputs input {
   line-height: 0;
 }
 .tile-stats .num,
+.tile-stats .val,
+.tile-stats .lab,
 .tile-stats h3,
 .tile-stats p {
   position: relative;
@@ -6703,9 +6705,18 @@ textareatable .replace-inputs input {
   margin: 0;
   padding: 0;
 }
-.tile-stats .num {
+.tile-stats .num,
+.tile-stats .val {
   font-size: 38px;
   font-weight: bold;
+}
+.tile-stats .lab {
+    font-size: 28px;
+    font-weight: bold;
+}
+.tile-stats .label,
+.tile-stats .val {
+    display:inline;
 }
 .tile-stats h3 {
   font-size: 18px;
@@ -6725,6 +6736,7 @@ textareatable .replace-inputs input {
   color: rgba(0, 0, 0, 0.1);
 }
 .tile-stats.tile-red .num,
+.tile-stats.tile-red .val,
 .tile-stats.tile-red h3,
 .tile-stats.tile-red p {
   color: #ffffff;
@@ -6739,6 +6751,7 @@ textareatable .replace-inputs input {
   color: rgba(0, 0, 0, 0.1);
 }
 .tile-stats.tile-green .num,
+.tile-stats.tile-green .val,
 .tile-stats.tile-green h3,
 .tile-stats.tile-green p {
   color: #ffffff;
@@ -6753,6 +6766,7 @@ textareatable .replace-inputs input {
   color: rgba(0, 0, 0, 0.1);
 }
 .tile-stats.tile-blue .num,
+.tile-stats.tile-blue .val,
 .tile-stats.tile-blue h3,
 .tile-stats.tile-blue p {
   color: #ffffff;
@@ -6767,6 +6781,7 @@ textareatable .replace-inputs input {
   color: rgba(0, 0, 0, 0.1);
 }
 .tile-stats.tile-aqua .num,
+.tile-stats.tile-aqua .val,
 .tile-stats.tile-aqua h3,
 .tile-stats.tile-aqua p {
   color: #ffffff;
@@ -6781,6 +6796,7 @@ textareatable .replace-inputs input {
   color: rgba(0, 0, 0, 0.1);
 }
 .tile-stats.tile-cyan .num,
+.tile-stats.tile-cyan .val,
 .tile-stats.tile-cyan h3,
 .tile-stats.tile-cyan p {
   color: #ffffff;
@@ -6809,6 +6825,7 @@ textareatable .replace-inputs input {
   color: rgba(0, 0, 0, 0.1);
 }
 .tile-stats.tile-pink .num,
+.tile-stats.tile-pink .val,
 .tile-stats.tile-pink h3,
 .tile-stats.tile-pink p {
   color: #ffffff;
@@ -6837,6 +6854,7 @@ textareatable .replace-inputs input {
   color: rgba(0, 0, 0, 0.1);
 }
 .tile-stats.tile-brown .num,
+.tile-stats.tile-brown .val,
 .tile-stats.tile-brown h3,
 .tile-stats.tile-brown p {
   color: #ffffff;
@@ -6865,6 +6883,7 @@ textareatable .replace-inputs input {
   color: rgba(0, 0, 0, 0.1);
 }
 .tile-stats.tile-gray .num,
+.tile-stats.tile-gray .val,
 .tile-stats.tile-gray h3,
 .tile-stats.tile-gray p {
   color: #8f8f8f;
@@ -6880,6 +6899,7 @@ textareatable .replace-inputs input {
   color: #f2f2f2;
 }
 .tile-stats.tile-white .num,
+.tile-stats.tile-white .val,
 .tile-stats.tile-white h3,
 .tile-stats.tile-white p {
   color: #303641;
@@ -6898,6 +6918,7 @@ textareatable .replace-inputs input {
   color: #f2f2f2;
 }
 .tile-stats.tile-white-red .num,
+.tile-stats.tile-white-red .val,
 .tile-stats.tile-white-red h3,
 .tile-stats.tile-white-red p {
   color: #f56954;
@@ -6916,6 +6937,7 @@ textareatable .replace-inputs input {
   color: #f2f2f2;
 }
 .tile-stats.tile-white-green .num,
+.tile-stats.tile-white-green .val,
 .tile-stats.tile-white-green h3,
 .tile-stats.tile-white-green p {
   color: #00a65a;
@@ -6934,6 +6956,7 @@ textareatable .replace-inputs input {
   color: #f2f2f2;
 }
 .tile-stats.tile-white-blue .num,
+.tile-stats.tile-white-blue .val,
 .tile-stats.tile-white-blue h3,
 .tile-stats.tile-white-blue p {
   color: #0073b7;
@@ -6952,6 +6975,7 @@ textareatable .replace-inputs input {
   color: #f2f2f2;
 }
 .tile-stats.tile-white-aqua .num,
+.tile-stats.tile-white-aqua .val,
 .tile-stats.tile-white-aqua h3,
 .tile-stats.tile-white-aqua p {
   color: #00c0ef;
@@ -6970,6 +6994,7 @@ textareatable .replace-inputs input {
   color: #f2f2f2;
 }
 .tile-stats.tile-white-cyan .num,
+.tile-stats.tile-white-cyan .val,
 .tile-stats.tile-white-cyan h3,
 .tile-stats.tile-white-cyan p {
   color: #00b29e;
@@ -6988,6 +7013,7 @@ textareatable .replace-inputs input {
   color: #f2f2f2;
 }
 .tile-stats.tile-white-purple .num,
+.tile-stats.tile-white-purple .val,
 .tile-stats.tile-white-purple h3,
 .tile-stats.tile-white-purple p {
   color: #ba79cb;
@@ -7006,6 +7032,7 @@ textareatable .replace-inputs input {
   color: #f2f2f2;
 }
 .tile-stats.tile-white-pink .num,
+.tile-stats.tile-white-pink .val,
 .tile-stats.tile-white-pink h3,
 .tile-stats.tile-white-pink p {
   color: #ec3b83;
@@ -7024,6 +7051,7 @@ textareatable .replace-inputs input {
   color: #f2f2f2;
 }
 .tile-stats.tile-white-orange .num,
+.tile-stats.tile-white-orange .val,
 .tile-stats.tile-white-orange h3,
 .tile-stats.tile-white-orange p {
   color: #ffa812;
@@ -7042,6 +7070,7 @@ textareatable .replace-inputs input {
   color: #f2f2f2;
 }
 .tile-stats.tile-white-brown .num,
+.tile-stats.tile-white-brown .val,
 .tile-stats.tile-white-brown h3,
 .tile-stats.tile-white-brown p {
   color: #6c541e;
@@ -7060,6 +7089,7 @@ textareatable .replace-inputs input {
   color: #f2f2f2;
 }
 .tile-stats.tile-white-plum .num,
+.tile-stats.tile-white-plum .val,
 .tile-stats.tile-white-plum h3,
 .tile-stats.tile-white-plum p {
   color: #701c1c;
@@ -7078,6 +7108,7 @@ textareatable .replace-inputs input {
   color: #f2f2f2;
 }
 .tile-stats.tile-white-gray .num,
+.tile-stats.tile-white-gray .val,
 .tile-stats.tile-white-gray h3,
 .tile-stats.tile-white-gray p {
   color: #8f8f8f;

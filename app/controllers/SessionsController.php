@@ -58,13 +58,11 @@ class SessionsController extends \BaseController {
             'password' => Input::get('password'),
         );
 
-
         // This array of data is returned for demo purpose, see assets/js/neon-forgotpassword.js
         //$resp['submitted_data'] = $_POST;
 
 
         // Login success or invalid login data [success|invalid]
-        // Your code will decide if username and password are correct
         $login_status = 'invalid';
 
         try
@@ -88,53 +86,11 @@ class SessionsController extends \BaseController {
             return Response::json($resp);
         } else {
             // if authentication is fails
-            Log::info('no user found');
-            $login_status = 'invalid';
             $resp['login_status'] = $login_status;
             $resp['message'] = $message;
             return Response::json( $resp );
         }
 
-
-
-
-        // Login Success URL
-//        if($login_status == 'success')
-//        {
-//            // If you validate the user you may set the user cookies/sessions here
-//            #setcookie("logged_in", "user_id");
-//            #$_SESSION["logged_user"] = "user_id";
-//
-//            // Set the redirect url after successful login
-//
-//        }
-
-
-
-
-
-//        // fetch the form input
-//        $credentials = Input::only('email', 'password');
-//        $this->signInForm->validate($credentials);
-//
-//        try
-//        {
-//            $user = $this->execute(
-//                new LoginUserCommand($credentials)
-//            );
-//
-//            if ($user) {
-//                Session::put([
-//                    'company' => $user->company
-//                ]);
-//                Flash::message('Welcome back!');
-//                return Redirect::intended('/');
-//            }
-//        }
-//        catch(\Exception $e)
-//        {
-//            return Redirect::back()->withErrors($e->getMessage());
-//        }
     }
 
     /**

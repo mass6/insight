@@ -45,11 +45,11 @@ class UpdateUserCommandHandler extends UserCommandAbstract
             return $e;
         }
 
-        return $user;
-
         $user->raise(new UserUpdated($user));
 
         $this->dispatchEventsFor($user);
+
+        return $user;
 
     }
 
