@@ -50,7 +50,7 @@ class PortalController extends \BaseController {
     {
         $doa = $this->portal->getReport('doa', 'array');
 
-        return View::make('portal.doa.index', compact('doa'));
+        return View::make('portal.doa', compact('doa'));
     }
 
     public function getApprovals()
