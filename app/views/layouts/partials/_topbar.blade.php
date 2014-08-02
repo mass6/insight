@@ -29,6 +29,20 @@
         </ul>
     </li>
 
+    <li id="search"><!-- add class "search-input-collapsed" to auto collapse search input -->
+    <div class="searchbox">
+        {{ Form::open(['route'=>'portal.orders.search', 'method'=>'GET', 'class' => 'form-inline', 'role' => 'form' ]) }}
+            <div class="form-group">
+                <input type="text" name="s" class="form-control input-lg" id="exampleInputEmail2" placeholder="Search web orders">
+                <span class="search-button">
+                    <button type="submit" class="btn btn-primary btn-lg btn-searchbox">Search</button>
+                </span>
+            </div>
+        {{ Form::close() }}
+    </div>
+    </li>
+
+
     @endif
 
 </ul>
