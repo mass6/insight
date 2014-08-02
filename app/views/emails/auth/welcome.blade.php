@@ -206,27 +206,36 @@
                                 </a>
                             </p>
                             <hr/><br/>
-                            <p>Hello {{ $user->first_name }},</p>
-                            <p>Welcome to 36S Insight!</p>
+                            <h3>Hello {{ $user->first_name . ' ' . $user->last_name }},</h3>
+                            <p>Welcome to <strong>36S Insight</strong> real-time reporting and analytics. You can access the site using the below account creditials.</p>
                             <p>
-                                Below are your credentials:
                             <ul>
                                 <li>Username: {{ $user->email }}</li>
                                 <li>Password: {{ $user->rawPassword }}</li>
+                                <li>URL: <a href="{{ URL::to('/') }}">{{ URL::to('home') }}</a></li>
                             </ul>
-                            </p>
+                            </p><br/>
+                            <h4>Features:</h4>
+                            <p>
+                            <ul>
+                                <li>Real-time spend analysis dashboard</li>
+                                <li>Search and view web orders and item details</li>
+                                <li>View products, contracts, and user data</a></li>
+                                <li>Optimized for mobile devices</li>
+                            </ul>
+                            </p><br/>
                             <table>
                                 <tr>
                                     <td class="padding">
-                                        <p><a href="http://36s-insight.com/login" class="btn-primary">Login to 36S Insight</a></p>
+                                        <p><a href="{{ URL::to('/login') }}" class="btn-primary">Login to 36S Insight</a></p>
                                     </td>
                                 </tr>
-                            </table>
+                            </table><br/>
                             <p>Regards,</p>
                             <p>The 36S Insight Team</p>
 
                             </p>
-                            <p><a href="http://36s-insight.com">http://36s-insight.com</a></p>
+                            <p><a href="{{ URL::to('/') }}">{{ URL::to('/') }}</a></p>
                         </td>
                     </tr>
                 </table>
@@ -250,7 +259,7 @@
                 <table>
                     <tr>
                         <td align="center">
-                            <p>Questions? <a href="mailto:customerservice@36-s.com"><unsubscribe>customerservice@36-s.com</unsubscribe></a>.
+                            <p>Questoins? <a href="mailto:customerservice@36-s.com"><unsubscribe>customerservice@36-s.com</unsubscribe></a>.
                             </p>
                         </td>
                     </tr>

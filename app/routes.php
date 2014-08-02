@@ -13,14 +13,6 @@
 
 
 
-
-
-// Home page
-    Route::get('/', [
-        'as' => 'home',
-        'uses' => 'PagesController@home'
-    ]);
-
 // Authentication routes
     Route::get('login', [
         'as' => 'login_path',
@@ -45,6 +37,13 @@
 // Member routes
 Route::group(array('before' => 'auth'), function()
 {
+
+    // Home page
+    Route::get('/', [
+        'as' => 'home',
+        'uses' => 'PagesController@home'
+    ]);
+
     /**
      * Profile
      */

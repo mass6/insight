@@ -132,6 +132,14 @@
                 </a>
             </li>
         @endif
+        @if ($currentUser->hasAccess('portal.approvals'))
+        <li class="{{ isActive('approvals', 2) }}">
+            <a href="{{ route('portal.approvals') }}">
+                <i class="entypo-check"></i>
+                <span>Approvals</span>
+            </a>
+        </li>
+        @endif
         @if ($currentUser->hasAccess('portal.budgets'))
             <li class="{{ isActive('budgets', 2) }}">
                 <a href="">
@@ -140,16 +148,6 @@
                 </a>
             </li>
         @endif
-        @if ($currentUser->hasAccess('portal.approvals'))
-            <li class="{{ isActive('approvals', 2) }}">
-                <a href="{{ route('portal.approvals') }}">
-                    <i class="entypo-check"></i>
-                    <span>Approvals</span>
-                </a>
-            </li>
-        @endif
-
-
         @if ($currentUser->hasAccess('portal.doa'))
             <li class="{{ isActive('doa', 2) }}">
                 <a href="{{ route('portal.doa') }}">
@@ -160,53 +158,53 @@
         @endif
 
         @endif
-        @if ($currentUser->hasAccess('sourcing.*'))
-            <li class="auto-inherit-active-class">
-                <a href="">
-                    <i class="entypo-network"></i>
-                    <span>Products Sourcing</span>
-                </a>
-                <ul>
-                    <li class="{{ isActive('item-requests', 1) }}">
-                        <a href="">
-                            <i class="entypo-export"></i>
-                            <span>Product Requests</span>
-                        </a>
-                    </li>
-                    <li class="{{ isActive('quotations', 1) }}">
-                        <a href="">
-                            <i class="entypo-attach"></i>
-                            <span>Quotations</span>
-                        </a>
-                    </li>
-                    <!--        <li class="{{ isActive('categories', 1) }}">-->
-                    <!--            <a href="">-->
-                    <!--                <span>Product Categories</span>-->
-                    <!--            </a>-->
-                    <!--        </li>-->
-                </ul>
-            </li>
-        @endif
-        @if ($currentUser->hasAccess('partners.*'))
-            <li class="auto-inherit-active-class {{ isActive('customers', 1, true) }}{{ isActive('suppliers', 1, true) }}">
-                <a href="">
-                    <i class="entypo-users"></i>
-                    <span>Partners</span>
-                </a>
-                <ul>
-                    <li class="{{ isActive('customers', 1) }}">
-                        <a href="">
-                            <span>Customers</span>
-                        </a>
-                    </li>
-                    <li class="{{ isActive('suppliers', 1) }}">
-                        <a href="">
-                            <span>Suppliers</span>
-                        </a>
-                    </li>
-                </ul>
-            </li>
-        @endif
+<!--        @if ($currentUser->hasAccess('sourcing.*'))-->
+<!--            <li class="auto-inherit-active-class">-->
+<!--                <a href="">-->
+<!--                    <i class="entypo-network"></i>-->
+<!--                    <span>Products Sourcing</span>-->
+<!--                </a>-->
+<!--                <ul>-->
+<!--                    <li class="{{ isActive('item-requests', 1) }}">-->
+<!--                        <a href="">-->
+<!--                            <i class="entypo-export"></i>-->
+<!--                            <span>Product Requests</span>-->
+<!--                        </a>-->
+<!--                    </li>-->
+<!--                    <li class="{{ isActive('quotations', 1) }}">-->
+<!--                        <a href="">-->
+<!--                            <i class="entypo-attach"></i>-->
+<!--                            <span>Quotations</span>-->
+<!--                        </a>-->
+<!--                    </li>-->
+<!--                            <li class="{{ isActive('categories', 1) }}">-->
+<!--                                <a href="">-->
+<!--                                    <span>Product Categories</span>-->
+<!--                                </a>-->
+<!--                            </li>-->
+<!--                </ul>-->
+<!--            </li>-->
+<!--        @endif-->
+<!--        @if ($currentUser->hasAccess('partners.*'))-->
+<!--            <li class="auto-inherit-active-class {{ isActive('customers', 1, true) }}{{ isActive('suppliers', 1, true) }}">-->
+<!--                <a href="">-->
+<!--                    <i class="entypo-users"></i>-->
+<!--                    <span>Partners</span>-->
+<!--                </a>-->
+<!--                <ul>-->
+<!--                    <li class="{{ isActive('customers', 1) }}">-->
+<!--                        <a href="">-->
+<!--                            <span>Customers</span>-->
+<!--                        </a>-->
+<!--                    </li>-->
+<!--                    <li class="{{ isActive('suppliers', 1) }}">-->
+<!--                        <a href="">-->
+<!--                            <span>Suppliers</span>-->
+<!--                        </a>-->
+<!--                    </li>-->
+<!--                </ul>-->
+<!--            </li>-->
+<!--        @endif-->
         @if ($currentUser->hasAccess('admin'))
             <li class="auto-inherit-active-class {{ isActive('users', 2, true) }}{{ isActive('permissions', 2, true) }}{{ isActive('groups', 2, true) }}">
             <a href="{{ route('admin.index') }}">
