@@ -7,7 +7,7 @@ use Insight\Users\User;
  * Time: 5:14 PM
  */
 
-class ProfileCreated 
+class ProfileWasCreated
 {
     /**
      * @var \Insight\Users\User

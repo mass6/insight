@@ -1,5 +1,5 @@
 <?php namespace Insight\Permissions;
-use Insight\Permissions\Events\GroupUpdated;
+use Insight\Permissions\Events\GroupWasUpdated;
 use Laracasts\Commander\Events\DispatchableTrait;
 
 /**
@@ -27,7 +27,7 @@ class UpdateGroupCommandHandler extends GroupCommandHandler
 
         $group->save();
 
-        $group->raise(new GroupUpdated($group));
+        $group->raise(new GroupWasUpdated($group));
         $this->dispatchEventsFor($group);
 
     }

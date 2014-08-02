@@ -10,7 +10,6 @@ use Laracasts\Commander\CommandHandler;
 use Laracasts\Commander\Events\DispatchableTrait;
 use Cartalyst\Sentry\Facades\Laravel\Sentry;
 use Laracasts\Commander\Events\EventGenerator;
-use Log;
 
 class LoginUserCommandHandler implements CommandHandler
 {

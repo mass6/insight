@@ -35,7 +35,7 @@
 <div class="form-group">
     {{ Form::label('company', 'Company:', ['class' => 'col-sm-3 control-label']) }}
     <div class="col-sm-5">
-        {{ Form::select('company', ['36s' => '36S', 'emrill' => 'Emrill Services LLC'], null, ['class' => 'form-control']) }}
+        {{ Form::select('company', ['36s' => '36S', 'emrill' => 'Emrill', 'chicago' => 'Chicago'], null, ['class' => 'form-control']) }}
     </div>
 </div>
 
@@ -100,15 +100,15 @@
 </div>
 
 <!-- if creating new user -->
-@if($submit === 'Submit')
+
     <!-- Send_email Form Input -->
     <div class="form-group">
-        {{ Form::label('send_email', 'Send welcome email:', ['class' => 'col-sm-3 control-label']) }}
+        {{ Form::label('send_email', $submit === 'Submit' ? 'Send welcome email:' : 'Resend Credentials', ['class' => 'col-sm-3 control-label']) }}
         <div class="col-sm-5">
-            {{ Form::checkbox('send_email', 'send_email', false, ['class' => 'form-control']) }}
+            {{ Form::checkbox('send_email', true, false, ['class' => 'form-control']) }}
         </div>
     </div>
-@endif
+
 
 
 <!-- Buttons -->

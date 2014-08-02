@@ -131,6 +131,7 @@ return array(
         'Barryvdh\Debugbar\ServiceProvider',
         'Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider',
         'Insight\Core\RepositoryServiceProvider',
+        'Insight\Listeners\EventingServiceProvider'
 	),
 
 	/*
@@ -197,6 +198,7 @@ return array(
 		'URL'               => 'Illuminate\Support\Facades\URL',
 		'Validator'         => 'Illuminate\Support\Facades\Validator',
 		'View'              => 'Illuminate\Support\Facades\View',
+        'Carbon'            => 'Carbon\Carbon',
         'Sentry'            => 'Cartalyst\Sentry\Facades\Laravel\Sentry',
         'Flash'             => 'Laracasts\Flash\Flash',
 

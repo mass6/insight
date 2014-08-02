@@ -5,6 +5,7 @@
 <link rel="stylesheet" href="{{ URL::asset('css/neon-core.css') }}">
 <link rel="stylesheet" href="{{ URL::asset('css/neon-theme.css') }}">
 <link rel="stylesheet" href="{{ URL::asset('css/neon-forms.css') }}">
+<link rel="stylesheet" href="{{ URL::asset('css/skins/blue.css') }}">
 <link rel="stylesheet" href="{{ URL::asset('css/custom.css') }}">
 
 <script src="{{ URL::asset('js/jquery-1.11.0.min.js') }}"></script>

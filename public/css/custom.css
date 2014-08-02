@@ -4,6 +4,18 @@
  *
 */
 
-body {
-	
+.page-container .sidebar-menu .logo-env {
+    background-color: #ffffff;
+    border-right: 1px solid #eeeeee;
+}
+
+body .login-container .login-header {
+    background-color: #ffffff;
+}
+
+body.login-page p.description {color:#666666;}
+div.flash {margin-top:20px;}
+
+.jumbotron {
+    color: #1c3484;
 }

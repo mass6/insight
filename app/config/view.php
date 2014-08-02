@@ -39,12 +39,22 @@ return array(
 	*/
 
     'layout' => [
-        'default' => 'layouts.neon',
-        'admin'   => 'layouts.neon',
-        'customer'  => [
-            '36s'       => 'layouts.neon',
-            'emrill'    => 'layouts.emrill',
-        ],
+        'default' => 'neon',
+        'admin'   => 'neon',
+        'company'  => [
+            '36s'       => [
+                'layout' => '36s',
+                'path'  => 'layouts.36s'
+                ],
+            'emrill'    => [
+                'layout' => 'emrill',
+                'path' => 'layouts.emrill'
+                ],
+            'chicago'    => [
+                'layout' => 'chicago',
+                'path' => 'layouts.chicago'
+            ],
+        ]
     ],
 
     /*

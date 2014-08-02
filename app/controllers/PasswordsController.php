@@ -53,16 +53,13 @@ class PasswordsController extends \BaseController {
         {
             // Find the user using the user email address
             $user = Sentry::findUserByLogin($email);
-            Log::info($user);
             // Get the password reset code
             $token = $user->getResetPasswordCode();
             $data = array('user' => $user,'token' => $token);
-            Log::info($data);
             $mail = Mail::send('emails.auth.confirm_reset', $data, function($message) use ($data)
             {
                 $message->to($data['user']['email'], $data['user']['first_name'] )->subject('Password Reset Request');
             });
-            Log::info($mail);
 
 
         }
@@ -81,6 +78,8 @@ class PasswordsController extends \BaseController {
         try
         {
             $user = Sentry::findUserByResetPasswordCode($token);
+
+            Flash::message('Enter a new password.');
             return View::make('sessions.change_password', compact(['user', 'token']));
         }
         catch (Cartalyst\Sentry\Users\UserNotFoundException $e)
@@ -137,7 +136,6 @@ class PasswordsController extends \BaseController {
         }
         catch (Exception $e)
         {
-            Log::info($e->getMessage());
             return $e->getMessage();
 
         }

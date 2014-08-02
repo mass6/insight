@@ -63,7 +63,7 @@
         @if (isset($results))
             @if(count($results))
             <div class="alert alert-warning clearfix" data-dismiss="alert">
-                Results are listed left to right by Order Date, newest on top.
+                Results are listed left to right, newest on top.
                 <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
             </div>
             <!--   <h4 class="alert alert-warning"><em>Results are listed by my recent order date (left to right).<em></h4>-->

@@ -50,6 +50,7 @@ var neonLogin = neonLogin || {};
 					
 				// Hide Errors
 				$(".form-login-error").slideUp('fast');
+				$(".flash").slideUp('fast');
 
 				// We will wait till the transition ends				
 				setTimeout(function()
@@ -66,7 +67,7 @@ var neonLogin = neonLogin || {};
 						dataType: 'json',
 						data: {
 							username: $("input#username").val(),
-							password: $("input#password").val(),
+							password: $("input#password").val()
 						},
 						error: function()
 						{
@@ -135,7 +136,7 @@ var neonLogin = neonLogin || {};
 				
 					password: {
 						required: true
-					},
+					}
 					
 				},
 				

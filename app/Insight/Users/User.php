@@ -7,7 +7,6 @@ use Illuminate\Auth\Reminders\RemindableTrait;
 use Cartalyst\Sentry\Users\Eloquent\User as Sentry;
 use Laracasts\Commander\Events\DispatchableTrait;
 use Laracasts\Commander\Events\EventGenerator;
-use Log;
 
 class User extends Sentry implements UserInterface, RemindableInterface {
 
@@ -45,6 +44,11 @@ class User extends Sentry implements UserInterface, RemindableInterface {
     }
 
 
+    /**
+     * Gets the user's assigned group names in an indexed array
+     *
+     * @return array
+     */
     public function getAssignedGroups()
     {
         $groups = $this->getGroups();
@@ -58,6 +62,11 @@ class User extends Sentry implements UserInterface, RemindableInterface {
 
     }
 
+    /**
+     * Gets the user's assigned group names in an indexed array
+     *
+     * @return array
+     */
     public function groupNames()
     {
         $groups = [];
@@ -70,6 +79,10 @@ class User extends Sentry implements UserInterface, RemindableInterface {
         return $groups;
     }
 
+    /**
+     * Mutates the last login date to add 'never' in case of null
+     * @return string
+     */
     public function getLastLoginAttribute()
     {
         $date = $this->attributes['last_login'];

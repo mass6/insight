@@ -3,13 +3,7 @@
 
 <header class="logo-env">
 
-    <!-- logo -->
-    <div class="logo">
-        <a href="{{ route('home') }}">
-<!--            <img src="{{ URL::asset('images/logo@2x.png') }}" width="120" alt="" />-->
-            <img src="{{ URL::asset('/images/insight-120.png') }}" alt="36S" />
-        </a>
-    </div>
+    @include($layoutPath . '.partials._logo')
 
     <!-- logo collapse icon -->
 
@@ -31,7 +25,7 @@
 </header>
 
 @if (Sentry::check())
-    <ul id="main-menu" class="multiple-expanded auto-inherit-active-class">
+    <ul id="main-menu" class="auto-inherit-active-class">
         <!-- add class "multiple-expanded" to allow multiple submenus to open -->
         <!-- class "auto-inherit-active-class" will automatically add "active" class for parent elements who are marked already with class "active" -->
         <!-- Search Bar -->
@@ -104,6 +98,11 @@
                     <li class="{{ isActive('ytd', 3) }}">
                         <a href="{{ route('portal.orders.period', 'ytd') }}">
                             <span>Year to Date</span>
+                        </a>
+                    </li>
+                    <li class="{{ isActive('third-party-this-month', 3) }}">
+                        <a href="{{ route('portal.orders.period', 'third-party-this-month') }}">
+                            <span>Third Party This Month</span>
                         </a>
                     </li>
                 </ul>
@@ -209,7 +208,7 @@
             </li>
         @endif
         @if ($currentUser->hasAccess('admin'))
-            <li class="auto-inherit-active-class">
+            <li class="auto-inherit-active-class {{ isActive('users', 2, true) }}{{ isActive('permissions', 2, true) }}{{ isActive('groups', 2, true) }}">
             <a href="{{ route('admin.index') }}">
                 <i class=""></i>
                 <span>Admin</span>

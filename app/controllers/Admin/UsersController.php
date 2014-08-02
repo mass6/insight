@@ -166,7 +166,7 @@ class UsersController extends AdminBaseController {
         // Validate form
         $this->updateUserForm->validate(Input::all());
 
-        extract(Input::only('first_name', 'last_name', 'email', 'password', 'company'));
+        extract(Input::only('first_name', 'last_name', 'email', 'password', 'company', 'send_email'));
         $permissionsAllowed = Input::get('permissions_allowed', []);
         $permissionsDenied = Input::get('permissions_denied', []);
         $groups = Input::get('groups', []);
@@ -174,7 +174,8 @@ class UsersController extends AdminBaseController {
         // Update the new user
         try
         {
-            $this->execute(new UpdateUserCommand($id, $first_name, $last_name, $email, $password, $company, $permissionsAllowed, $permissionsDenied, $groups));
+            $this->execute(new UpdateUserCommand($id, $first_name, $last_name, $email, $password, $company,
+                $send_email, $permissionsAllowed, $permissionsDenied, $groups));
         }
         catch (\Exception $e)
         {

@@ -5,7 +5,7 @@
  * Time: 4:31 PM
  */
 
-use Insight\Users\Events\UserCreated;
+use Insight\Users\Events\UserWasCreated;
 use Cartalyst\Sentry\Facades\Laravel\Sentry;
 
 class AddNewUserCommandHandler extends UserCommandAbstract
@@ -33,6 +33,8 @@ class AddNewUserCommandHandler extends UserCommandAbstract
             ]);
 
             $user->profile()->save(new Profile);
+            $user->send_email = $command->send_email;
+            $user->rawPassword = $command->password;
         }
         catch(Cartalyst\Sentry\Users\UserExistsException $e)
         {
@@ -41,7 +43,7 @@ class AddNewUserCommandHandler extends UserCommandAbstract
 
         $this->assignUserToGroups($user, $command->groups);
 
-        $user->raise(new UserCreated($user));
+        $user->raise(new UserWasCreated($user));
 
         $this->dispatchEventsFor($user);
 

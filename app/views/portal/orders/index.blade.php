@@ -184,7 +184,7 @@
 
 @section('content')
 
-<h2>{{ isset($heading) ? $heading : 'Orders' }}</h2>
+<h2>{{ isset($heading) ? $heading : 'Orders: ' }}</h2>
 
 <table id="datatable" class="table table-bordered datatable hover order-column">
     <thead>

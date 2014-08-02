@@ -70,7 +70,7 @@ class PortalController extends \BaseController {
         $parts = array_map('ucfirst', $parts);
 
         $reportName = 'Orders' . implode('', $parts);
-        $heading = 'Orders ' . implode(' ', $parts);
+        $heading = 'Orders: ' . implode(' ', $parts);
 
         return View::make('portal.orders.index', compact('reportName', 'heading'));
     }
@@ -103,6 +103,13 @@ class PortalController extends \BaseController {
         $order = $this->portal->getQuery('orderDetails', $id, 'array')[0];
         $items = $this->portal->getQuery('orderItemDetails', $id, 'array');
         return View::make('portal.orders.show', compact('order', 'items'));
+    }
+
+    public function printOrder($id)
+    {
+        $order = $this->portal->getQuery('orderDetails', $id, 'array')[0];
+        $items = $this->portal->getQuery('orderItemDetails', $id, 'array');
+        return View::make('portal.orders.print', compact('order', 'items'));
     }
 
 

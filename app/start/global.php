@@ -48,7 +48,6 @@ Log::useFiles(storage_path().'/logs/laravel.log');
 
 App::error(function(Laracasts\Validation\FormValidationException $exception, $code)
 {
-    Log::info('there was a validation error caught');
     return Redirect::back()->withInput()->withErrors($exception->getErrors());
 });
 
@@ -90,6 +89,20 @@ App::down(function()
 
 require app_path().'/filters.php';
 
+
+
+/*
+|--------------------------------------------------------------------------
+| 404 Handler // redirect to home page for now
+|--------------------------------------------------------------------------
+|
+|
+|
+*/
+App::missing(function($exception)
+{
+    return Redirect::route('home');
+});
 
 /*
 |--------------------------------------------------------------------------

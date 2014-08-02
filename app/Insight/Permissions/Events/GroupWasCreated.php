@@ -7,7 +7,7 @@ use Insight\Permissions\Group;
  * Time: 10:59 PM
  */
 
-class GroupCreated 
+class GroupWasCreated
 {
     /**
      * @var \Insight\Permissions\Group

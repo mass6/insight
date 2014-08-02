@@ -17,23 +17,41 @@ class BaseController extends Controller {
         View::share([
             'currentUser' => Sentry::getUser(),
             'layout'      => $this->getLayout(),
-            'defaultLayout' => Config::get('view.layout.default', 'layouts.default')
+            'layoutPath'  => $this->getLayoutPath(),
+            'defaultLayout' => 'layouts.' . Config::get('view.layout.default', 'layouts.default')
         ]);
 	}
 
-    public function getLayout()
+    protected function getLayout()
     {
         if (Sentry::check()) {
             $company = Sentry::getUser()->company;
-            $layout = Config::get('view.layout.customer.' . $company, Config::get('view.layout.default', 'layouts.default'));
 
-            if (! file_exists(__DIR__ . '/../app/views/layouts/' . $layout . '.blade.php')) {
-                $layout = Config::get('view.layout.default', 'layouts.default');
+            if ($company !== '36s')
+            {
+                $layout = Config::get('view.layout.company.' . $company . '.layout', Config::get('view.layout.default'));
+                if (! file_exists(__DIR__ . '/../views/layouts/' . $company  . '/' . $layout .'.blade.php')) {
+                    $layout = Config::get('view.layout.default', 'layouts.default');
+                    return 'layouts.' . $layout;
+                }
+                return 'layouts.' . $company . '.' . $layout;
             }
-            return $layout;
-        } else {
-            return Config::get('view.layout.default', 'layouts.default');
+            else return 'layouts.' . Config::get('view.layout.default');
+
         }
+        else return 'layouts.' . Config::get('view.layout.default', 'layouts.default');
+
+
     }
 
+    protected function getLayoutPath(){
+        if (Sentry::check()) {
+            $company = Sentry::getUser()->company;
+            if ($company !== '36s'){
+                return Config::get('view.layout.company.' . $company . '.path', 'layouts');
+            }
+            else return 'layouts';
+        }
+        else return 'layouts';
+    }
 }

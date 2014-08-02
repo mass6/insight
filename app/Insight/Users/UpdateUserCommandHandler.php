@@ -5,7 +5,7 @@
  * Time: 4:31 PM
  */
 
-use Insight\Users\Events\UserUpdated;
+use Insight\Users\Events\UserWasUpdated;
 
 class UpdateUserCommandHandler extends UserCommandAbstract
 {
@@ -38,6 +38,7 @@ class UpdateUserCommandHandler extends UserCommandAbstract
             $this->assignUserToGroups($user, $command->groups, $this->userRepository->getAssignedGroups($user));
 
             $user->save();
+            $user->send_email = $command->send_email;
 
         }
         catch(Exception $e)
@@ -45,7 +46,7 @@ class UpdateUserCommandHandler extends UserCommandAbstract
             return $e;
         }
 
-        $user->raise(new UserUpdated($user));
+        $user->raise(new UserWasUpdated($user));
 
         $this->dispatchEventsFor($user);
 

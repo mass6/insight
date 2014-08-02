@@ -1,13 +1,13 @@
-<?php namespace Insight\Users\Events; 
+<?php namespace Insight\Users\Events;
 /**
  * Insight Client Management Portal:
- * Date: 7/28/14
- * Time: 1:00 PM
+ * Date: 7/26/14
+ * Time: 7:54 PM
  */
 
 use Cartalyst\Sentry\Users\Eloquent\User as User;
 
-class UserCreated 
+class UserWasUpdated
 {
     public $user;
 

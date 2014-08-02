@@ -1,10 +1,11 @@
 
-<footer class="main">
+    <footer class="main">
 
 
-    &copy; 2014 <strong>Neon</strong> Admin Theme by <a href="http://laborator.co" target="_blank">Laborator</a>
+        &copy; 2014 <strong>36S</strong> - Procure Smarter | <a href="http://36-s.com" target="_blank">http://36-s.com</a>
 
-</footer>	</div>
+    </footer>
+</div>
 
 @include('layouts.partials._chat')
 

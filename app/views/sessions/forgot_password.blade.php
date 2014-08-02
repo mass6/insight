@@ -18,6 +18,7 @@
     <link rel="stylesheet" href="{{ URL::asset('css/neon-core.css') }}">
     <link rel="stylesheet" href="{{ URL::asset('css/neon-theme.css') }}">
     <link rel="stylesheet" href="{{ URL::asset('css/neon-forms.css') }}">
+    <link rel="stylesheet" href="{{ URL::asset('css/skins/blue.css') }}">
     <link rel="stylesheet" href="{{ URL::asset('css/custom.css') }}">
 
     <script src="{{ URL::asset('js/jquery-1.11.0.min.js') }}"></script>
@@ -47,7 +48,7 @@
         <div class="login-content">
 
             <a href="index.html" class="logo">
-                <img src="{{ URL::asset('images/insight-120.png') }}" width="120" alt="" />
+                <img src="{{ URL::asset('images/insight-100.png') }}" alt="36S Insight" />
             </a>
 
             <p class="description">Enter your email, and we will send you a reset link.</p>

@@ -1,5 +1,5 @@
 <?php namespace Insight\Users;
-use Insight\Users\Events\UserDeleted;
+use Insight\Users\Events\UserWasDeleted;
 use Laracasts\Commander\CommandHandler;
 use Laracasts\Commander\Events\DispatchableTrait;
 
@@ -34,7 +34,7 @@ class DeleteUserCommandHandler implements  CommandHandler
 
         $this->user->delete($command->user->id);
 
-        $savedUser->raise(new UserDeleted($savedUser));
+        $savedUser->raise(new UserWasDeleted($savedUser));
 
         $this->dispatchEventsFor($savedUser);
     }

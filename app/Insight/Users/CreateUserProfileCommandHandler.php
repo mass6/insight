@@ -1,5 +1,5 @@
 <?php namespace Insight\Users;
-use Insight\Users\Events\ProfileCreated;
+use Insight\Users\Events\ProfileWasCreated;
 use Laracasts\Commander\CommandHandler;
 use Laracasts\Commander\Events\DispatchableTrait;
 
@@ -24,7 +24,7 @@ class CreateUserProfileCommandHandler implements CommandHandler
         $user = $command->user;
         $user->profile()->save(new Profile);
 
-        $user->raise(new ProfileCreated($user));
+        $user->raise(new ProfileWasCreated($user));
         $this->dispatchEventsFor($user);
     }
 }

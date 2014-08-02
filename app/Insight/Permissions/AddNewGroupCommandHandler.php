@@ -1,6 +1,6 @@
 <?php namespace Insight\Permissions;
 use Aws\CloudFront\Exception\Exception;
-use Insight\Permissions\Events\GroupCreated;
+use Insight\Permissions\Events\GroupWasCreated;
 use Laracasts\Commander\Events\DispatchableTrait;
 use Cartalyst\Sentry\Facades\Laravel\Sentry;
 
@@ -38,7 +38,7 @@ class AddNewGroupCommandHandler extends GroupCommandHandler
             return 'Could not create group.';
         }
 
-        $group->raise(new GroupCreated($group));
+        $group->raise(new GroupWasCreated($group));
 
         $this->dispatchEventsFor($group);
 

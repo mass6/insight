@@ -7,24 +7,26 @@
 
 class UpdateUserCommand 
 {
+    public $id;
     public $first_name;
     public $last_name;
     public $email;
     public $password;
     public $company;
-    public $id;
     public $permissionsAllowed;
     public $groups;
     public $permissionsDenied;
+    public $send_email;
 
-    public function __construct($id, $first_name, $last_name, $email, $password, $company, $permissionsAllowed, $permissionsDenied, $groups)
+    public function __construct($id, $first_name, $last_name, $email, $password, $company, $send_email, $permissionsAllowed, $permissionsDenied, $groups)
     {
+        $this->id = $id;
         $this->first_name = $first_name;
         $this->last_name = $last_name;
         $this->email = $email;
         $this->password = $password;
         $this->company = $company;
-        $this->id = $id;
+        $this->send_email = $send_email;
         $this->permissionsAllowed = $permissionsAllowed;
         $this->permissionsDenied = $permissionsDenied;
         $this->groups = $groups;

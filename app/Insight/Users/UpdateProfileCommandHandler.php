@@ -1,9 +1,9 @@
 <?php namespace Insight\Users;
 use Aws\CloudFront\Exception\Exception;
-use Insight\Users\Events\ProfileUpdated;
+use Insight\Users\Events\ProfileWasUpdated;
 use Laracasts\Commander\CommandHandler;
 use Laracasts\Commander\Events\DispatchableTrait;
-use Log;
+
 /**
  * Insight Client Management Portal:
  * Date: 7/29/14
@@ -33,7 +33,7 @@ class UpdateProfileCommandHandler implements CommandHandler
             return $e->getMessage();
         }
 
-        $command->user->raise(new ProfileUpdated($command->user));
+        $command->user->raise(new ProfileWasUpdated($command->user));
         $this->dispatchEventsFor($command->user);
 
         return $profile;

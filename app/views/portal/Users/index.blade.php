@@ -28,11 +28,6 @@
 <script class="init" type="text/javascript">
     $(document).ready(function() {
 
-        $('#datatable tfoot th').each( function () {
-            var title = $('#example thead th').eq( $(this).index() ).text();
-            $(this).html( '<input type="text" placeholder="Search '+title+'" />' );
-        } );
-
         var table = $('#datatable').DataTable({
             "ajax": {
                 "url" : "/portal/ajax/users",
@@ -77,16 +72,6 @@
             }
         });
 
-        // Apply the filter
-        table.columns().eq( 0 ).each( function ( colIdx ) {
-            $( 'input', table.column( colIdx ).footer() ).on( 'keyup change', function () {
-                table
-                    .column( colIdx )
-                    .search( this.value )
-                    .draw();
-            } );
-        } );
-
 
     });
 </script>
@@ -112,21 +97,6 @@
         <th>Last Login</th>
     </tr>
     </thead>
-    <tfoot>
-    <tr>
-        <th>ID</th>
-        <th>Customer</th>
-        <th>Name</th>
-        <th>Email</th>
-        <th>Type</th>
-        <th>Approver Level</th>
-        <th>Active Approver</th>
-        <th>Override</th>
-        <th>Override Limit</th>
-        <th>Last Login</th>
-    </tr>
-    </tfoot>
-
 </table>
 
 @include('portal.partials._datatables')

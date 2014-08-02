@@ -35,18 +35,6 @@ App::after(function($request, $response)
 
 Route::filter('auth', function()
 {
-//	if (Auth::guest())
-//	{
-//		if (Request::ajax())
-//		{
-//			return Response::make('Unauthorized', 401);
-//		}
-//		else
-//		{
-//			return Redirect::guest('login');
-//		}
-//	}
-
     //if ( Sentry::check()) return Redirect::guest('login');
     if ( ! Sentry::check())
     {
@@ -60,6 +48,21 @@ Route::filter('auth.basic', function()
 	return Auth::basic();
 });
 
+
+/*
+ * Filter for Admin area
+ */
+Route::filter('admin', function()
+{
+    // get current user
+    $user = Sentry::getUser();
+
+    if ( ! $user->hasAccess('admin'))
+    {
+        Flash::error('You do not have the appropriate priveliges to view the requested page.');
+        return Redirect::home();
+    }
+});
 /*
 |--------------------------------------------------------------------------
 | Guest Filter

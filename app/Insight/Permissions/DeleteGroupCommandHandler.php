@@ -1,5 +1,5 @@
 <?php namespace Insight\Permissions;
-use Insight\Permissions\Events\GroupDeleted;
+use Insight\Permissions\Events\GroupWasDeleted;
 
 /**
  * Insight Client Management Portal:
@@ -22,7 +22,7 @@ class DeleteGroupCommandHandler extends GroupCommandHandler
 
         $this->group->delete($command->group->id);
 
-        $savedGroup->raise(new GroupDeleted($savedGroup));
+        $savedGroup->raise(new GroupWasDeleted($savedGroup));
 
         $this->dispatchEventsFor($savedGroup);
 

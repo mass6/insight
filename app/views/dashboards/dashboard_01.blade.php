@@ -8,7 +8,7 @@
 <div class="row">
     <div class="col-sm-12">
         <div class="well">
-            <h1>Executive Dashboard <small class="pull-right">{{-- Carbon::now()->format('d/m/Y') --}}</small></h1>
+            <h1>Executive Dashboard <small class="pull-right">{{ Carbon::now()->format('d/m/Y') }}</small></h1>
         </div>
     </div>
 </div>
@@ -36,7 +36,7 @@
                 <span class="lab">AED </span><div id="orders-today-value" class="val" data-start="0" data-end="0" data-postfix="" data-duration="1500" data-delay="0">0</div>
 
                 <h3>Orders Approved Today</h3>
-                <p>orders approved so far today .</p>
+                <p>approved so far today.</p>
             </div>
         </a>
 
@@ -56,16 +56,16 @@
     </div>
 
     <div class="col-sm-3">
+        <a href="{{ route('portal.orders.period', 'third-party-this-month') }}">
+            <div class="tile-stats tile-blue">
+                <div class="icon"><i class="entypo-export"></i></div>
+                <div id="third-party-order-count" class="num" data-start="0" data-end="52" data-postfix="" data-duration="1500" data-delay="1800">0</div>
+                <span class="lab">AED </span><div id="third-party-order-value" class="val" data-start="0" data-end="52" data-postfix="" data-duration="1500" data-delay="1800">0</div>
 
-        <div class="tile-stats tile-blue">
-            <div class="icon"><i class="entypo-export"></i></div>
-            <div id="third-party-order-count" class="num" data-start="0" data-end="52" data-postfix="" data-duration="1500" data-delay="1800">0</div>
-            <span class="lab">AED </span><div id="third-party-order-value" class="val" data-start="0" data-end="52" data-postfix="" data-duration="1500" data-delay="1800">0</div>
-
-            <h3>Third Party Orders</h3>
-            <p>orders to third-party suppliers this month.</p>
-        </div>
-
+                <h3>Third Party Orders</h3>
+                <p>orders to third-party suppliers this month.</p>
+            </div>
+        </a>
     </div>
 </div>
 

@@ -156,12 +156,6 @@ function format2 ( d ) {
 
 $(document).ready(function() {
 
-    $('#datatable tfoot th').each( function () {
-        var title = $('#example thead th').eq( $(this).index() ).text();
-        $(this).html( '<input type="text" placeholder="Search '+title+'" />' );
-    } );
-
-
     var table = $('#datatable').DataTable({
         "ajax": {
             "url" : "/portal/ajax/contracts",
@@ -173,13 +167,13 @@ $(document).ready(function() {
                 "class":          'details-control1',
                 "orderable":      false,
                 "data":           null,
-                "defaultContent": 'Show/Hide'
+                "defaultContent": ''
             },
             {
                 "class":          'details-control2',
                 "orderable":      false,
                 "data":           null,
-                "defaultContent": 'Show/Hide'
+                "defaultContent": ''
             },
             { "data": "web_id" },
             { "data": "code" },
@@ -315,16 +309,6 @@ $(document).ready(function() {
         }
     } );
 
-    // Apply the filter
-    table.columns().eq( 0 ).each( function ( colIdx ) {
-        $( 'input', table.column( colIdx ).footer() ).on( 'keyup change', function () {
-            table
-                .column( colIdx )
-                .search( this.value )
-                .draw();
-        } );
-    } );
-
 
 });
 </script>
@@ -338,8 +322,8 @@ $(document).ready(function() {
 <table id="datatable" class="table table-bordered datatable">
     <thead>
     <tr>
-        <th>Users</th>
-        <th>Addresses</th>
+        <th>Users (Show/Hide)</th>
+        <th>Addresses (Show/Hide)</th>
         <th>ID</th>
         <th>Code</th>
         <th>Name</th>
@@ -405,75 +389,6 @@ $(document).ready(function() {
         <th>User 20</th>
     </tr>
     </thead>
-    <tfoot>
-    <tr>
-        <th>Users</th>
-        <th>Addresses</th>
-        <th>ID</th>
-        <th>Code</th>
-        <th>Name</th>
-        <th>Customer</th>
-        <th>Store</th>
-        <th>Last Updated</th>
-        <th>Created At</th>
-        <th>Bill To Name</th>
-        <th>Bill To - Street L1</th>
-        <th>Bill To - Street L2</th>
-        <th>Bill To - City</th>
-        <th>Bill To - Country</th>
-        <th>Bill To - Zip</th>
-        <th>Ship To 1 - Name</th>
-        <th>Ship To 1 - Street L1</th>
-        <th>Ship To 1 - Street L2</th>
-        <th>Ship To 1 - City</th>
-        <th>Ship To 1 - Country</th>
-        <th>Ship To 1 - Zip</th>
-        <th>Ship To 2 - Name</th>
-        <th>Ship To 2 - Street L1</th>
-        <th>Ship To 2 - Street L2</th>
-        <th>Ship To 2 - City</th>
-        <th>Ship To 2 - Country</th>
-        <th>Ship To 2 - Zip</th>
-        <th>Ship To 3 - Name</th>
-        <th>Ship To 3 - Street L1</th>
-        <th>Ship To 3 - Street L2</th>
-        <th>Ship To 3 - City</th>
-        <th>Ship To 3 - Country</th>
-        <th>Ship To 3 - Zip</th>
-        <th>Ship To 4 - Name</th>
-        <th>Ship To 4 - Street L1</th>
-        <th>Ship To 4 - Street L2</th>
-        <th>Ship To 4 - City</th>
-        <th>Ship To 4 - Country</th>
-        <th>Ship To 4 - Zip</th>
-        <th>Ship To 5 - Name</th>
-        <th>Ship To 5 - Street L1</th>
-        <th>Ship To 5 - Street L2</th>
-        <th>Ship To 5 - City</th>
-        <th>Ship To 5 - Country</th>
-        <th>Ship To 5 - Zip</th>
-        <th>User 1</th>
-        <th>User 2</th>
-        <th>User 3</th>
-        <th>User 4</th>
-        <th>User 5</th>
-        <th>User 6</th>
-        <th>User 7</th>
-        <th>User 8</th>
-        <th>User 9</th>
-        <th>User 10</th>
-        <th>User 11</th>
-        <th>User 12</th>
-        <th>User 13</th>
-        <th>User 14</th>
-        <th>User 15</th>
-        <th>User 16</th>
-        <th>User 17</th>
-        <th>User 18</th>
-        <th>User 19</th>
-        <th>User 20</th>
-    </tr>
-    </tfoot>
 
 </table>
 

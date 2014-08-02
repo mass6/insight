@@ -195,6 +195,7 @@ if(count($fields) > 4 &&
                     <table  id="items-ordered" class="table table-bordered table-hover">
                         <colgroup>
                             <col style="width:40%">
+                            <col style="width:5%">
                             <col style="width:2%">
                             <col style="width:10%">
                             <col style="width:2%">
@@ -203,6 +204,7 @@ if(count($fields) > 4 &&
                         <thead>
                         <tr>
                             <th class="left">Product</th>
+                            <th class="left">Supplier</th>
                             <th>Price</th>
                             <th>UOM</th>
                             <th>Qty</th>
@@ -212,7 +214,8 @@ if(count($fields) > 4 &&
                         <tbody>
                         @foreach ($items as $item)
                         <tr>
-                            <td class="left">SKU: {{ $item['sku'] }} | <small>{{ $item['supplier'] }}</small><br/>{{ $item['name'] }}</td>
+                            <td class="left">SKU: {{ $item['sku'] }}<br/>{{ $item['name'] }}</td>
+                            <td class="left">{{ $item['supplier'] }}</td>
                             <td class="right">{{ $item['price'] }}</td>
                             <td>{{ $item['uom'] }}</td>
                             <td>{{ $item['qty'] }}</td>
@@ -229,7 +232,7 @@ if(count($fields) > 4 &&
             </div>
 
             <div class="right">
-                <a href="" class="btn btn-orange">Print</a>
+                <a href="{{ URL::route('portal.orders.print', $order['entity_id']) }}" target="_blank" class="btn btn-orange">Print</a>
                 <a href="{{ URL::previous() }}" class="btn btn-primary">Go Back</a>
             </div>
         </div>

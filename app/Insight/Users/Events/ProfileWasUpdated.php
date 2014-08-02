@@ -4,15 +4,18 @@ use Insight\Users\User;
 /**
  * Insight Client Management Portal:
  * Date: 7/29/14
- * Time: 3:46 PM
+ * Time: 8:15 PM
  */
 
-class UserDeleted 
+class ProfileWasUpdated
 {
+    /**
+     * @var \Insight\Users\User
+     */
     public $user;
 
-    function __construct(User $user)
+    public function __construct(User $user)
     {
         $this->user = $user;
     }
-}
+} 

@@ -10,7 +10,6 @@ function getLayout()
 {
     $company = Session::get('company', '36s');
     $layout = 'layouts.' . Config::get('view.layout.customer.' . $company, Config::get('view.layout.default', 'layouts.default'));
-    Log::info($layout);
     return $layout;
 }
 
