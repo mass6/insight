@@ -80,7 +80,7 @@
         <div class="panel panel-primary" id="charts_env">
 
             <div class="panel-heading">
-                <div class="panel-title">Current Month - Daily Order Totals</div>
+                <div class="panel-title">Daily Order Totals - Last 60 Days</div>
 
                 <div class="panel-options">
                     <ul class="nav nav-tabs">

@@ -207,7 +207,7 @@
                             </p>
                             <hr/><br/>
                             <h3>Hello {{ $user->first_name . ' ' . $user->last_name }},</h3>
-                            <p>Welcome to <strong>36S Insight</strong> real-time reporting and analytics. You can access the site using the below account credentials.</p>
+                            <p>Welcome to <strong>36S Insight</strong> real-time reporting and analytics for your procurement spend. You can access the site using the below account credentials.</p>
                             <p>
                             <ul>
                                 <li>Username: {{ $user->email }}</li>

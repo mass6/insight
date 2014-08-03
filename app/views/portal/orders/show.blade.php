@@ -68,7 +68,7 @@ if(count($fields) > 4 &&
                                 </tr>
                                 <tr>
                                     <td>Status:</td>
-                                    <td>{{ $order['status'] }}</td>
+                                    <td>{{ ucwords(str_replace('_', ' ', $order['status'])) }}</td>
                                 </tr>
                                 <tr>
                                     <td>Contract:</td>

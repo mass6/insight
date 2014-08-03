@@ -46,6 +46,9 @@
             '</table>';
     }
 
+    function numberWithCommas(x) {
+        return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    }
 
     $(document).ready(function() {
         var table = $('#datatable').DataTable({
@@ -89,11 +92,12 @@
                     $(td).css('color', '#4379C9');
                     $(td).css('font-weight', 'bold');
                     $(td).css('width', '7%');
+                    $(td).css('text-align', 'right');
                     }
                 }, {
                 "targets": 7,
                 "createdCell": function (td, cellData, rowData, row, col) {
-                    $(td).css('width', '7%');
+                    $(td).css('width', '10%');
                 }
             }
             ],
@@ -127,7 +131,8 @@
                 console.log(pageTotal);
                 // Update footer
                 $( api.column( 6 ).footer() ).html(
-                    '$'+ Math.round(pageTotal*100)/100 +'  ( AED'+ Math.round(total*100)/100 +' total)'
+                    'Showing AED '+ numberWithCommas(Math.round(pageTotal*100)/100) +
+                        '<br/> of  AED '+ numberWithCommas(Math.round(total*100)/100) +' Total'
                 );
             },
             "order": [[2, 'asc']],
