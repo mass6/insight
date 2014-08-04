@@ -43,20 +43,3 @@
     </div>
 </div>
 @stop
-
-
-
-
-
-
-
-
-<!-- Bottom Scripts -->
-<script src="{{ URL::asset('js/gsap/main-gsap.js') }}"></script>
-<script src="{{ URL::asset('js/joinable.js') }}"></script>
-<script src="{{ URL::asset('js/resizeable.js') }}"></script>
-<script src="{{ URL::asset('js/neon-api.js') }}"></script>
-<script src="{{ URL::asset('js/jquery.multi-select.js') }}"></script>
-<script src="{{ URL::asset('js/icheck/icheck.min.js') }}"></script>
-<script src="{{ URL::asset('js/neon-custom.js') }}"></script>
-@stop

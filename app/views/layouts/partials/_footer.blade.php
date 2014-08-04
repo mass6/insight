@@ -7,6 +7,6 @@
     </footer>
 </div>
 
-@include('layouts.partials._chat')
+
 
 @include('layouts.partials._footerlinks')

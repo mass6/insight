@@ -1,6 +1,7 @@
 @extends($layout)
 
 @section('links')
+@parent
 <link rel="stylesheet" href="{{ URL::asset('css/font-icons/font-awesome/css/font-awesome.min.css') }}">
 @stop
 
@@ -269,7 +270,7 @@ function getRandomInt(min, max)
 
 
 @section('bottomlinks')
-
+@parent
 <script src="{{ URL::asset('js/jquery.sparkline.min.js') }}"></script>
 <script src="{{ URL::asset('js/raphael-min.js') }}"></script>
 <script src="{{ URL::asset('js/morris.min.js') }}"></script>

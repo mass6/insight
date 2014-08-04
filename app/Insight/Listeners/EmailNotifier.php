@@ -20,13 +20,12 @@ class EmailNotifier extends EventListener
             {
                 $message->to($data['user']['email'], $data['user']['first_name'] )->subject('Welcome to 36S Insight!');
             });
-            Log::info('_____Mail____ : ' . $mail);
         }
     }
 
     public function whenUserWasUpdated(UserWasUpdated $event)
     {
-        Log::info("{$event->user->first_name} was updated!");
+        Log::info("User: {$event->user->first_name} was updated!");
         if ($event->user->send_email) {
             Log::info('..and needs to have his credentials emailed again to ' . $event->user->email);
         }

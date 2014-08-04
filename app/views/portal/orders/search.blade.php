@@ -1,13 +1,13 @@
 @extends($layout)
 
 @section('links')
-
-<style>
-    .search-results-env .search-results > .search-result {
-        padding-bottom: 0px;
-        margin-bottom: 0px;
-    }
-</style>
+    @parent
+    <style>
+        .search-results-env .search-results > .search-result {
+            padding-bottom: 0px;
+            margin-bottom: 0px;
+        }
+    </style>
 
 @stop
 
@@ -105,8 +105,6 @@
             <!-- Pager for search results -->
             <ul class="pager">
                 {{ $results->links() }}
-<!--                <li><a href="#"><i class="entypo-left-thin"></i> Previous</a></li>-->
-<!--                <li><a href="#">Next <i class="entypo-right-thin"></i></a></li>-->
             </ul>
         </div>
     </div>

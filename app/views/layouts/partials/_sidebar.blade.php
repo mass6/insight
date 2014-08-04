@@ -3,7 +3,11 @@
 
 <header class="logo-env">
 
-    @include($layoutPath . '.partials._logo')
+    @if(isset($layoutPath))
+        @include($layoutPath . '.partials._logo')
+    @else
+        @include('layouts.partials._logo')
+      @endif
 
     <!-- logo collapse icon -->
 
@@ -235,6 +239,14 @@
                             <span>Groups</span>
                         </a>
                     </li>
+                @endif
+                @if ($currentUser->hasAccess('logs'))
+                <li class="{{ isActive('logs', 2) }}">
+                    <a href="{{ url('admin/logviewer') }}">
+                        <i class="entypo-attach"></i>
+                        <span>Logs</span>
+                    </a>
+                </li>
                 @endif
             </ul>
         </li>

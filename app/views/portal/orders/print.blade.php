@@ -1,25 +1,25 @@
 @extends('layouts.print')
 
 @section('links')
+    @parent
+    <style>
 
-<style>
+        body {font-size: 1em;}
+        .table > thead > tr > th, .table > tbody > tr > th, .table > tfoot > tr > th, .table > thead > tr > td, .table > tbody > tr > td, .table > tfoot > tr > td {padding:0;}
+        .table > tbody > tr > td { border-top: none; border-bottom: 1px solid #ebebeb;}
+        .table {margin-bottom: 0;}
+        .table > tbody > tr > td, .table > thead > tr > th {padding-left: 5px;padding-right: 5px;}
+        blockquote {
+            padding: 0px 17px;
+            margin: 0 0 17px;
+            border-left: 5px solid #eeeeee;
+        }
+        #items-ordered th, #items-ordered td {text-align: right;}
+        #items-ordered td.left, #items-ordered th.left {text-align: left;}
+        .right {text-align: right;}
+        #items-ordered td.center, #items-ordered th.center {text-align: center;}
 
-    body {font-size: 1em;}
-    .table > thead > tr > th, .table > tbody > tr > th, .table > tfoot > tr > th, .table > thead > tr > td, .table > tbody > tr > td, .table > tfoot > tr > td {padding:0;}
-    .table > tbody > tr > td { border-top: none; border-bottom: 1px solid #ebebeb;}
-    .table {margin-bottom: 0;}
-    .table > tbody > tr > td, .table > thead > tr > th {padding-left: 5px;padding-right: 5px;}
-    blockquote {
-        padding: 0px 17px;
-        margin: 0 0 17px;
-        border-left: 5px solid #eeeeee;
-    }
-    #items-ordered th, #items-ordered td {text-align: right;}
-    #items-ordered td.left, #items-ordered th.left {text-align: left;}
-    .right {text-align: right;}
-    #items-ordered td.center, #items-ordered th.center {text-align: center;}
-
-</style>
+    </style>
 
 @stop
 

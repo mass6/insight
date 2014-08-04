@@ -26,3 +26,17 @@ div.searchbox {margin-left: 30px}
     border-bottom-left-radius: 0;
     border-top-left-radius: 0;
 }
+body .navbar-inverse {
+    border-color: #003471;
+    background: #2E99FC;
+}
+.navbar-inverse .navbar-inner {
+    color:#bfccdb;
+    background: none;
+    background-color: #003471;
+    background-image: none;
+    border-color: #252525;
+}
+.navbar-inverse .brand, .navbar-inverse .nav>li>a {
+    color: #bfccdb;
+}

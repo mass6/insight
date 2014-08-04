@@ -1,10 +1,12 @@
 @extends($layout)
 
 @section('links')
-<style>
-    .features img {border: 1px solid #d6d6d6;}
-</style>
+    @parent
+    <style>
+        .features img {border: 1px solid #d6d6d6;}
+    </style>
 @stop
+
 @section('content')
 
 <!-- Main component for a primary marketing message or call to action -->

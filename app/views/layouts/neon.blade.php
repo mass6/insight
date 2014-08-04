@@ -19,17 +19,17 @@
 
 <div class="page-container"><!-- add class "sidebar-collapsed" to close sidebar by default, "chat-visible" to make chat appear always -->
 
-@include('layouts.partials._sidebar')
-<div class="main-content">
+    @include('layouts.partials._sidebar')
+    <div class="main-content">
 
-@include('layouts.partials._topbar')
-<!--@include('layouts.partials._breadcrumbs')-->
-    @include('flash::message')
+    @include('layouts.partials._topbar')
+    <!--@include('layouts.partials._breadcrumbs')-->
+        @include('flash::message')
 
-    @yield('content')
+        @yield('content')
 
-<!-- Footer -->
-    @include('layouts.partials._footer')
+    <!-- Footer -->
+        @include('layouts.partials._footer')
 
 </div>
 
