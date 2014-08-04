@@ -22,9 +22,4 @@ class PagesController extends BaseController {
         return View::make('pages.home', compact('message'));
     }
 
-    public function testing()
-    {
-        return View::make('pages.testing');
-    }
-
 }

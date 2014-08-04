@@ -131,8 +131,7 @@ return array(
         'Barryvdh\Debugbar\ServiceProvider',
         'Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider',
         'Insight\Core\RepositoryServiceProvider',
-        'Insight\Listeners\EventingServiceProvider',
-        'Kmd\Logviewer\LogviewerServiceProvider',
+        'Insight\Listeners\EventingServiceProvider'
 	),
 
 	/*

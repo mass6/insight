@@ -14,8 +14,7 @@
         "aws/aws-sdk-php": "2.4.*@dev",
         "laracasts/utilities": "~1.0",
         "guzzlehttp/guzzle": "~4.0",
-        "iron-io/iron_mq": "1.4.8",
-        "kmd/logviewer": "dev-master"
+        "iron-io/iron_mq": "1.4.8"
     },
     "require-dev": {
         "way/generators": "~2.0",
