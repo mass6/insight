@@ -2,7 +2,6 @@
 /vendor
 /pubic/js-old/
 composer.phar
-composer.lock
 .env.*.php
 .env.php
 environment.php
