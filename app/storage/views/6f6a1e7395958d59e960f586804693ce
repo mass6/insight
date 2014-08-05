@@ -1,6 +1,4 @@
-@extends($layout)
-
-@section('links')
+<?php $__env->startSection('links'); ?>
     @parent
     <style>
         .table > thead > tr > th, .table > tbody > tr > th, .table > tfoot > tr > th, .table > thead > tr > td, .table > tbody > tr > td, .table > tfoot > tr > td {padding:0;}
@@ -19,7 +17,7 @@
 
     </style>
 
-@stop
+<?php $__env->stopSection(); ?>
 
 <?php
 $fields = explode('<br/>',$order['ship_to']);
@@ -33,9 +31,9 @@ if(count($fields) > 4 &&
 };?>
 
 
-@section('content')
+<?php $__env->startSection('content'); ?>
 
-<h2>Order Details - <small>#{{ $order['increment_id'] }} | {{ $order['created_at'] }}</small></h2>
+<h2>Order Details - <small>#<?php echo $order['increment_id']; ?> | <?php echo $order['created_at']; ?></small></h2>
 <br />
 
 <div class="well">
@@ -47,7 +45,7 @@ if(count($fields) > 4 &&
 
                 <!-- panel head -->
                 <div class="panel-heading">
-                    <div class="panel-title">Order #{{ $order['increment_id'] }}</div>
+                    <div class="panel-title">Order #<?php echo $order['increment_id']; ?></div>
 
                     <div class="panel-options">
                         <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a>
@@ -64,15 +62,15 @@ if(count($fields) > 4 &&
                                 <tbody>
                                 <tr>
                                     <td>Order Date:</td>
-                                    <td>{{ $order['created_at'] }}</td>
+                                    <td><?php echo $order['created_at']; ?></td>
                                 </tr>
                                 <tr>
                                     <td>Status:</td>
-                                    <td>{{ $order['status'] }}</td>
+                                    <td><?php echo ucwords(str_replace('_', ' ', $order['status'])); ?></td>
                                 </tr>
                                 <tr>
                                     <td>Contract:</td>
-                                    <td>{{ $order['code'] . ' - ' . $order['contract'] }}</td>
+                                    <td><?php echo $order['code'] . ' - ' . $order['contract']; ?></td>
                                 </tr>
                                 </tbody>
                             </table>
@@ -86,19 +84,19 @@ if(count($fields) > 4 &&
                                 <tbody>
                                 <tr>
                                     <td>Ordered by:</td>
-                                    <td>{{ $order['ordered_by'] }}</td>
+                                    <td><?php echo $order['ordered_by']; ?></td>
                                 </tr>
                                 <tr>
                                     <td>Email:</td>
-                                    <td>{{ $order['customer_email'] }}</td>
+                                    <td><?php echo $order['customer_email']; ?></td>
                                 </tr>
                                 <tr>
                                     <td>Approved by:</td>
-                                    <td>{{ $order['approved_by'] }}</td>
+                                    <td><?php echo $order['approved_by']; ?></td>
                                 </tr>
                                 <tr>
                                     <td>Approved at:</td>
-                                    <td>{{ $order['approved_at'] }}</td>
+                                    <td><?php echo $order['approved_at']; ?></td>
                                 </tr>
                                 </tbody>
                             </table>
@@ -131,7 +129,7 @@ if(count($fields) > 4 &&
                     <table class="">
                         <tbody>
                         <tr>
-                            <td>{{ $order['bill_to'] }}</td>
+                            <td><?php echo $order['bill_to']; ?></td>
                         </tr>
                         </tbody>
                     </table>
@@ -162,7 +160,7 @@ if(count($fields) > 4 &&
                     <table class="">
                         <tbody>
                         <tr>
-                            <td>{{ $order['ship_to'] }}</td>
+                            <td><?php echo $order['ship_to']; ?></td>
                         </tr>
                         </tbody>
                     </table>
@@ -212,31 +210,32 @@ if(count($fields) > 4 &&
                         </tr>
                         </thead>
                         <tbody>
-                        @foreach ($items as $item)
+                        <?php foreach($items as $item): ?>
                         <tr>
-                            <td class="left">SKU: {{ $item['sku'] }}<br/>{{ $item['name'] }}</td>
-                            <td class="left">{{ $item['supplier'] }}</td>
-                            <td class="right">{{ $item['price'] }}</td>
-                            <td>{{ $item['uom'] }}</td>
-                            <td>{{ $item['qty'] }}</td>
-                            <td class="right">{{ $item['row_total'] }}</td>
+                            <td class="left">SKU: <?php echo $item['sku']; ?><br/><?php echo $item['name']; ?></td>
+                            <td class="left"><?php echo $item['supplier']; ?></td>
+                            <td class="right"><?php echo $item['price']; ?></td>
+                            <td><?php echo $item['uom']; ?></td>
+                            <td><?php echo $item['qty']; ?></td>
+                            <td class="right"><?php echo $item['row_total']; ?></td>
                         </tr>
-                        @endforeach
+                        <?php endforeach; ?>
                         </tbody>
 
                     </table>
 
-                    <h4 class="text-right">Grand Total {{ $order['grand_total'] }}</h4>
+                    <h4 class="text-right">Grand Total <?php echo $order['grand_total']; ?></h4>
 
                 </div>
             </div>
 
             <div class="right">
-                <a href="{{ URL::route('portal.orders.print', $order['entity_id']) }}" target="_blank" class="btn btn-orange">Print</a>
-                <a href="{{ URL::previous() }}" class="btn btn-primary">Go Back</a>
+                <a href="<?php echo URL::route('portal.orders.print', $order['entity_id']); ?>" target="_blank" class="btn btn-orange">Print</a>
+                <a href="<?php echo URL::previous(); ?>" class="btn btn-primary">Go Back</a>
             </div>
         </div>
     </div>
 </div>
 
-@stop
+<?php $__env->stopSection(); ?>
+<?php echo $__env->make($layout, array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>

@@ -1,0 +1,147 @@
+<!-- First_name Form Input -->
+<div class="form-group">
+    <?php echo Form::label('first_name', 'First_name:', ['class' => 'col-sm-3 control-label']); ?>
+
+    <div class="col-sm-5">
+        <?php echo Form::text('first_name', null, ['class' => 'form-control']); ?>
+
+    </div>
+</div>
+
+<!-- Last_name Form Input -->
+<div class="form-group">
+    <?php echo Form::label('last_name', 'Last_name:', ['class' => 'col-sm-3 control-label']); ?>
+
+    <div class="col-sm-5">
+        <?php echo Form::text('last_name', null, ['class' => 'form-control']); ?>
+
+    </div>
+</div>
+
+<!-- Email Form Input -->
+<div class="form-group">
+    <?php echo Form::label('email', 'Email:', ['class' => 'col-sm-3 control-label']); ?>
+
+    <div class="col-sm-5">
+        <?php echo Form::text('email', null, ['class' => 'form-control']); ?>
+
+    </div>
+</div>
+
+<!-- Password Form Input -->
+<div class="form-group">
+    <?php echo Form::label('password', 'Password:', ['class' => 'col-sm-3 control-label']); ?>
+
+    <div class="col-sm-5">
+        <?php echo Form::password('password', ['class' => 'form-control']); ?>
+
+    </div>
+</div>
+
+
+<!-- Company Form Input -->
+<div class="form-group">
+    <?php echo Form::label('company', 'Company:', ['class' => 'col-sm-3 control-label']); ?>
+
+    <div class="col-sm-5">
+        <?php echo Form::select('company', ['36s' => '36S', 'emrill' => 'Emrill', 'chicago' => 'Chicago'], null, ['class' => 'form-control']); ?>
+
+    </div>
+</div>
+
+<?php if(count($groups)): ?>
+    <div class="form-group">
+        <label class="col-sm-3 control-label">Assigned groups<br/>
+            <small>Selected groups on the right</small></label>
+
+        <div class="col-sm-7">
+            <select multiple="multiple" name="groups[]" class="form-control multi-select">
+                <?php foreach($groups as $group): ?>
+                <option value="<?php echo $group; ?>"><?php echo $group; ?></option>
+                <?php endforeach; ?>
+                <?php if(isset($userGroups)): ?>
+                <?php foreach($userGroups as $group): ?>
+                <option value="<?php echo $group; ?>" selected><?php echo $group; ?></option>
+                <?php endforeach; ?>
+                <?php endif; ?>
+            </select>
+        </div>
+    </div>
+<?php endif; ?>
+
+<div class="form-group">
+    <label class="col-sm-3 control-label">Allowed permissions<br/>
+        <small>Allowed permissions on the right</small></label>
+
+    <div class="col-sm-7">
+        <select multiple="multiple" name="permissions_allowed[]" class="form-control multi-select">
+            <?php if(isset($allowedPermissionsDiff)): ?>
+                <?php foreach($allowedPermissionsDiff as $permission): ?>
+                    <option value="<?php echo $permission; ?>"><?php echo $permission; ?></option>
+                <?php endforeach; ?>
+            <?php endif; ?>
+            <?php if(isset($allowedPermissions)): ?>
+                <?php foreach($allowedPermissions as $permission): ?>
+                    <option value="<?php echo $permission; ?>" selected><?php echo $permission; ?></option>
+                <?php endforeach; ?>
+            <?php endif; ?>
+        </select>
+    </div>
+</div>
+
+<div class="form-group">
+    <label class="col-sm-3 control-label">Denied permissions<br/>
+        <small>Denied permissions on the right</small></label>
+
+    <div class="col-sm-7">
+        <select multiple="multiple" name="permissions_denied[]" class="form-control multi-select">
+            <?php if(isset($deniedPermissionsDiff)): ?>
+                <?php foreach($deniedPermissionsDiff as $permission): ?>
+                    <option value="<?php echo $permission; ?>"><?php echo $permission; ?></option>
+                <?php endforeach; ?>
+            <?php endif; ?>
+            <?php if(isset($deniedPermissions)): ?>
+                <?php foreach($deniedPermissions as $permission): ?>
+                    <option value="<?php echo $permission; ?>" selected><?php echo $permission; ?></option>
+                <?php endforeach; ?>
+            <?php endif; ?>
+        </select>
+    </div>
+</div>
+
+<!-- if creating new user -->
+
+    <!-- Send_email Form Input -->
+    <div class="form-group">
+        <?php echo Form::label('send_email', $submit === 'Submit' ? 'Send welcome email:' : 'Resend Credentials', ['class' => 'col-sm-3 control-label']); ?>
+
+        <div class="col-sm-5">
+            <?php echo Form::checkbox('send_email', true, false, ['class' => 'form-control']); ?>
+
+        </div>
+    </div>
+
+
+
+<!-- Buttons -->
+<div class="form-group">
+    <?php echo Form::label('', '', ['class' => 'col-sm-3 control-label']); ?>
+
+    <div class="col-sm-5">
+<!-- Submit button -->
+        <?php echo Form::submit(isset($submit)?$submit:'Submit', ['class' => 'form-control btn btn-primary']); ?>
+
+<!-- Cancel button -->
+        <?php echo link_to_route('admin.users.index', 'Cancel', null, array('class'=>'form-control btn btn-warning')); ?>
+
+    </div>
+</div>
+
+<!-- Bottom Scripts -->
+<script src="<?php echo URL::asset('js/gsap/main-gsap.js'); ?>"></script>
+<script src="<?php echo URL::asset('js/joinable.js'); ?>"></script>
+<script src="<?php echo URL::asset('js/resizeable.js'); ?>"></script>
+<script src="<?php echo URL::asset('js/neon-api.js'); ?>"></script>
+<script src="<?php echo URL::asset('js/jquery.multi-select.js'); ?>"></script>
+<script src="<?php echo URL::asset('js/icheck/icheck.min.js'); ?>"></script>
+<script src="<?php echo URL::asset('js/neon-custom.js'); ?>"></script>

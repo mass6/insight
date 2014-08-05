@@ -1,0 +1,255 @@
+<div class="sidebar-menu">
+
+
+<header class="logo-env">
+
+    <?php if(isset($layoutPath)): ?>
+        <?php echo $__env->make($layoutPath . '.partials._logo', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+    <?php else: ?>
+        <?php echo $__env->make('layouts.partials._logo', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+      <?php endif; ?>
+
+    <!-- logo collapse icon -->
+
+    <div class="sidebar-collapse">
+        <a href="#" class="sidebar-collapse-icon with-animation"><!-- add class "with-animation" if you want sidebar to have animation during expanding/collapsing transition -->
+            <i class="entypo-menu"></i>
+        </a>
+    </div>
+
+
+
+    <!-- open/close menu icon (do not remove if you want to enable menu on mobile devices) -->
+    <div class="sidebar-mobile-menu visible-xs">
+        <a href="#" class="with-animation"><!-- add class "with-animation" to support animation -->
+            <i class="entypo-menu"></i>
+        </a>
+    </div>
+
+</header>
+
+<?php if(Sentry::check()): ?>
+    <ul id="main-menu" class="auto-inherit-active-class">
+        <!-- add class "multiple-expanded" to allow multiple submenus to open -->
+        <!-- class "auto-inherit-active-class" will automatically add "active" class for parent elements who are marked already with class "active" -->
+        <!-- Search Bar -->
+        <!--<li id="search">-->
+        <!--    <form method="get" action="">-->
+        <!--        <input type="text" name="q" class="search-input" placeholder="Search something..."/>-->
+        <!--        <button type="submit">-->
+        <!--            <i class="entypo-search"></i>-->
+        <!--        </button>-->
+        <!--    </form>-->
+        <!--</li>-->
+        <?php if($currentUser->hasAccess('dashboards')): ?>
+            <li id="nav-dashboards" class="<?php echo isActive('dashboard', 1); ?>">
+                <a href="<?php echo route('dashboards.home'); ?>">
+                    <i class="entypo-gauge"></i>
+                    <span>Dashboard</span>
+                </a>
+                <!--    <ul>-->
+                <!--        <li class="<?php echo isActive('dashboard', 1); ?>">-->
+                <!--            <a href="">-->
+                <!--                <span>Dashboard</span>-->
+                <!--            </a>-->
+                <!--        </li>-->
+                <!--    </ul>-->
+            </li>
+        <?php endif; ?>
+        <?php if($currentUser->hasAccess('portal.*')): ?>
+
+
+        <?php if($currentUser->hasAccess('portal.orders')): ?>
+            <li class="auto-inherit-active-class <?php echo isActive('orders', 2, true); ?>">
+                <a href="">
+                    <i class="entypo-ticket"></i>
+                    <span>Orders</span>
+                </a>
+                <ul>
+                    <li id="search">
+                        <?php echo Form::open(['route'=>'portal.orders.search', 'method'=>'GET']); ?>
+
+                        <input type="text" name="s" class="search-input" placeholder="Search Weborders..."/>
+                        <button type="submit">
+                            <i class="entypo-search"></i>
+                        </button>
+                        <?php echo Form::close(); ?>
+
+                    </li>
+                    <li class="<?php echo isActive('search', 3); ?>">
+                        <a href="<?php echo route('portal.orders.search'); ?>">
+                            <span>Search</span>
+                        </a>
+                    </li>
+                    <li class="<?php echo isActive('today', 3); ?>">
+                        <a href="<?php echo route('portal.orders.period', 'today'); ?>">
+                            <span>Today</span>
+                        </a>
+                    </li>
+                    <li class="<?php echo isActive('yesterday', 3); ?>">
+                        <a href="<?php echo route('portal.orders.period', 'yesterday'); ?>">
+                            <span>Yesterday</span>
+                        </a>
+                    </li>
+                    <li class="<?php echo isActive('this-month', 3); ?>">
+                        <a href="<?php echo route('portal.orders.period', 'this-month'); ?>">
+                            <span>This Month</span>
+                        </a>
+                    </li>
+                    <li class="<?php echo isActive('last-month', 3); ?>">
+                        <a href="<?php echo route('portal.orders.period', 'last-month'); ?>">
+                            <span>Last Month</span>
+                        </a>
+                    </li>
+                    <li class="<?php echo isActive('ytd', 3); ?>">
+                        <a href="<?php echo route('portal.orders.period', 'ytd'); ?>">
+                            <span>Year to Date</span>
+                        </a>
+                    </li>
+                    <li class="<?php echo isActive('third-party-this-month', 3); ?>">
+                        <a href="<?php echo route('portal.orders.period', 'third-party-this-month'); ?>">
+                            <span>Third Party This Month</span>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+        <?php endif; ?>
+        <?php if($currentUser->hasAccess('portal.contracts')): ?>
+            <li class="<?php echo isActive('contracts', 2); ?>">
+                <a href="<?php echo route('portal.contracts'); ?>">
+                    <i class="entypo-docs"></i>
+                    <span>Contracts</span>
+                </a>
+            </li>
+        <?php endif; ?>
+        <?php if($currentUser->hasAccess('portal.users')): ?>
+            <li class="<?php echo isActive('users', 2); ?>">
+                <a href="<?php echo route('portal.users'); ?>">
+                    <i class="entypo-cc-by"></i>
+                    <span>Portal Users</span>
+                </a>
+            </li>
+        <?php endif; ?>
+        <?php if($currentUser->hasAccess('portal.products')): ?>
+            <li class="<?php echo isActive('products', 2); ?>">
+                <a href="<?php echo route('portal.products'); ?>">
+                    <i class="entypo-basket"></i>
+                    <span>Products</span>
+                </a>
+            </li>
+        <?php endif; ?>
+        <?php if($currentUser->hasAccess('portal.approvals')): ?>
+        <li class="<?php echo isActive('approvals', 2); ?>">
+            <a href="<?php echo route('portal.approvals'); ?>">
+                <i class="entypo-check"></i>
+                <span>Approvals</span>
+            </a>
+        </li>
+        <?php endif; ?>
+        <?php if($currentUser->hasAccess('portal.budgets')): ?>
+            <li class="<?php echo isActive('budgets', 2); ?>">
+                <a href="">
+                    <i class="entypo-chart-line"></i>
+                    <span>Budgets</span>
+                </a>
+            </li>
+        <?php endif; ?>
+        <?php if($currentUser->hasAccess('portal.doa')): ?>
+            <li class="<?php echo isActive('doa', 2); ?>">
+                <a href="<?php echo route('portal.doa'); ?>">
+                    <i class="entypo-flag"></i>
+                    <span>DOA</span>
+                </a>
+            </li>
+        <?php endif; ?>
+
+        <?php endif; ?>
+<!--        <?php if($currentUser->hasAccess('sourcing.*')): ?>-->
+<!--            <li class="auto-inherit-active-class">-->
+<!--                <a href="">-->
+<!--                    <i class="entypo-network"></i>-->
+<!--                    <span>Products Sourcing</span>-->
+<!--                </a>-->
+<!--                <ul>-->
+<!--                    <li class="<?php echo isActive('item-requests', 1); ?>">-->
+<!--                        <a href="">-->
+<!--                            <i class="entypo-export"></i>-->
+<!--                            <span>Product Requests</span>-->
+<!--                        </a>-->
+<!--                    </li>-->
+<!--                    <li class="<?php echo isActive('quotations', 1); ?>">-->
+<!--                        <a href="">-->
+<!--                            <i class="entypo-attach"></i>-->
+<!--                            <span>Quotations</span>-->
+<!--                        </a>-->
+<!--                    </li>-->
+<!--                            <li class="<?php echo isActive('categories', 1); ?>">-->
+<!--                                <a href="">-->
+<!--                                    <span>Product Categories</span>-->
+<!--                                </a>-->
+<!--                            </li>-->
+<!--                </ul>-->
+<!--            </li>-->
+<!--        <?php endif; ?>-->
+<!--        <?php if($currentUser->hasAccess('partners.*')): ?>-->
+<!--            <li class="auto-inherit-active-class <?php echo isActive('customers', 1, true); ?><?php echo isActive('suppliers', 1, true); ?>">-->
+<!--                <a href="">-->
+<!--                    <i class="entypo-users"></i>-->
+<!--                    <span>Partners</span>-->
+<!--                </a>-->
+<!--                <ul>-->
+<!--                    <li class="<?php echo isActive('customers', 1); ?>">-->
+<!--                        <a href="">-->
+<!--                            <span>Customers</span>-->
+<!--                        </a>-->
+<!--                    </li>-->
+<!--                    <li class="<?php echo isActive('suppliers', 1); ?>">-->
+<!--                        <a href="">-->
+<!--                            <span>Suppliers</span>-->
+<!--                        </a>-->
+<!--                    </li>-->
+<!--                </ul>-->
+<!--            </li>-->
+<!--        <?php endif; ?>-->
+        <?php if($currentUser->hasAccess('admin')): ?>
+            <li class="auto-inherit-active-class <?php echo isActive('users', 2, true); ?><?php echo isActive('permissions', 2, true); ?><?php echo isActive('groups', 2, true); ?>">
+            <a href="<?php echo route('admin.index'); ?>">
+                <i class=""></i>
+                <span>Admin</span>
+            </a>
+            <ul>
+                <?php if($currentUser->hasAccess('users.*')): ?>
+                    <li class="<?php echo isActive('users', 2); ?>">
+                        <a href="<?php echo route('admin.users.index'); ?>">
+                            <i class="entypo-export"></i>
+                            <span>Users</span>
+                        </a>
+                    </li>
+                <?php endif; ?>
+                <?php if($currentUser->hasAccess('permissions.*')): ?>
+                    <li class="<?php echo isActive('permissions', 2); ?>">
+                        <a href="<?php echo route('admin.permissions.index'); ?>">
+                            <i class="entypo-attach"></i>
+                            <span>Permissions</span>
+                        </a>
+                    </li>
+                <?php endif; ?>
+                <?php if($currentUser->hasAccess('groups.*')): ?>
+                    <li class="<?php echo isActive('groups', 2); ?>">
+                        <a href="<?php echo route('admin.groups.index'); ?>">
+                            <i class="entypo-attach"></i>
+                            <span>Groups</span>
+                        </a>
+                    </li>
+                <?php endif; ?>
+            </ul>
+        </li>
+        <?php endif; ?>
+
+    </ul>
+
+<?php endif; ?>
+
+
+
+</div>

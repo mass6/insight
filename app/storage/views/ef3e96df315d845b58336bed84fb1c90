@@ -1,0 +1,115 @@
+<?php $__env->startSection('links'); ?>
+    @parent
+    <style>
+        .search-results-env .search-results > .search-result {
+            padding-bottom: 0px;
+            margin-bottom: 0px;
+        }
+    </style>
+
+<?php $__env->stopSection(); ?>
+
+<?php $__env->startSection('content'); ?>
+
+<h2>Search Web Orders</h2>
+
+<section class="search-results-env">
+
+    <div class="row">
+        <div class="col-md-12">
+
+
+            <!-- Search categories tabs -->
+            <ul class="nav nav-tabs right-aligned">
+                <li class="tab-title pull-left">
+                    <?php if(isset($searchTerm) && isset($results)): ?>
+                    <div class="search-string"><?php echo $results->getTotal() ?: 'No'; ?> results found for: <strong>&ldquo;<?php echo $searchTerm; ?>&rdquo;</strong></div>
+                    <br />
+                    <?php endif; ?>
+                </li>
+
+                <!--    <li class="active">-->
+                <!--        <a href="#orders">-->
+                <!--            Orders-->
+                <!--           <span class="disabled-text">(31)</span>-->
+                <!--        </a>-->
+                <!--    </li>-->
+                <!--    <li>-->
+                <!--        <a href="#members">Users</a>-->
+                <!--    </li>-->
+                <!--    <li>-->
+                <!--        <a href="#messages">Messages</a>-->
+                <!--    </li>-->
+            </ul>
+
+            <!-- Search search form -->
+            <?php echo Form::open(['route'=>'portal.orders.search', 'method'=>'GET', 'class'=>'search-bar', 'enctype'=>'application/x-www-form-urlencoded']); ?>
+
+            <!--<form method="get" class="search-bar" action="" enctype="application/x-www-form-urlencoded">-->
+
+            <div class="input-group">
+                <input type="text" class="form-control input-lg" name="s" placeholder="Search by weborder number, location, contract, user, or order status...">
+
+                <div class="input-group-btn">
+                    <button type="submit" class="btn btn-lg btn-primary btn-icon">
+                        Search
+                        <i class="entypo-search"></i>
+                    </button>
+                </div>
+            </div>
+
+            <?php echo Form::close(); ?>
+
+        <?php if(isset($results)): ?>
+            <?php if(count($results)): ?>
+            <div class="alert alert-warning clearfix" data-dismiss="alert">
+                Results are listed left to right, newest on top.
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+            </div>
+            <!--   <h4 class="alert alert-warning"><em>Results are listed by my recent order date (left to right).<em></h4>-->
+            <!-- Search search form -->
+            <div class="search-results-panes">
+
+                <div class="search-results-pane active" id="orders">
+
+                    <ul class="search-results">
+                        <?php $count = 0; ?>
+                        <?php foreach($results as $result): ?>
+                        <div class="col-md-3">
+                            <li class="search-result">
+                                <div class="sr-inner well">
+                                    <h3>
+                                        <a href="<?php echo route('portal.orders.details', $result['entity_id']); ?>"><?php echo $result['web_order']; ?></a>
+                                        <span class="badge <?php echo $result['badge']; ?> pull-right"><?php echo $result['status']; ?></span>
+                                    </h3>
+                                    <h5 class="text-muted"><?php echo $result['contract']; ?></h5>
+                                    <span class="text text-warning"><strong>AED <?php echo $result['grand_total']; ?></strong></span>
+                                    <span class="text text-warning pull-right"><?php echo $result['created_at']; ?></span>
+                                    <!--                <a href="<?php echo route('portal.orders.details', $result['web_order']); ?>" class="link">view</a>-->
+                                </div>
+                            </li>
+                        </div>
+                        <?php endforeach; ?>
+                    </ul>
+
+                </div>
+
+            </div>
+            <?php endif; ?>
+        <?php endif; ?>
+        </div>
+
+    </div>
+    <?php if(isset($results)): ?>
+        <div class="row">
+            <!-- Pager for search results -->
+            <ul class="pager">
+                <?php echo $results->links(); ?>
+
+            </ul>
+        </div>
+    </div>
+    <?php endif; ?>
+</section>
+<?php $__env->stopSection(); ?>
+<?php echo $__env->make($layout, array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>

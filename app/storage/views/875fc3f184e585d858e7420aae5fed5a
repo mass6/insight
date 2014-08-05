@@ -1,0 +1,39 @@
+<h2>Change Password</h2>
+
+<?php echo Form::open( ['route' => ['password.update', $currentUser->id], 'method' => 'PATCH'] ); ?>
+
+
+    <?php if(isset($errors)): ?>
+        <?php if( count($errors) ): ?>
+            <div class="errors alert alert-danger">
+                <?php foreach($errors->all('<li>:message</li>') as $message): ?>
+                    <?php echo $message; ?>
+
+                <?php endforeach; ?>
+            </div>
+        <?php endif; ?>
+    <?php endif; ?>
+
+    <!-- New Password Form Input -->
+    <div class="form-group">
+        <?php echo Form::label('password', 'New Password:'); ?>
+
+        <?php echo Form::password('password', ['class' => 'form-control']); ?>
+
+    </div>
+
+    <!-- New Password_confirmation Form Input -->
+    <div class="form-group">
+        <?php echo Form::label('password_confirmation', 'Confirm New Password:'); ?>
+
+        <?php echo Form::password('password_confirmation', ['class' => 'form-control']); ?>
+
+    </div>
+    <br />
+
+    <div class="form-group">
+        <?php echo Form::submit( 'Submit', ['class' => 'btn btn-primary']); ?> <?php echo link_to_route('profiles.show', 'Cancel', $user->id, array('class'=>'btn btn-warning')); ?>
+
+    </div>
+
+<?php echo Form::close(); ?>

@@ -1,15 +1,13 @@
-@extends($layout)
-
-@section('links')
+<?php $__env->startSection('links'); ?>
 @parent
-<link rel="stylesheet" href="{{ URL::asset('css/font-icons/font-awesome/css/font-awesome.min.css') }}">
-@stop
+<link rel="stylesheet" href="<?php echo URL::asset('css/font-icons/font-awesome/css/font-awesome.min.css'); ?>">
+<?php $__env->stopSection(); ?>
 
-@section('content')
+<?php $__env->startSection('content'); ?>
 <div class="row">
     <div class="col-sm-12">
         <div class="well">
-            <h1>Executive Dashboard <small class="pull-right">{{ Carbon::now()->format('d/m/Y') }}</small></h1>
+            <h1>Executive Dashboard <small class="pull-right"><?php echo Carbon::now()->format('d/m/Y'); ?></small></h1>
         </div>
     </div>
 </div>
@@ -17,7 +15,7 @@
 <div class="row">
 
     <div class="col-sm-3">
-        <a href="{{ route('portal.approvals') }}">
+        <a href="<?php echo route('portal.approvals'); ?>">
             <div class="tile-stats tile-red">
                 <div class="icon"><i class="entypo-loop"></i></div>
                 <div id="pending-approval-count" class="num" data-start="0" data-end="0" data-postfix="" data-duration="1500" data-delay="0">0</div>
@@ -30,7 +28,7 @@
     </div>
 
     <div class="col-sm-3">
-        <a href="{{ route('portal.orders.period', 'today') }}">
+        <a href="<?php echo route('portal.orders.period', 'today'); ?>">
             <div class="tile-stats tile-green">
                 <div class="icon"><i class="entypo-basket"></i></div>
                 <div id="orders-today-count" class="num" data-start="0" data-end="0" data-postfix="" data-duration="1500" data-delay="0">0</div>
@@ -44,7 +42,7 @@
     </div>
 
     <div class="col-sm-3">
-        <a href="{{ route('portal.orders.period', 'this-month') }}">
+        <a href="<?php echo route('portal.orders.period', 'this-month'); ?>">
             <div class="tile-stats tile-aqua">
                 <div class="icon"><i class="entypo-chart-area"></i></div>
                 <div id="monthly-order-count" class="num" data-start="0" data-end="23" data-postfix="" data-duration="1500" data-delay="1200">0</div>
@@ -57,7 +55,7 @@
     </div>
 
     <div class="col-sm-3">
-        <a href="{{ route('portal.orders.period', 'third-party-this-month') }}">
+        <a href="<?php echo route('portal.orders.period', 'third-party-this-month'); ?>">
             <div class="tile-stats tile-blue">
                 <div class="icon"><i class="entypo-export"></i></div>
                 <div id="third-party-order-count" class="num" data-start="0" data-end="52" data-postfix="" data-duration="1500" data-delay="1800">0</div>
@@ -81,7 +79,7 @@
         <div class="panel panel-primary" id="charts_env">
 
             <div class="panel-heading">
-                <div class="panel-title">Current Month - Daily Order Totals</div>
+                <div class="panel-title">Daily Order Totals - Last 60 Days</div>
 
                 <div class="panel-options">
                     <ul class="nav nav-tabs">
@@ -265,13 +263,14 @@ function getRandomInt(min, max)
 }
 </script>
 
-@stop
+<?php $__env->stopSection(); ?>
 
 
 
-@section('bottomlinks')
+<?php $__env->startSection('bottomlinks'); ?>
 @parent
-<script src="{{ URL::asset('js/jquery.sparkline.min.js') }}"></script>
-<script src="{{ URL::asset('js/raphael-min.js') }}"></script>
-<script src="{{ URL::asset('js/morris.min.js') }}"></script>
-@stop
+<script src="<?php echo URL::asset('js/jquery.sparkline.min.js'); ?>"></script>
+<script src="<?php echo URL::asset('js/raphael-min.js'); ?>"></script>
+<script src="<?php echo URL::asset('js/morris.min.js'); ?>"></script>
+<?php $__env->stopSection(); ?>
+<?php echo $__env->make($layout, array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
