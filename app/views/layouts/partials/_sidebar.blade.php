@@ -240,6 +240,14 @@
                         </a>
                     </li>
                 @endif
+                @if ($currentUser->hasAccess('logs'))
+                <li class="{{ isActive('logs', 2) }}">
+                    <a href="{{ url('admin/logviewer') }}">
+                        <i class="entypo-attach"></i>
+                        <span>Logs</span>
+                    </a>
+                </li>
+                @endif
             </ul>
         </li>
         @endif
