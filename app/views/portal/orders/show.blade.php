@@ -231,6 +231,40 @@ if(count($fields) > 4 &&
                 </div>
             </div>
 
+        </div>
+    </div>
+
+    <div class="row">
+
+        <div class="col-md-12">
+
+            <div class="panel panel-dark" data-collapsed="0">
+
+                <!-- panel head -->
+                <div class="panel-heading">
+                    <div class="panel-title">Comments</div>
+
+                    <div class="panel-options">
+                        <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a>
+                        <a href="#" data-rel="close"><i class="entypo-cancel"></i></a>
+                    </div>
+                </div>
+
+                <!-- panel body -->
+                <div class="panel-body">
+                    <table  id="items-ordered" class="table table-bordered table-hover">
+                        <tbody>
+                        @foreach ($comments as $comment)
+                        <tr>
+                            <td class="left">{{ $comment['created_at'] }} | {{ $comment['comment'] }}</td>
+                        </tr>
+                        @endforeach
+                        </tbody>
+
+                    </table>
+                </div>
+            </div>
+
             <div class="right">
                 <a href="{{ URL::route('portal.orders.print', $order['entity_id']) }}" target="_blank" class="btn btn-orange">Print</a>
                 <a href="{{ URL::previous() }}" class="btn btn-primary">Go Back</a>

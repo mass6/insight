@@ -102,14 +102,17 @@ class PortalController extends \BaseController {
     {
         $order = $this->portal->getQuery('orderDetails', $id, 'array')[0];
         $items = $this->portal->getQuery('orderItemDetails', $id, 'array');
-        return View::make('portal.orders.show', compact('order', 'items'));
+        $comments = $this->portal->getQuery('orderComments', $id, 'array');
+
+        return View::make('portal.orders.show', compact('order', 'items', 'comments'));
     }
 
     public function printOrder($id)
     {
         $order = $this->portal->getQuery('orderDetails', $id, 'array')[0];
         $items = $this->portal->getQuery('orderItemDetails', $id, 'array');
-        return View::make('portal.orders.print', compact('order', 'items'));
+        $comments = $this->portal->getQuery('orderComments', $id, 'array');
+        return View::make('portal.orders.print', compact('order', 'items', 'comments'));
     }
 
 
