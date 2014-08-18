@@ -30,4 +30,6 @@ class EmailNotifier extends EventListener
             Log::info('..and needs to have his credentials emailed again to ' . $event->user->email);
         }
     }
+
+
 } 

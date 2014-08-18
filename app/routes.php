@@ -11,8 +11,6 @@
 |
 */
 
-Route::get('testing', 'PagesController@testing');
-
 // Authentication routes
     Route::get('login', [
         'as' => 'login_path',

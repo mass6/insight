@@ -11,3 +11,5 @@
 |
 */
 
+Artisan::resolve('VerifyContractsCommand');
+Artisan::resolve('VerifyProductsCommand');
