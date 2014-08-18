@@ -1,4 +1,5 @@
-<?php  namespace Insight\Portal\Repositories; /***
+<?php  namespace Insight\Portal\Repositories;
+/***
  * Created by:
  * User: sam
  * Date: 7/7/14
@@ -17,7 +18,7 @@ class Portal
     /**
      * @var string
      */
-    protected $reportURl;
+    protected $reportUrl;
 
     /**
      * @var string
@@ -25,13 +26,32 @@ class Portal
     protected $queryUrl;
 
     /**
+     * @var string
+     */
+    protected $validationReportUrl;
+
+    /**
      *
      */
     public function __construct()
     {
-        $this->group = Sentry::getUser()->company !== '36s' ? Sentry::getUser()->company : '' ;
-        $this->reportURl = getenv('WS_REPORT_URL');
+        $this->group = $this->getDataGroup();
+        $this->reportUrl = getenv('WS_REPORT_URL');
         $this->queryUrl = getenv('WS_QUERY_URL');
+        $this->validationReportUrl = getenv('WS_VALIDATION_REPORT_URL');
+    }
+
+    protected function getDataGroup()
+    {
+        if (Sentry::check())
+        {
+            $group = Sentry::getUser()->company !== '36s' ? Sentry::getUser()->company : '' ;
+        }
+        else
+        {
+            $group = '';
+        }
+        return $group;
     }
 
     /**
@@ -47,7 +67,7 @@ class Portal
      */
     public function getReport($reportName, $format = 'json')
     {
-        $data = array('key'=>sha1(getenv('WS_KEY')), 'url' => $this->reportURl,
+        $data = array('key'=>sha1(getenv('WS_KEY')), 'url' => $this->reportUrl,
             'reportName' => ucwords($reportName), 'group' => $this->group);
 
         $response = $this->sendRequest($data);
@@ -86,6 +106,21 @@ class Portal
         }
     }
 
+    public function getValidationReport($reportName, $store, $customer, $format = 'json')
+    {
+        $data = array('key'=>sha1(getenv('WS_KEY')), 'url' => $this->validationReportUrl,
+            'reportName' => ucwords($reportName), 'store' => $store, 'group' => $customer);
+
+        $response = $this->sendRequest($data);
+
+        if ($format === 'array'){
+            return object_to_array(json_decode($response));
+        } else {
+            return $response;
+        }
+
+    }
+
     /**
      * @param $data
      * @return mixed
@@ -101,6 +136,11 @@ class Portal
         curl_close($ch);
 
         return $response;
+    }
+
+    public function getContracts()
+    {
+        return $this->getReport('VerifyContracts', 'array');
     }
 
 } 

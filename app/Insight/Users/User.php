@@ -99,6 +99,10 @@ class User extends Sentry implements UserInterface, RemindableInterface {
         return $this->hasOne('Insight\Users\Profile');
     }
 
+    public function notifications()
+    {
+        return $this->belongsToMany('Insight\Notifications\Notification');
+    }
 
 
 

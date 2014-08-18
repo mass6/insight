@@ -10,7 +10,7 @@ return array(
     ),
     'log_dirs'   => array('app' => storage_path().'/logs'),
     'log_order'  => 'asc', // Change to 'desc' for the latest entries first
-    'per_page'   => 10,
+    'per_page'   => 30,
     'view'       => 'admin.logs.show',
     'p_view'     => 'pagination::slider'
 
