@@ -1,9 +1,12 @@
 <?php
 
+use Insight\Portal\Approvals\FormatApprovalStatisticsCommand;
 use Insight\Portal\Repositories\Portal;
+use Insight\Core\CommandBus;
 
 class PortalController extends \BaseController {
 
+    use CommandBus;
 
     /**
      * @var Insight\Portal\Repositories\Portal
@@ -61,7 +64,10 @@ class PortalController extends \BaseController {
 
     public function getApprovalStatistics()
     {
+        $approvalHistory = $this->portal->getReport('ApprovalStatistics', 'array');
+        $approvalStatistics = $this->execute(new FormatApprovalStatisticsCommand($approvalHistory));
 
+        return View::make('portal.approvals.statistics', compact('approvalStatistics'));
     }
 
     public function getOrders($period = 'today')
