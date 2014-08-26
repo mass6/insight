@@ -10,6 +10,8 @@
 | and give it the Closure to execute when that URI is requested.
 |
 */
+// test
+Route::get('testing', 'PortalController@getApprovalStatistics');
 
 // Authentication routes
     Route::get('login', [
@@ -61,8 +63,8 @@ Route::group(array('before' => 'auth'), function()
         Route::get('portal/contracts', ['as' => 'portal.contracts', 'uses' => 'PortalController@getContracts']);
         Route::get('portal/products', ['as' => 'portal.products', 'uses' => 'PortalController@getProducts']);
         Route::get('portal/doa', ['as' => 'portal.doa', 'uses' => 'PortalController@getDoa']);
-        Route::get('portal/approvals', ['as' => 'portal.approvals', 'uses' => 'PortalController@getApprovals']);
-        Route::get('portal/approval-statistics', ['as' => 'portal.approvals.statistics', 'uses' => 'PortalController@getApprovalStatistics']);
+        Route::get('portal/approval-statistics', ['as' => 'portal.approval-statistics', 'uses' => 'PortalController@getApprovalStatistics']);
+        Route::get('portal/orders/approvals', ['as' => 'portal.orders.pending-approval', 'uses' => 'PortalController@getApprovals']);
         Route::get('portal/orders/search', ['as' => 'portal.orders.search', 'uses' => 'PortalController@searchRouter']);
         Route::get('portal/orders/search/{searchTerm}', ['as' => 'portal.orders.search_term', 'uses' => 'PortalController@searchOrder']);
         Route::get('portal/orders/{period}', ['as' => 'portal.orders.period', 'uses' => 'PortalController@getOrders']);

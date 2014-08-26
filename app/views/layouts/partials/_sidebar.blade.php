@@ -79,6 +79,11 @@
                             <span>Search</span>
                         </a>
                     </li>
+                    <li class="{{ isActive('search', 3) }}">
+                        <a href="{{ route('portal.orders.pending-approval') }}">
+                            <span>Pending Approval</span>
+                        </a>
+                    </li>
                     <li class="{{ isActive('today', 3) }}">
                         <a href="{{ route('portal.orders.period', 'today') }}">
                             <span>Today</span>
@@ -137,10 +142,10 @@
             </li>
         @endif
         @if ($currentUser->hasAccess('portal.approvals'))
-        <li class="{{ isActive('approvals', 2) }}">
-            <a href="{{ route('portal.approvals') }}">
+        <li class="auto-inherit-active-class {{ isActive('approvals', 2) }}">
+            <a href="{{ route('portal.approval-statistics') }}">
                 <i class="entypo-check"></i>
-                <span>Approvals</span>
+                <span>Approval Statistics</span>
             </a>
         </li>
         @endif
