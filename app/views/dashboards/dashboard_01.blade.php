@@ -17,7 +17,7 @@
 <div class="row">
 
     <div class="col-sm-3">
-        <a href="{{ route('portal.approvals') }}">
+        <a href="{{ route('portal.orders.pending-approval') }}">
             <div class="tile-stats tile-red">
                 <div class="icon"><i class="entypo-loop"></i></div>
                 <div id="pending-approval-count" class="num" data-start="0" data-end="0" data-postfix="" data-duration="1500" data-delay="0">0</div>
