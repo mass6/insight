@@ -8,6 +8,7 @@ use Insight\Portal\Contracts\Events\ContractsWereUpdated;
 use Insight\Portal\Products\Events\ProductsWereUpdated;
 use Insight\Notifications\Notification;
 use Insight\Mailers\PortalUpdatesMailer;
+use Log;
 
 class PortalDataUpdatesNotifier extends EventListener
 {
