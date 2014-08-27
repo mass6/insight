@@ -32,12 +32,11 @@ class PortalDataUpdatesNotifier extends EventListener
         $emails = $notification->users->lists('email');
         $emrillEmailRecipients = array_unique(array_merge($emailRecipients, $emails));
 
-
         foreach ($log as $customer => $contractUpdates)
         {
             $data = ['customer' => $customer, 'data' => $contractUpdates];
 
-            $this->mailer->sendContractUpdatesMessageTo($customer = 'Emrill' ? $emrillEmailRecipients : $emailRecipients, $data);
+            $this->mailer->sendContractUpdatesMessageTo($customer == 'Emrill' ? $emrillEmailRecipients : $emailRecipients, $data);
 
         }
 
@@ -59,7 +58,7 @@ class PortalDataUpdatesNotifier extends EventListener
         {
             $data = ['customer' => $customer, 'data' => $productUpdates];
 
-            $this->mailer->sendProductUpdatesMessageTo($customer = 'Emrill' ? $emrillEmailRecipients : $emailRecipients, $data);
+            $this->mailer->sendProductUpdatesMessageTo($customer == 'Emrill' ? $emrillEmailRecipients : $emailRecipients, $data);
 
         }
 
