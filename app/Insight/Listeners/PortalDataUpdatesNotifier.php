@@ -24,6 +24,7 @@ class PortalDataUpdatesNotifier extends EventListener
     public function whenContractsWereUpdated(ContractsWereUpdated $event)
     {
         $log = $event->changeLog;
+
         $notification = Notification::where('name', 'ContractsUpdated')->first();
         $emailRecipients = $notification->users->lists('email');
 
