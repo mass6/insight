@@ -54,6 +54,10 @@ return array(
                 'layout' => 'chicago',
                 'path' => 'layouts.chicago'
             ],
+            'allaith'    => [
+                'layout' => 'allaith',
+                'path' => 'layouts.allaith'
+            ],
         ]
     ],
 
