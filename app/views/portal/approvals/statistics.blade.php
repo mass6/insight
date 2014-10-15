@@ -17,11 +17,6 @@
                     "aButtons": [
                         "print",
                         {
-                            "sExtends": "pdf",
-                            "sFileName": "approval-history.pdf",
-                            "mColumns": [0,1,2,3,4,5,6,7,8,9]
-                        },
-                        {
                             "sExtends": "csv",
                             "sFileName": "approval-history.csv",
                             "mColumns": 'all'
