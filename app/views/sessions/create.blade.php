@@ -118,7 +118,7 @@
                 <div class="form-group">
                     <button type="submit" class="btn btn-primary btn-block btn-login">
                         <i class="entypo-login"></i>
-                        Login In
+                        Log In
                     </button>
                 </div>
 
