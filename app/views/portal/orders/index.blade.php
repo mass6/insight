@@ -135,7 +135,7 @@
                             '<br/> of  AED '+ numberWithCommas(Math.round(total*100)/100) +' Total'
                     );
                 },
-                "order": [[2, 'asc']],
+                "order": [[2, 'desc']],
                 "sPaginationType": "bootstrap",
                 "pagingType": "full_numbers",
                 "sDom": "<'row'<'col-xs-6 col-left'l><'col-xs-6 col-right'<'export-data'T>f>r>t<'row'<'col-xs-6 col-left'i><'col-xs-6 col-right'p>>",
@@ -146,17 +146,17 @@
                         "print",
                         {
                             "sExtends": "pdf",
-                            "sFileName": "contracts.pdf",
-                            "mColumns": [ 1,2,3,4,5,6 ]
+                            "sFileName": "orders.pdf",
+                            "mColumns": [ 1,2,4,5,6 ]
                         },
                         {
                             "sExtends": "csv",
-                            "sFileName": "contracts.csv",
+                            "sFileName": "orders.csv",
                             "mColumns": [ 1,2,3,4,5,6 ]
                         },
                         {
                             "sExtends": "xls",
-                            "sFileName": "contracts.xls",
+                            "sFileName": "orders.xls",
                             "mColumns": [ 1,2,3,4,5,6 ]
                         }
                     ]
