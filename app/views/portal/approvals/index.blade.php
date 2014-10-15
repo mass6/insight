@@ -70,17 +70,17 @@
                         {
                             "sExtends": "pdf",
                             "sFileName": "orders_pending_approval.pdf",
-                            "mColumns": [ 1,2,3,4,5,6 ]
+                            "mColumns": [ 1,2,3,5,7,9 ]
                         },
                         {
                             "sExtends": "csv",
                             "sFileName": "orders_pending_approval.csv",
-                            "mColumns": [ 2,3,4,5,6]
+                            "mColumns": [ 1,2,3,4,5,6,7,8,9,10 ]
                         },
                         {
                             "sExtends": "xls",
                             "sFileName": "orders_pending_approval.xls",
-                            "mColumns": [ 1,2,3,4,5,6]
+                            "mColumns": [ 1,2,3,4,5,6,7,8,9,10 ]
                         }
                     ]
                 }

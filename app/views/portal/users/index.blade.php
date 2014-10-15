@@ -56,7 +56,7 @@
                         {
                             "sExtends": "pdf",
                             "sFileName": "portal-users.pdf",
-                            "mColumns": "all"
+                            "mColumns": [ 2,3,4,5,6,9 ]
                         },
                         {
                             "sExtends": "csv",
