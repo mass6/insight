@@ -4,7 +4,6 @@
  * Date: 8/13/14
  * Time: 10:02 AM
  */
-
 class ProductRepository
 {
 
@@ -13,9 +12,9 @@ class ProductRepository
         return Product::all();
     }
 
-    public function getEmrillProducts()
+    public function getCustomerProducts($customer)
     {
-        return Product::where('store', 5)->get();
+        return Product::where('store', (int) $customer['store'])->get();
     }
 
     public function addProduct($product)
