@@ -3,6 +3,7 @@
 use Illuminate\Console\Command;
 use Insight\Portal\Products\UpdateProductsCommandHandler;
 use Insight\Portal\Products\UpdateProductsCommand;
+use Illuminate\Support\Facades\Config;
 use \Log;
 class VerifyProductsCommand extends Command {
 
@@ -20,6 +21,11 @@ class VerifyProductsCommand extends Command {
 	 */
 	protected $description = 'Verifies that local product data matches latest product data from portal.';
 
+    /**
+     * @var array
+     */
+    protected $customers;
+
     private $portal;
     /**
      * @var Insight\Portal\Contracts\Contract
@@ -35,6 +41,7 @@ class VerifyProductsCommand extends Command {
         parent::__construct();
         $this->portal = $portal;
         $this->product = $product;
+        $this->customers = Config::get('insight.customers');
     }
 
 	/**
@@ -44,14 +51,18 @@ class VerifyProductsCommand extends Command {
 	 */
 	public function fire()
 	{
-        $localProducts = $this->product->getEmrillProducts()->toArray();
-        $portalProducts = $this->portal->getValidationReport('VerifyProducts', 5, 'Emrill', 'array');
+        foreach($this->customers as $customer)
+        {
+            $localProducts = $this->product->getCustomerProducts($customer)->toArray();
+            $portalProducts = $this->portal->getValidationReport('VerifyProducts', $customer['store'], $customer['name'], 'array');
 
-        $this->info('Local: ' . count($localProducts) . '  Portal: ' . count($portalProducts));
-        $command = new UpdateProductsCommand($localProducts, $portalProducts);
-        $handler = new UpdateProductsCommandHandler;
-        $results = $handler->handle($command);
-        $this->info($results);
+            $this->info('Local: ' . count($localProducts) . '  Portal: ' . count($portalProducts));
+            $command = new UpdateProductsCommand($localProducts, $portalProducts);
+            $handler = new UpdateProductsCommandHandler;
+            $results = $handler->handle($command);
+            $this->info($results);
+        }
+
 	}
 
 
