@@ -21,22 +21,17 @@ class PortalDataUpdatesNotifier extends EventListener
         $this->mailer = $mailer;
     }
 
+
+
     public function whenContractsWereUpdated(ContractsWereUpdated $event)
     {
         $log = $event->changeLog;
-
-        $notification = Notification::where('name', 'ContractsUpdated')->first();
-        $emailRecipients = $notification->users->lists('email');
-
-        $notification = Notification::where('name', 'EmrillContractsUpdated')->first();
-        $emails = $notification->users->lists('email');
-        $emrillEmailRecipients = array_unique(array_merge($emailRecipients, $emails));
 
         foreach ($log as $customer => $contractUpdates)
         {
             $data = ['customer' => $customer, 'data' => $contractUpdates];
 
-            $this->mailer->sendContractUpdatesMessageTo($customer == 'Emrill' ? $emrillEmailRecipients : $emailRecipients, $data);
+            $this->mailer->sendContractUpdatesMessageTo($this->getEmailRecipients('ContractsUpdated', $customer), $data);
 
         }
 
@@ -46,21 +41,39 @@ class PortalDataUpdatesNotifier extends EventListener
     {
         $log = $event->changeLog;
 
-        $notification = Notification::where('name', 'ProductsUpdated')->first();
-        $emailRecipients = $notification->users->lists('email');
-
-        $notification = Notification::where('name', 'EmrillProductsUpdated')->first();
-        $emails = $notification->users->lists('email');
-
-        $emrillEmailRecipients = array_unique(array_merge($emailRecipients, $emails));
-
         foreach ($log as $customer => $productUpdates)
         {
             $data = ['customer' => $customer, 'data' => $productUpdates];
 
-            $this->mailer->sendProductUpdatesMessageTo($customer == 'Emrill' ? $emrillEmailRecipients : $emailRecipients, $data);
+            $this->mailer->sendProductUpdatesMessageTo($this->getEmailRecipients('ProductsUpdated', $customer), $data);
 
         }
 
     }
-} 
+
+    private function getEmailRecipients($notification, $customer = null)
+    {
+        // General recipients
+        $generalNotification = Notification::where('name', $notification)->first();
+        $emailRecipients = $generalNotification->users->lists('email');
+
+
+        // Customer specific recipients
+        if ($customer)
+        {
+            $notificationName = $customer . $notification;
+            $customerNotification = Notification::where('name', $notificationName)->first();
+
+
+            if ($customerNotification)
+            {
+                $emails = $customerNotification->users->lists('email');
+                return array_unique(array_merge($emailRecipients, $emails));
+            }
+
+        }
+        else return $emailRecipients;
+
+
+    }
+}
