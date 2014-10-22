@@ -9,14 +9,17 @@ return [
     'customers' => [
         'emrill' => [
             'name' => 'Emrill',
+            'code' => 'emrill',
             'store' => 5
         ],
         'chicago' => [
             'name' => 'Chicago',
+            'code' => 'chicago',
             'store' => 4
         ],
         'allaith' => [
-            'name' => 'Allaith',
+            'name' => 'Al Laith',
+            'code' => 'allaith',
             'store' => 53
         ]
     ]

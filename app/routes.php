@@ -58,6 +58,8 @@ Route::group(array('before' => 'auth'), function()
     /**
      * Portal
      */
+
+        Route::get('portal/ajax/{report}/{customer}', 'PortalController@getAjaxReport');
         Route::get('portal/ajax/{report}', 'PortalController@getAjaxReport');
         Route::get('portal/users', ['as' => 'portal.users', 'uses' => 'PortalController@getUsers']);
         Route::get('portal/contracts', ['as' => 'portal.contracts', 'uses' => 'PortalController@getContracts']);
@@ -67,9 +69,10 @@ Route::group(array('before' => 'auth'), function()
         Route::get('portal/orders/approvals', ['as' => 'portal.orders.pending-approval', 'uses' => 'PortalController@getApprovals']);
         Route::get('portal/orders/search', ['as' => 'portal.orders.search', 'uses' => 'PortalController@searchRouter']);
         Route::get('portal/orders/search/{searchTerm}', ['as' => 'portal.orders.search_term', 'uses' => 'PortalController@searchOrder']);
-        Route::get('portal/orders/{period}', ['as' => 'portal.orders.period', 'uses' => 'PortalController@getOrders']);
         Route::get('portal/orders/details/{id}', ['as' => 'portal.orders.details', 'uses' => 'PortalController@getOrderDetails']);
         Route::get('portal/orders/print/{id}', ['as' => 'portal.orders.print', 'uses' => 'PortalController@printOrder']);
+        Route::get('portal/orders/{period}/{customer}', ['as' => 'portal.orders.period', 'uses' => 'PortalController@getOrders']);
+        Route::get('portal/orders/{period}', ['as' => 'portal.orders.period', 'uses' => 'PortalController@getOrders']);
         Route::get('portal/orders', function(){
             return Redirect::route('portal.orders.period',['period'=>'today']);
         });
