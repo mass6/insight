@@ -65,10 +65,13 @@ class Portal
      * @internal param null $search
      * @return array|mixed
      */
-    public function getReport($reportName, $format = 'json')
+    public function getReport($reportName, $format = 'json', $group = '')
     {
+        if (! $group){
+            $group = $this->group;
+        }
         $data = array('key'=>sha1(getenv('WS_KEY')), 'url' => $this->reportUrl,
-            'reportName' => ucwords($reportName), 'group' => $this->group);
+            'reportName' => ucwords($reportName), 'group' => $group);
 
         $response = $this->sendRequest($data);
 
