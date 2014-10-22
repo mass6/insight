@@ -54,7 +54,7 @@ class VerifyProductsCommand extends Command {
         foreach($this->customers as $customer)
         {
             $localProducts = $this->product->getCustomerProducts($customer)->toArray();
-            $portalProducts = $this->portal->getValidationReport('VerifyProducts', $customer['store'], $customer['code'], 'array');
+            $portalProducts = $this->portal->getValidationReport('VerifyProducts', $customer['store'], $customer['name'], 'array');
 
             $this->info('Local: ' . count($localProducts) . '  Portal: ' . count($portalProducts));
             $command = new UpdateProductsCommand($localProducts, $portalProducts);
