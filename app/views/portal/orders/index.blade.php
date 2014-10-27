@@ -192,8 +192,8 @@
 <h2>{{ isset($heading) ? $heading : 'Orders: ' }} {{isset($group) ? "<span class='text text-info'>(" . $group . ")</span>" : ''}}</h2>
 
 @if (isset($customers))
-    <div id="customer-filter" class="container">
-        <div class="row clearfix">
+    <div id="customer-filter">
+        <div class="clearfix">
 
             <div class="btn-group">
                 <button type="button" class="btn btn-blue">{{isset($group)? $group : 'Customer'}}</button>
