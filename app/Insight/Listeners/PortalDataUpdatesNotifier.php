@@ -8,7 +8,13 @@ use Insight\Portal\Contracts\Events\ContractsWereUpdated;
 use Insight\Portal\Products\Events\ProductsWereUpdated;
 use Insight\Notifications\Notification;
 use Insight\Mailers\PortalUpdatesMailer;
+use Insight\Settings\SettingRepository;
+use Illuminate\Support\Facades\Config;
 
+/**
+ * Class PortalDataUpdatesNotifier
+ * @package Insight\Listeners
+ */
 class PortalDataUpdatesNotifier extends EventListener
 {
     /**
@@ -16,41 +22,77 @@ class PortalDataUpdatesNotifier extends EventListener
      */
     private $mailer;
 
-    public function __construct(PortalUpdatesMailer $mailer)
+    /**
+     * @var SettingRepository
+     */
+    protected $setting;
+
+    protected $sendNotifications;
+
+    /**
+     * @param PortalUpdatesMailer $mailer
+     * @param SettingRepository $setting
+     */
+    public function __construct(PortalUpdatesMailer $mailer, SettingRepository $setting)
     {
         $this->mailer = $mailer;
+        $this->setting = $setting;
+        $this->sendNotifications = $this->notificationsAreEnabled();
+    }
+
+    private function notificationsAreEnabled()
+    {
+        return $this->setting->findByName('portal-data-update-notifications');
     }
 
 
-
+    /**
+     * @param ContractsWereUpdated $event
+     */
     public function whenContractsWereUpdated(ContractsWereUpdated $event)
     {
         $log = $event->changeLog;
 
         foreach ($log as $customer => $contractUpdates)
         {
-            $data = ['customer' => $customer, 'data' => $contractUpdates];
+            $data = ['customer' => Config::get('insight.customers')[strtolower($customer)]['displayName'], 'data' => $contractUpdates];
+            $emailRecipients = $this->getEmailRecipients('ContractsUpdated', $customer);
 
-            $this->mailer->sendContractUpdatesMessageTo($this->getEmailRecipients('ContractsUpdated', $customer), $data);
+            if ($this->sendNotifications && $emailRecipients)
+            {
+                $this->mailer->sendContractUpdatesMessageTo($emailRecipients, $data);
+            }
 
         }
 
     }
 
+    /**
+     * @param ProductsWereUpdated $event
+     */
     public function whenProductsWereUpdated(ProductsWereUpdated $event)
     {
         $log = $event->changeLog;
 
         foreach ($log as $customer => $productUpdates)
         {
-            $data = ['customer' => $customer, 'data' => $productUpdates];
+            $data = ['customer' => Config::get('insight.customers')[strtolower($customer)]['displayName'], 'data' => $productUpdates];
+            $emailRecipients = $this->getEmailRecipients('ProductsUpdated', $customer);
 
-            $this->mailer->sendProductUpdatesMessageTo($this->getEmailRecipients('ProductsUpdated', $customer), $data);
+            if ($this->sendNotifications && $emailRecipients)
+            {
+                $this->mailer->sendProductUpdatesMessageTo($emailRecipients, $data);
+            }
 
         }
 
     }
 
+    /**
+     * @param $notification
+     * @param null $customer
+     * @return array
+     */
     private function getEmailRecipients($notification, $customer = null)
     {
         // General recipients
@@ -59,7 +101,7 @@ class PortalDataUpdatesNotifier extends EventListener
 
 
         // Customer specific recipients
-        if ($customer)
+        if (isset($customer))
         {
             $notificationName = $customer . $notification;
             $customerNotification = Notification::where('name', $notificationName)->first();

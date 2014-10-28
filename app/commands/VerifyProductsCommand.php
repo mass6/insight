@@ -56,8 +56,8 @@ class VerifyProductsCommand extends Command {
             $localProducts = $this->product->getCustomerProducts($customer)->toArray();
             $portalProducts = $this->portal->getValidationReport('VerifyProducts', $customer['store'], $customer['name'], 'array');
 
-            $this->info('Local: ' . count($localProducts) . '  Portal: ' . count($portalProducts));
-            $command = new UpdateProductsCommand($localProducts, $portalProducts);
+            $this->info("Products for {$customer['name']} \r\n" . 'Local: ' . count($localProducts) . '  Portal: ' . count($portalProducts));
+            $command = new UpdateProductsCommand($localProducts, $portalProducts, $customer);
             $handler = new UpdateProductsCommandHandler;
             $results = $handler->handle($command);
             $this->info($results);

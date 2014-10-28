@@ -114,8 +114,8 @@ class UpdateProductsCommandHandler implements CommandHandler
             Log::info("All products up to date. No changes to be made.");
         }
 
-        return "To be updated: {$numToBeUpdated}  To be added: {$numToBeAdded}  To be deleted: {$numToBeDeleted} \r\n
-         Actual updated: {$updated}  Actual added: {$added}  Actual deleted: {$deleted} ";
+        return "To be updated: {$numToBeUpdated}  To be added: {$numToBeAdded}  To be deleted: {$numToBeDeleted} \r\n" .
+         "Actual updated: {$updated}  Actual added: {$added}  Actual deleted: {$deleted} \r\n";
 
 
 
