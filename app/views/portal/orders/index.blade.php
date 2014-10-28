@@ -189,36 +189,31 @@
 
 @section('content')
 
-<h2>{{ isset($heading) ? $heading : 'Orders: ' }} {{isset($group) ? "<span class='text text-info'>(" . $group . ")</span>" : ''}}</h2>
+
+<span class="inline-heading2">{{ isset($heading) ? $heading : 'Orders: ' }} </span>
 
 @if (isset($customers))
-    <div id="customer-filter">
-        <div class="clearfix">
-
-            <div class="btn-group">
-                <button type="button" class="btn btn-blue">{{isset($group)? $group : 'Customer'}}</button>
-                <button type="button" class="btn btn-blue dropdown-toggle" data-toggle="dropdown">
-                    <i class="entypo-down"></i>
-                </button>
-                <ul class="dropdown-menu dropdown-blue" role="menu">
-                @foreach($customers as $customer)
-                    @if(isset($group))
-                        @if($group !== $customer['name'])
-                            <li>{{link_to('portal/orders/' . $period . '/' . $customer['name'], $customer['name'])}}</li>
-                        @endif
-                    @else
-                        <li>{{link_to('portal/orders/' . $period . '/' . $customer['name'], $customer['name'])}}</li>
-                    @endif
-                @endforeach
-                    <li class="divider"></li>
-                    <li>{{link_to('portal/orders/' . $period, "View All")}}</li>
-                </ul>
-            </div>
-
-        </div>
-        <br/>
+    <div class="btn-group customer-selecter">
+        <button type="button" class="btn btn-blue">{{isset($group)? $group : 'Customer'}}</button>
+        <button type="button" class="btn btn-blue dropdown-toggle" data-toggle="dropdown">
+            <i class="entypo-down"></i>
+        </button>
+        <ul class="dropdown-menu dropdown-blue" role="menu">
+        @foreach($customers as $customer)
+            @if(isset($group))
+                @if($group !== $customer['name'])
+                    <li>{{link_to('portal/orders/' . $period . '/' . $customer['name'], $customer['name'])}}</li>
+                @endif
+            @else
+                <li>{{link_to('portal/orders/' . $period . '/' . $customer['name'], $customer['name'])}}</li>
+            @endif
+        @endforeach
+            <li class="divider"></li>
+            <li>{{link_to('portal/orders/' . $period, "View All")}}</li>
+        </ul>
     </div>
-    <div class="clearfix"></div>
+    <br/>
+    <br/>
 @endif
 
 <table id="datatable" class="table table-bordered datatable hover order-column">
