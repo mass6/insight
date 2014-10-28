@@ -224,7 +224,7 @@
                 @if ($currentUser->hasAccess('users.*'))
                     <li class="{{ isActive('users', 2) }}">
                         <a href="{{ route('admin.users.index') }}">
-                            <i class="entypo-export"></i>
+                            <i class="entypo-users"></i>
                             <span>Users</span>
                         </a>
                     </li>
@@ -232,7 +232,7 @@
                 @if ($currentUser->hasAccess('permissions.*'))
                     <li class="{{ isActive('permissions', 2) }}">
                         <a href="{{ route('admin.permissions.index') }}">
-                            <i class="entypo-attach"></i>
+                            <i class="entypo-thumbs-up"></i>
                             <span>Permissions</span>
                         </a>
                     </li>
@@ -240,7 +240,7 @@
                 @if ($currentUser->hasAccess('groups.*'))
                     <li class="{{ isActive('groups', 2) }}">
                         <a href="{{ route('admin.groups.index') }}">
-                            <i class="entypo-attach"></i>
+                            <i class="entypo-network"></i>
                             <span>Groups</span>
                         </a>
                     </li>
@@ -248,8 +248,16 @@
                 @if ($currentUser->hasAccess('logs.*'))
                 <li class="{{ isActive('logviewer', 2) }}">
                     <a href="{{ url('admin/logviewer') }}">
-                        <i class="entypo-attach"></i>
+                        <i class="entypo-archive"></i>
                         <span>Logs</span>
+                    </a>
+                </li>
+                @endif
+                @if ($currentUser->hasAccess('settings.*'))
+                <li class="{{ isActive('settings', 2) }}">
+                    <a href="{{ url('admin/settings') }}">
+                        <i class="entypo-cog"></i>
+                        <span>Settings</span>
                     </a>
                 </li>
                 @endif
