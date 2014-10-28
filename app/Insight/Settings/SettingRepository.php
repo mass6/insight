@@ -19,6 +19,11 @@ class SettingRepository
         return Setting::all();
     }
 
+    public function findByName($name)
+    {
+        return Setting::where('name', $name)->first()->pluck('value');
+    }
+
     /**
      * @param $type
      * @return mixed

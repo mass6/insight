@@ -124,8 +124,8 @@ class UpdateContractsCommandHandler implements CommandHandler
         }
 
 
-        return "To be updated: {$numToBeUpdated}  To be added: {$numToBeAdded}  To be deleted: {$numToBeDeleted} \r\n
-         Actual updated: {$updated}  Actual added: {$added}  Actual deleted: {$deleted} ";
+        return "To be updated: {$numToBeUpdated}  To be added: {$numToBeAdded}  To be deleted: {$numToBeDeleted} \r\n" .
+         "Actual updated: {$updated}  Actual added: {$added}  Actual deleted: {$deleted} ";
 
     }
 
