@@ -13,6 +13,22 @@ body .login-container .login-header {
     background-color: #ffffff;
 }
 
+.inline-heading2 {
+    font-size: 25px;
+    font-width: bold;
+    margin-top: 17px;
+    margin-bottom: 8.5px;
+    font-family: inherit;
+    font-weight: 500;
+    line-height: 1.1;
+    color: #373E4A;
+}
+
+.customer-selecter {
+    margin-left: 5px;
+    margin-bottom: 8.5px;
+}
+
 body.login-page p.description {color:#666666;}
 div.flash {margin-top:20px;}
 

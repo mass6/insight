@@ -1,5 +1,6 @@
 <?php
 
+use Cartalyst\Sentry\Facades\Laravel\Sentry;
 use Insight\Portal\Approvals\FormatApprovalStatisticsCommand;
 use Insight\Portal\Repositories\Portal;
 use Insight\Core\CommandBus;
@@ -20,7 +21,7 @@ class PortalController extends \BaseController {
         $this->group = Session::get('company') !== '36s' ? Session::get('company') : '' ;
     }
 
-    public function getAjaxReport($report, $search = null)
+    public function getAjaxReport($report, $customer = null, $search = null)
     {
         if (Request::ajax())
         {
@@ -28,10 +29,9 @@ class PortalController extends \BaseController {
             {
                 return $this->portal->getQuery($report, $search, 'array');
             } else {
-                return $this->portal->getReport($report, 'array');
+                return $this->portal->getReport($report, 'array', $customer);
             }
         }
-
     }
 
     public function getUsers()
@@ -70,7 +70,7 @@ class PortalController extends \BaseController {
         return View::make('portal.approvals.statistics', compact('approvalStatistics'));
     }
 
-    public function getOrders($period = 'today')
+    public function getOrders($period = 'today', $group = null)
     {
         $parts = explode('-', $period);
         $parts = array_map('ucfirst', $parts);
@@ -78,7 +78,13 @@ class PortalController extends \BaseController {
         $reportName = 'Orders' . implode('', $parts);
         $heading = 'Orders: ' . implode(' ', $parts);
 
+        if (Sentry::getUser()->company === '36s' && Sentry::getUser()->hasAccess('customers.data') )
+        {
+            $customers = $this->portal->getReport('CustomersWithOrders' . implode('', $parts), 'array');
+            return View::make('portal.orders.index', compact('reportName', 'heading', 'group', 'period', 'customers'));
+        }
         return View::make('portal.orders.index', compact('reportName', 'heading'));
+
     }
 
     public function searchOrder($searchTerm)

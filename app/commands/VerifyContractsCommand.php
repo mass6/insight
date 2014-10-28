@@ -48,6 +48,7 @@ class VerifyContractsCommand extends Command {
 	 */
 	public function fire()
 	{
+        // fetch array of local contract and remote contract
         $localContracts = $this->contract->getAll()->toArray();
         $portalContracts = $this->portal->getContracts();
 
