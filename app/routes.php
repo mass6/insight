@@ -87,6 +87,7 @@ Route::group(array('prefix' => 'admin', 'before' => 'auth|admin'), function()
     Route::resource('users', 'Admin\UsersController');
     Route::resource('permissions', 'Admin\PermissionsController');
     Route::resource('groups', 'Admin\GroupsController');
+    Route::resource('settings', 'Admin\SettingsController');
     Route::get('/', [
         'as' => 'admin.index',
         'uses' => 'Admin\AdminController@index'
