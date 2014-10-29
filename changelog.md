@@ -1,7 +1,7 @@
 Changelog
 ========
   
-###Changes between 2.0.2 and 2.0.1
+###Changes between 2.1.0 and 2.0.2
 ---
 ####Orders reports can now be sorted by customer
 >In the **Orders** section, the report results can now be filtered by selecting the customer from the dropdown menu located to the right of the report heading. 
