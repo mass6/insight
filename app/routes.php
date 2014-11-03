@@ -10,8 +10,6 @@
 | and give it the Closure to execute when that URI is requested.
 |
 */
-// test
-Route::get('testing', 'PortalController@getApprovalStatistics');
 
 // Authentication routes
     Route::get('login', [

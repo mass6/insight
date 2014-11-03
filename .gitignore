@@ -2,6 +2,7 @@
 /vendor
 /pubic/js-old/
 /public/system/
+.idea/
 composer.phar
 .env.*.php
 .env.php
