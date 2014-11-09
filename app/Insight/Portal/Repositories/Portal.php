@@ -45,7 +45,7 @@ class Portal
     {
         if (Sentry::check())
         {
-            $group = Sentry::getUser()->company !== '36s' ? Sentry::getUser()->company : '' ;
+            $group = strtolower(Sentry::getUser()->company->name) !== '36s' ? strtolower(Sentry::getUser()->company->name) : '' ;
         }
         else
         {

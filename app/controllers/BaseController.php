@@ -25,7 +25,7 @@ class BaseController extends Controller {
     protected function getLayout()
     {
         if (Sentry::check()) {
-            $company = Sentry::getUser()->company;
+            $company = strtolower(Sentry::getUser()->company->name);
 
             if ($company !== '36s')
             {
@@ -46,7 +46,7 @@ class BaseController extends Controller {
 
     protected function getLayoutPath(){
         if (Sentry::check()) {
-            $company = Sentry::getUser()->company;
+            $company = strtolower(Sentry::getUser()->company->name);
             if ($company !== '36s'){
                 return Config::get('view.layout.company.' . $company . '.path', 'layouts');
             }

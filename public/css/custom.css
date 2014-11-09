@@ -56,3 +56,8 @@ body .navbar-inverse {
 .navbar-inverse .brand, .navbar-inverse .nav>li>a {
     color: #bfccdb;
 }
+
+.ms-container .ms-list {
+    width: 250px;
+    height: 250px;
+}

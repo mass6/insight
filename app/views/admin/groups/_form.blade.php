@@ -14,7 +14,7 @@
     <label class="col-sm-3 control-label">Allowed permissions<br/>
         <small>Selected Permissions on the right</small></label>
 
-    <div class="col-sm-7">
+    <div class="col-sm-9">
         <select multiple="multiple" name="permissions[]" class="form-control multi-select">
             @foreach ($permissions as $permission)
                 <option value="{{ $permission }}">{{ $permission }}</option>

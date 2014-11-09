@@ -17,7 +17,7 @@ class NewUserForm extends FormValidator
     protected $rules = [
         'email'     => 'required|email|unique:users',
         'password'  => 'required|digits_between:6,30',
-        'company'   => 'required'
+        'company_id'   => 'required'
     ];
     
 } 
