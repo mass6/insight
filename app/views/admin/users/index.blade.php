@@ -23,7 +23,7 @@
             <td>{{ $user->id }}</td>
             <td>{{ $user->email }}</td>
             <td>{{ $user->name() }}</td>
-            <td>{{ $user->company }}</td>
+            <td>{{ $user->company->name }}</td>
             <td>
                 <ul class="list-unstyled">
                     @foreach ($user->groups as $group)

@@ -13,6 +13,12 @@ function getLayout()
     return $layout;
 }
 
+/**
+ * @param $link
+ * @param int $seg
+ * @param bool $parent
+ * @return string
+ */
 function isActive($link, $seg = 1, $parent = false)
 {
     $class = '';
@@ -46,4 +52,15 @@ function object_to_array($data)
     }
 
     return $data;
+}
+
+/**
+ * Converts a price to integer for persisting to db
+ *
+ * @param $price
+ * @return mixed
+ */
+function priceToInteger($price)
+{
+    return $price * 100;
 }

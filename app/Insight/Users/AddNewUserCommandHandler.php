@@ -27,7 +27,7 @@ class AddNewUserCommandHandler extends UserCommandAbstract
                 'password'      => $command->password,
                 'first_name'    => $command->first_name,
                 'last_name'     =>  $command->last_name,
-                'company'       =>  $command->company,
+                'company_id'       =>  $command->company_id,
                 'activated'     =>  true,
                 'permissions'   => $this->serializePermissions($command->permissionsAllowed, $command->permissionsDenied)
             ]);

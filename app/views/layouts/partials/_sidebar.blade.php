@@ -59,113 +59,128 @@
         @if ($currentUser->hasAccess('portal.*'))
 
 
-        @if ($currentUser->hasAccess('portal.orders'))
-            <li class="auto-inherit-active-class {{ isActive('orders', 2, true) }}">
-                <a href="">
+            @if ($currentUser->hasAccess('portal.orders'))
+                <li class="auto-inherit-active-class {{ isActive('orders', 2, true) }}">
+                    <a href="">
+                        <i class="entypo-ticket"></i>
+                        <span>Orders</span>
+                    </a>
+                    <ul>
+                        <li id="search">
+                            {{ Form::open(['route'=>'portal.orders.search', 'method'=>'GET']) }}
+                            <input type="text" name="s" class="search-input" placeholder="Search Weborders..."/>
+                            <button type="submit">
+                                <i class="entypo-search"></i>
+                            </button>
+                            {{ Form::close() }}
+                        </li>
+                        <li class="{{ isActive('search', 3) }}">
+                            <a href="{{ route('portal.orders.search') }}">
+                                <span>Search</span>
+                            </a>
+                        </li>
+                        <li class="{{ isActive('search', 3) }}">
+                            <a href="{{ route('portal.orders.pending-approval') }}">
+                                <span>Pending Approval</span>
+                            </a>
+                        </li>
+                        <li class="{{ isActive('today', 3) }}">
+                            <a href="{{ route('portal.orders.period', 'today') }}">
+                                <span>Today</span>
+                            </a>
+                        </li>
+                        <li class="{{ isActive('yesterday', 3) }}">
+                            <a href="{{ route('portal.orders.period', 'yesterday') }}">
+                                <span>Yesterday</span>
+                            </a>
+                        </li>
+                        <li class="{{ isActive('this-month', 3) }}">
+                            <a href="{{ route('portal.orders.period', 'this-month') }}">
+                                <span>This Month</span>
+                            </a>
+                        </li>
+                        <li class="{{ isActive('last-month', 3) }}">
+                            <a href="{{ route('portal.orders.period', 'last-month') }}">
+                                <span>Last Month</span>
+                            </a>
+                        </li>
+                        <li class="{{ isActive('ytd', 3) }}">
+                            <a href="{{ route('portal.orders.period', 'ytd') }}">
+                                <span>Year to Date</span>
+                            </a>
+                        </li>
+                        <li class="{{ isActive('third-party-this-month', 3) }}">
+                            <a href="{{ route('portal.orders.period', 'third-party-this-month') }}">
+                                <span>Third Party This Month</span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+            @endif
+            @if ($currentUser->hasAccess('portal.contracts'))
+                <li class="{{ isActive('contracts', 2) }}">
+                    <a href="{{ route('portal.contracts') }}">
+                        <i class="entypo-docs"></i>
+                        <span>Contracts</span>
+                    </a>
+                </li>
+            @endif
+            @if ($currentUser->hasAccess('portal.users'))
+                <li class="{{ isActive('users', 2) }}">
+                    <a href="{{ route('portal.users') }}">
+                        <i class="entypo-cc-by"></i>
+                        <span>Portal Users</span>
+                    </a>
+                </li>
+            @endif
+            @if ($currentUser->hasAccess('portal.products'))
+                <li class="{{ isActive('products', 2) }}">
+                    <a href="{{ route('portal.products') }}">
+                        <i class="entypo-basket"></i>
+                        <span>Products</span>
+                    </a>
+                </li>
+            @endif
+            @if ($currentUser->hasAccess('portal.approvals'))
+            <li class="auto-inherit-active-class {{ isActive('approvals', 2) }}">
+                <a href="{{ route('portal.approval-statistics') }}">
+                    <i class="entypo-check"></i>
+                    <span>Approval Statistics</span>
+                </a>
+            </li>
+            @endif
+            @if ($currentUser->hasAccess('portal.budgets'))
+                <li class="{{ isActive('budgets', 2) }}">
+                    <a href="">
+                        <i class="entypo-chart-line"></i>
+                        <span>Budgets</span>
+                    </a>
+                </li>
+            @endif
+            @if ($currentUser->hasAccess('portal.doa'))
+                <li class="{{ isActive('doa', 2) }}">
+                    <a href="{{ route('portal.doa') }}">
+                        <i class="entypo-flag"></i>
+                        <span>DOA</span>
+                    </a>
+                </li>
+            @endif
+        @endif
+        @if ($currentUser->hasAccess('cataloguing.*'))
+            <li class="auto-inherit-active-class {{ isActive('catalogue', 1, true) }}">
+                <a href="#">
                     <i class="entypo-ticket"></i>
-                    <span>Orders</span>
+                    <span>Product Cataloguing</span>
                 </a>
                 <ul>
-                    <li id="search">
-                        {{ Form::open(['route'=>'portal.orders.search', 'method'=>'GET']) }}
-                        <input type="text" name="s" class="search-input" placeholder="Search Weborders..."/>
-                        <button type="submit">
-                            <i class="entypo-search"></i>
-                        </button>
-                        {{ Form::close() }}
-                    </li>
-                    <li class="{{ isActive('search', 3) }}">
-                        <a href="{{ route('portal.orders.search') }}">
-                            <span>Search</span>
-                        </a>
-                    </li>
-                    <li class="{{ isActive('search', 3) }}">
-                        <a href="{{ route('portal.orders.pending-approval') }}">
-                            <span>Pending Approval</span>
-                        </a>
-                    </li>
-                    <li class="{{ isActive('today', 3) }}">
-                        <a href="{{ route('portal.orders.period', 'today') }}">
-                            <span>Today</span>
-                        </a>
-                    </li>
-                    <li class="{{ isActive('yesterday', 3) }}">
-                        <a href="{{ route('portal.orders.period', 'yesterday') }}">
-                            <span>Yesterday</span>
-                        </a>
-                    </li>
-                    <li class="{{ isActive('this-month', 3) }}">
-                        <a href="{{ route('portal.orders.period', 'this-month') }}">
-                            <span>This Month</span>
-                        </a>
-                    </li>
-                    <li class="{{ isActive('last-month', 3) }}">
-                        <a href="{{ route('portal.orders.period', 'last-month') }}">
-                            <span>Last Month</span>
-                        </a>
-                    </li>
-                    <li class="{{ isActive('ytd', 3) }}">
-                        <a href="{{ route('portal.orders.period', 'ytd') }}">
-                            <span>Year to Date</span>
-                        </a>
-                    </li>
-                    <li class="{{ isActive('third-party-this-month', 3) }}">
-                        <a href="{{ route('portal.orders.period', 'third-party-this-month') }}">
-                            <span>Third Party This Month</span>
+                    <li class="auto-inherit-active-class">
+                        <a href="{{ route('catalogue.product-definitions.index') }}">
+                            <i class="entypo-ticket"></i>
+                            <span>Products Cataloguing Requests</span>
                         </a>
                     </li>
                 </ul>
             </li>
-        @endif
-        @if ($currentUser->hasAccess('portal.contracts'))
-            <li class="{{ isActive('contracts', 2) }}">
-                <a href="{{ route('portal.contracts') }}">
-                    <i class="entypo-docs"></i>
-                    <span>Contracts</span>
-                </a>
-            </li>
-        @endif
-        @if ($currentUser->hasAccess('portal.users'))
-            <li class="{{ isActive('users', 2) }}">
-                <a href="{{ route('portal.users') }}">
-                    <i class="entypo-cc-by"></i>
-                    <span>Portal Users</span>
-                </a>
-            </li>
-        @endif
-        @if ($currentUser->hasAccess('portal.products'))
-            <li class="{{ isActive('products', 2) }}">
-                <a href="{{ route('portal.products') }}">
-                    <i class="entypo-basket"></i>
-                    <span>Products</span>
-                </a>
-            </li>
-        @endif
-        @if ($currentUser->hasAccess('portal.approvals'))
-        <li class="auto-inherit-active-class {{ isActive('approvals', 2) }}">
-            <a href="{{ route('portal.approval-statistics') }}">
-                <i class="entypo-check"></i>
-                <span>Approval Statistics</span>
-            </a>
-        </li>
-        @endif
-        @if ($currentUser->hasAccess('portal.budgets'))
-            <li class="{{ isActive('budgets', 2) }}">
-                <a href="">
-                    <i class="entypo-chart-line"></i>
-                    <span>Budgets</span>
-                </a>
-            </li>
-        @endif
-        @if ($currentUser->hasAccess('portal.doa'))
-            <li class="{{ isActive('doa', 2) }}">
-                <a href="{{ route('portal.doa') }}">
-                    <i class="entypo-flag"></i>
-                    <span>DOA</span>
-                </a>
-            </li>
-        @endif
-
         @endif
 <!--        @if ($currentUser->hasAccess('sourcing.*'))-->
 <!--            <li class="auto-inherit-active-class">-->
@@ -215,12 +230,20 @@
 <!--            </li>-->
 <!--        @endif-->
         @if ($currentUser->hasAccess('admin'))
-            <li class="auto-inherit-active-class {{ isActive('users', 2, true) }}{{ isActive('permissions', 2, true) }}{{ isActive('groups', 2, true) }}">
+            <li class="auto-inherit-active-class {{ isActive('companies', 2, true) }}{{ isActive('users', 2, true) }}{{ isActive('permissions', 2, true) }}{{ isActive('groups', 2, true) }}">
             <a href="{{ route('admin.index') }}">
-                <i class=""></i>
+                <i class="entypo-tools"></i>
                 <span>Admin</span>
             </a>
             <ul>
+                @if ($currentUser->hasAccess('companies.*'))
+                    <li class="{{ isActive('companies', 2) }}">
+                        <a href="{{ route('admin.companies.index') }}">
+                            <i class="entypo-flow-tree"></i>
+                            <span>Companies</span>
+                        </a>
+                    </li>
+                @endif
                 @if ($currentUser->hasAccess('users.*'))
                     <li class="{{ isActive('users', 2) }}">
                         <a href="{{ route('admin.users.index') }}">

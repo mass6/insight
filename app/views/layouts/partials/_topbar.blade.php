@@ -9,10 +9,15 @@
     <!-- Profile Info -->
     <li class="profile-info dropdown"><!-- add class "pull-right" if you want to place this from right -->
 
+
         <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-            <img src="{{ $currentUser->profile->avatar->url('thumb') }}" alt="" class="img-circle" width="44" />
+            @if($currentUser->profile)
+                <img src="{{ $currentUser->profile->avatar->url('thumb') }}" alt="" class="img-circle" width="44" />
+            @endif
             {{ $currentUser->name() }}
+
         </a>
+
 
         <ul class="dropdown-menu">
 

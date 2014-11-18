@@ -1,7 +1,7 @@
 /bootstrap/compiled.php
 /vendor
 /pubic/js-old/
-/public/system/
+/public/system/Insight/
 .idea/
 composer.phar
 .env.*.php

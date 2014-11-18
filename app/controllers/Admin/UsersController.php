@@ -1,5 +1,6 @@
 <?php namespace Admin;
 
+use Insight\Companies\CompanyRepository;
 use Insight\Core\CommandBus;
 use Insight\Permissions\GroupRepository;
 use Insight\Permissions\PermissionRepository;
@@ -40,8 +41,12 @@ class UsersController extends AdminBaseController {
      * @var \Insight\Permissions\PermissionRepository
      */
     private $permission;
+    /**
+     * @var CompanyRepository
+     */
+    private $company;
 
-    public function __construct(UserRepositoryInterface $user, GroupRepository $group, PermissionRepository $permission,
+    public function __construct(UserRepositoryInterface $user, GroupRepository $group, CompanyRepository $company, PermissionRepository $permission,
                                 NewUserForm $newUserForm, UpdateUserForm $updateUserForm)
     {
         $this->user = $user;
@@ -49,6 +54,7 @@ class UsersController extends AdminBaseController {
         $this->updateUserForm = $updateUserForm;
         $this->group = $group;
         $this->permission = $permission;
+        $this->company = $company;
     }
 	/**
 	 * Display a listing of the resource.
@@ -71,12 +77,13 @@ class UsersController extends AdminBaseController {
 	 */
 	public function create()
 	{
+        $companies = $this->company->getList();
         $permissions = $this->permission->getList();
         $allowedPermissionsDiff = $permissions;
         $deniedPermissionsDiff = $permissions;
         $groups = $this->group->getList();
 
-        return View::make('admin.users.create', compact(
+        return View::make('admin.users.create', compact('companies',
             'allowedPermissionsDiff', 'deniedPermissionsDiff', 'groups'));
 	}
 
@@ -91,7 +98,7 @@ class UsersController extends AdminBaseController {
         // Validate form
         $this->newUserForm->validate(Input::all());
 
-        extract(Input::only('first_name', 'last_name', 'email', 'password', 'company', 'send_email'));
+        extract(Input::only('first_name', 'last_name', 'email', 'password', 'company_id', 'send_email'));
         $permissionsAllowed = Input::get('permissions_allowed', []);
         $permissionsDenied = Input::get('permissions_denied', []);
         $groups = Input::get('groups', []);
@@ -99,7 +106,7 @@ class UsersController extends AdminBaseController {
         // Create the new user
         try
         {
-            $this->execute(new AddNewUserCommand($first_name, $last_name, $email, $password, $company,
+            $this->execute(new AddNewUserCommand($first_name, $last_name, $email, $password, $company_id,
                 $send_email, $permissionsAllowed, $permissionsDenied, $groups));
         }
         catch (\Exception $e)
@@ -123,7 +130,6 @@ class UsersController extends AdminBaseController {
 	public function show($id)
 	{
 		$user = $this->user->find($id);
-
         return View::make('admin.users.show', compact('user'));
 	}
 
@@ -138,6 +144,7 @@ class UsersController extends AdminBaseController {
 	{
         $user = $this->user->find($id);
 
+        $companies = $this->company->getList();
         $allPermissions = $this->permission->getList();
         $allowedPermissions = $this->user->getAllowedPermissions($user);
         $deniedPermissions = $this->user->getDeniedPermissions($user);
@@ -150,7 +157,7 @@ class UsersController extends AdminBaseController {
         $groups = array_diff($allGroups, $userGroups);
 
         return View::make('admin.users.edit', compact(
-            'user', 'allowedPermissions', 'allowedPermissionsDiff', 'deniedPermissions', 'deniedPermissionsDiff', 'groups', 'userGroups'));
+            'user', 'companies', 'allowedPermissions', 'allowedPermissionsDiff', 'deniedPermissions', 'deniedPermissionsDiff', 'groups', 'userGroups'));
 	}
 
 
@@ -162,11 +169,10 @@ class UsersController extends AdminBaseController {
 	 */
 	public function update($id)
 	{
-        //return Input::all();
         // Validate form
         $this->updateUserForm->validate(Input::all());
 
-        extract(Input::only('first_name', 'last_name', 'email', 'password', 'company', 'send_email'));
+        extract(Input::only('first_name', 'last_name', 'email', 'password', 'company_id', 'send_email'));
         $permissionsAllowed = Input::get('permissions_allowed', []);
         $permissionsDenied = Input::get('permissions_denied', []);
         $groups = Input::get('groups', []);
@@ -174,7 +180,7 @@ class UsersController extends AdminBaseController {
         // Update the new user
         try
         {
-            $this->execute(new UpdateUserCommand($id, $first_name, $last_name, $email, $password, $company,
+            $this->execute(new UpdateUserCommand($id, $first_name, $last_name, $email, $password, $company_id,
                 $send_email, $permissionsAllowed, $permissionsDenied, $groups));
         }
         catch (\Exception $e)

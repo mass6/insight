@@ -58,7 +58,7 @@ class PermissionsController extends AdminBaseController {
 
         $permission = $this->permission->create(Input::all());
 
-        Flash::success("Permission {$permission} was successfully created.");
+        Flash::success("Permission \"{$permission->name}\" was successfully created.");
 
         return Redirect::route('admin.permissions.index');
 

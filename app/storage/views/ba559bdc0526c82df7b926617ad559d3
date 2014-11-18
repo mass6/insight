@@ -1,0 +1,25 @@
+<?php $__env->startSection('content'); ?>
+
+<div class="container">
+    <div class="row">
+        <div class="col-sm-5 col-sm-offset-2">
+            <h2>New Permission Group</h2>
+            <br />
+        </div>
+    </div>
+
+    <div class="row">
+            <?php echo $__env->make('layouts.partials.errors', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+
+            <?php echo Form::open(['route' => 'admin.groups.store', 'class' => 'form-horizontal form-groups-bordered']); ?>
+
+
+                <?php $submit = 'Submit'; ?>
+                <?php echo $__env->make('admin.groups._form', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+
+            <?php echo Form::close(); ?>
+
+    </div>
+</div>
+<?php $__env->stopSection(); ?>
+<?php echo $__env->make($layout, array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>

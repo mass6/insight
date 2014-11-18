@@ -1,0 +1,42 @@
+<?php $__env->startSection('content'); ?>
+
+<h1>Companies</h1>
+    <p><?php echo link_to_route('admin.companies.create', 'Add new company', null, ['class' => 'btn btn-primary']); ?></p>
+    <?php if($companies->count()): ?>
+    <table  id="sample" class="display table table-striped table-bordered">
+        <thead>
+        <tr>
+            <th>Id</th>
+            <th>Name</th>
+            <th>Type</th>
+            <th>Note</th>
+        </tr>
+        </thead>
+        <tbody>
+        <?php foreach($companies as $company): ?>
+        <tr>
+            <td><?php echo $company->id; ?></td>
+            <td><?php echo $company->name; ?></td>
+            <td><?php echo $company->type; ?></td>
+            <td><?php echo $company->notes; ?></td>
+            <td><?php echo link_to_route('admin.companies.edit', 'Edit', array($company->id), array('class' => 'btn btn-info pull-left')); ?>
+
+                <?php echo Form::open(array('method' => 'DELETE', 'route' => array('admin.companies.destroy', $company->id))); ?>
+
+                <?php echo Form::submit('Delete', array('class' => 'btn btn-danger', 'Onclick'=>'return confirm("Are you sure you want to delete this company?")')); ?>
+
+                <?php echo Form::close(); ?>
+
+            </td>
+        </tr>
+        <?php endforeach; ?>
+        </tbody>
+    </table>
+    <div>
+        <?php echo $companies->links(); ?>
+
+    </div>
+    <?php endif; ?>
+
+<?php $__env->stopSection(); ?>
+<?php echo $__env->make($layout, array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>

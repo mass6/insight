@@ -17,7 +17,9 @@ class PermissionsTableSeeder extends Seeder {
             'permissions',
             'groups',
             'product-requests',
-            'quotations'
+            'quotations',
+            'companies',
+            'cataloguing.products',
         ];
 
         $viewPermissions = [
@@ -40,6 +42,11 @@ class PermissionsTableSeeder extends Seeder {
         {
             Permission::create(['name' => $permission]);
         }
+
+        // Misc permissions
+        Permission::create(['name' => 'portal.doa']);
+        Permission::create(['name' => 'customers.data']);
+        Permission::create(['name' => 'cataloguing.products.edit.full']);
 
 	}
 

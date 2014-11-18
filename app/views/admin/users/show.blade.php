@@ -38,7 +38,7 @@
         <div class="form-group">
             {{ Form::label('company', 'Company:', ['class' => 'col-sm-3 control-label']) }}
             <div class="col-sm-5">
-                {{ Form::text('company', $user->company, ['class' => 'form-control', 'disabled' => 'disabled']) }}
+                {{ Form::text('company', $user->company->name, ['class' => 'form-control', 'disabled' => 'disabled']) }}
             </div>
         </div>
 

@@ -12,32 +12,30 @@ class UsersTableSeeder extends Seeder {
 
     public function run()
     {
-        //User::truncate();
-
         $adminUser = Sentry::createUser([
             'first_name' => 'Admin',
             'email' => 'admin@admin.com',
             'password' => 'admin',
-            'company' => '36s',
+            'company_id' => '1',
             'activated' => true,
             'permissions' => ['superuser' => 1]
         ]);
 
         $adminUser->profile()->save(new Profile);
 
-//        $faker = Faker::create();
-//
-//        foreach(range(1, 5) as $index)
-//        {
-//            Sentry::createUser([
-//                'first_name' => $faker->firstName,
-//                'last_name' => $faker->lastName,
-//                'email' => $faker->unique()->email(),
-//                'password' => 'secret',
-//                'company' => '36s',
-//                'activated' => true
-//            ]);
-//        }
+        $faker = Faker::create();
+
+        foreach(range(1, 10) as $index)
+        {
+            Sentry::createUser([
+                'first_name' => $faker->firstName,
+                'last_name' => $faker->lastName,
+                'email' => $faker->unique()->email(),
+                'password' => 'secret',
+                'company_id' => $faker->numberBetween(2,11),
+                'activated' => true
+            ]);
+        }
 
         // Assign users to groups
 
