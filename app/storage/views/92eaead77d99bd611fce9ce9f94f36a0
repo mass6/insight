@@ -1,0 +1,25 @@
+<?php $__env->startSection('content'); ?>
+
+<div class="container">
+    <div class="row">
+        <div class="col-sm-5 col-sm-offset-2">
+            <h2>New Customer</h2>
+            <br />
+        </div>
+    </div>
+
+    <div class="row">
+            <?php echo $__env->make('layouts.partials.errors', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+
+            <?php echo Form::open(['route' => 'admin.customers.store', 'class' => 'form-horizontal form-groups-bordered']); ?>
+
+
+                <?php $submit = 'Submit'; ?>
+                <?php echo $__env->make('admin.customers._form', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+
+            <?php echo Form::close(); ?>
+
+    </div>
+</div>
+<?php $__env->stopSection(); ?>
+<?php echo $__env->make($layout, array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>

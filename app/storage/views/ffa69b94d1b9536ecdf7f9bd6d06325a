@@ -1,0 +1,50 @@
+<?php $__env->startSection('content'); ?>
+
+<h1>Permission Groups</h1>
+<p><?php echo link_to_route('admin.groups.create', 'Add new group', null, ['class' => 'btn btn-primary']); ?></p>
+<?php if($groups->count()): ?>
+<table  id="sample" class="display table table-striped table-bordered">
+    <thead>
+    <tr>
+        <th>Id</th>
+        <th>Group Name</th>
+        <th>Permissions</th>
+        <th>Options</th>
+    </tr>
+    </thead>
+    <tbody>
+    <?php foreach($groups as $group): ?>
+    <tr>
+        <td><?php echo $group->id; ?></td>
+        <td><?php echo $group->name; ?></td>
+        <td><?php if(! empty($group->permissions)): ?>
+            <ul class="list-unstyled">
+                <?php foreach($group->permissions as $key => $val): ?>
+                <li><?php echo $key; ?> : <?php echo $val ? 'allow' : 'deny'; ?></li>
+                <?php endforeach; ?>
+            </ul>
+            <?php endif; ?>
+        </td>
+        <td><?php echo link_to_route('admin.groups.edit', 'Edit', array($group->id), array('class' => 'btn btn-info pull-left')); ?>
+
+            <?php echo Form::open(array('method' => 'DELETE', 'route' => array('admin.groups.destroy', $group->id))); ?>
+
+            <?php echo Form::submit('Delete', array('class' => 'delete btn btn-danger', 'Onclick'=>'return confirm("Are you sure you want to delete this item?")')); ?>
+
+            <?php echo Form::close(); ?>
+
+        </td>
+    </tr>
+    <?php endforeach; ?>
+    </tbody>
+</table>
+<div>
+    <?php echo $groups->links(); ?>
+
+</div>
+<?php else: ?>
+    <h4>No Groups Defined</h4>
+<?php endif; ?>
+
+<?php $__env->stopSection(); ?>
+<?php echo $__env->make($layout, array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>

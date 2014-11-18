@@ -1,0 +1,6 @@
+<!-- logo -->
+<div class="logo">
+    <a href="<?php echo route('home'); ?>">
+        <img src="<?php echo URL::asset('/images/insight.png'); ?>" alt="36S" />
+    </a>
+</div>

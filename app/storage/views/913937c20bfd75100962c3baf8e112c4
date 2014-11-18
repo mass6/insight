@@ -1,0 +1,11 @@
+<?php if($errors->any()): ?>
+<div class="alert alert-danger">
+    <ul>
+        <?php foreach($errors->all('<li>:message</li>') as $message): ?>
+        <?php echo $message; ?>
+
+        <?php endforeach; ?>
+    </ul>
+</div>
+
+<?php endif; ?>
