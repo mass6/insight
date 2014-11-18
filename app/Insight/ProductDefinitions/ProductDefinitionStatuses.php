@@ -1,7 +1,7 @@
 <?php namespace Insight\ProductDefinitions;
 
 /**
- * Class Company
+ * Class ProductDefinitionStatuses
  * @package Insight\ProductDefinitions
  */
 class ProductDefinitionStatuses extends \Eloquent {

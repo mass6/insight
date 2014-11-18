@@ -1,3 +1,9 @@
+<!-- Form Type (full/limited) -->
+{{Form::hidden('form-type', 'limited')}}
+<!-- Product being updated -->
+{{Form::hidden('id', $product->id)}}
+<!-- Product owned by company -->
+{{Form::hidden('company_id', $product->company_id, ['id' => 'company_id'])}}
 <!-- Created by UserId -->
 {{Form::hidden('user_id', $user->id)}}
 <!-- Currency hard-coded to AED -->
@@ -5,25 +11,17 @@
 <!-- Attributes: //Todo: add to form as input -->
 {{Form::hidden('attributes', '') }}
 
-{{-- Show company select box if usertype is internal --}}
-@if($internalUser)
-    <!-- Customer -->
-    <div class="form-group">
-        {{ Form::label('company_id', 'Customer:', ['class' =>'col-sm-3 control-label']) }}
-        <div class="col-sm-5">
-            {{ Form::select('company_id', $companies, null, ['class'=>'form-control', 'id'=>'company_id', 'required']) }}
-        </div>
-    </div>
-@else
-    <!-- Owned by CompanyID -->
-    {{Form::hidden('company_id', $user->company->id, ['id' => 'company_id'])}}
-@endif
+<ul>
+    <li>Created by: {{$product->createdBy->name()}}</li>
+    <li>Created at: {{$product->created_at}}</li>
+    <li>Created at: {{$product->updated_at}}</li>
+</ul>
 
 <!-- Code  -->
 <div class="form-group">
     {{ Form::label('code', 'Product Code:', ['class' => 'col-sm-3 control-label']) }}
     <div class="col-sm-5">
-        {{ Form::text('code', '555', ['class' => 'form-control step1', 'id' => 'code', 'required', 'placeholder' => 'Item Code, Product Code, or SKU']) }}
+        {{ Form::text('code', null, ['class' => 'form-control step1', 'id' => 'code', 'required', 'placeholder' => 'Item Code, Product Code, or SKU', 'readonly']) }}
     </div>
 </div>
 
@@ -31,7 +29,7 @@
 <div class="form-group">
     {{ Form::label('name', 'Name:', ['class' => 'col-sm-3 control-label']) }}
     <div class="col-sm-5">
-        {{ Form::text('name', 'bread', ['class' => 'form-control', 'required', 'placeholder' => 'Name as it shall be cataloged in the portal']) }}
+        {{ Form::text('name', null, ['class' => 'form-control', 'required', 'placeholder' => 'Name as it shall be cataloged in the portal', 'readonly']) }}
     </div>
 </div>
 
@@ -39,7 +37,7 @@
 <div class="form-group">
     {{ Form::label('category', 'Category:', ['class' => 'col-sm-3 control-label']) }}
     <div class="col-sm-5">
-        {{ Form::text('category', null, ['class' => 'form-control', 'placeholder' => 'Category that this product should be classified in.']) }}
+        {{ Form::text('category', null, ['class' => 'form-control', 'placeholder' => 'Category that this product should be classified in.', 'readonly']) }}
     </div>
 </div>
 
@@ -47,39 +45,53 @@
 <div class="form-group">
     {{ Form::label('uom', 'UOM:', ['class' => 'col-sm-3 control-label']) }}
     <div class="col-sm-5">
-        {{ Form::text('uom', null, ['class' => 'form-control', 'id' => 'uom', 'placeholder' => 'e.g. Each, Pack, Carton']) }}
-    </div>
-</div>
-
-<!-- Price -->
-<div class="form-group">
-    {{ Form::label('price', 'Price per UOM:', ['class' => 'col-sm-3 control-label']) }}
-    <div class="col-sm-5">
-        <div class="input-group">
-            <span class="input-group-addon">AED</span>
-            {{ Form::text('price', null, ['class' => 'form-control']) }}
-            <span class="input-group-addon">.00</span>
-        </div>
+        {{ Form::text('uom', null, ['class' => 'form-control', 'id' => 'uom', 'placeholder' => 'e.g. Each, Pack, Carton', 'readonly']) }}
     </div>
 </div>
 
 <!-- Description -->
 <div class="form-group">
-    <label for="description" class="col-sm-3 control-label">Description</label>
+    <label for="field-ta" class="col-sm-3 control-label">Description</label>
     <div class="col-sm-8">
-        <textarea id="description" class="form-control wysihtml5" data-stylesheet-url="{{ URL::asset('css/wysihtml5-color.css') }} " name="description" id="sample_wysiwyg">{{{ Input::old('description') ? Input::old('description') : '' }}} </textarea>
+        <textarea class="form-control wysihtml5" data-stylesheet-url="{{ URL::asset('css/wysihtml5-color.css') }} " name="description" id="sample_wysiwyg">{{{ Input::old('description') ? Input::old('description') : (isset($product) ? $product->description : '') }}}</textarea>
     </div>
 </div>
 
 <!-- Short Description -->
 <div class="form-group">
-    <label for="short_description" class="col-sm-3 control-label">Short Description</label>
+    <label for="field-ta" class="col-sm-3 control-label">Short Description</label>
     <div class="col-sm-8">
-        <textarea id="short_description" class="form-control wysihtml5" data-stylesheet-url="{{ URL::asset('css/wysihtml5-color.css') }} " name="short_description" id="sample_wysiwyg">{{{ Input::old('short_description') ? Input::old('short_description') : '' }}} </textarea>
+        <textarea class="form-control wysihtml5" data-stylesheet-url="{{ URL::asset('css/wysihtml5-color.css') }} " name="short_description" id="sample_wysiwyg">{{{ Input::old('short_description') ? Input::old('short_description') : (isset($product) ? $product->short_description : '') }}}</textarea>
     </div>
 </div>
 
 <!-- Images -->
+
+{{-- Existing Images --}}
+@if($product->images)
+    <div class="gallery-env">
+        <div class="row">
+            <div class="col-sm-3">
+                <h3>Product Images</h3>
+            </div>
+        </div>
+        <div class="col-sm-8 col-sm-offset-3">
+                 @foreach ($product->images as $image)
+                    <div id="image{{$image->id}}" class="col-sm-2 col-xs-4" data-tag="1d">
+                        <article class="image-thumb">
+                            <a href="{{ $image->image->url() }}" class="image" target="_blank">
+                                <img src="{{ $image->image->url('thumb') }}"/>
+                            </a>
+                            <div class="image-options">
+                                <a href="#" class="detach-image delete" imageid="{{$image->id}}"><i class="entypo-cancel"></i></a>
+                            </div>
+                        </article>
+                    </div>
+                @endforeach
+        </div>
+    </div>
+@endif
+
 
 <!-- Add new Images -->
 <div id="image-div0" class="form-group">
@@ -115,6 +127,30 @@
 
 
 <!-- Attachments -->
+
+<!-- Existing Attachments -->
+@if($product->attachments)
+    <div class="row">
+        <div class="col-sm-12">
+            <h3>Attachments</h3>
+        </div>
+    </div>
+    <div class="row">
+        <ul>
+             @foreach ($product->attachments as $attachment)
+             <span id="attachment{{$attachment->id}}">
+                <li>
+                    <span style="font-size:1.4em;text-decoration: underline;"><a href="{{ $attachment->attachment->url() }}" target="_blank">
+                        {{$attachment->attachment->originalFilename()}}
+                    </a></span>
+                    <a href="" class="detach-attachment delete" attachmentid="{{$attachment->id}}"><i class="entypo-cancel"></i></a>
+                </li>
+            </span>
+            @endforeach
+        </ul>
+    </div>
+@endif
+
 <!-- Add new Attachments -->
 <div class="form-group">
     <label class="col-sm-3 control-label">Product Attachments</label>
@@ -190,7 +226,7 @@
         }
         else {
             var newdiv = document.createElement('div');
-            var divId = 'attachment-div' + attachmentSerial;
+            var divId = 'image-div' + attachmentSerial;
             var inner = "<label class='col-sm-3 control-label'>&nbsp;</label>"
                 + "<div class='col-sm-5'>"
                 + "<div class='fileinput fileinput-new' data-provides='fileinput'>"
@@ -247,16 +283,21 @@
 <div class="form-group">
     {{ Form::label('remarks', 'Remarks:', ['class' => 'col-sm-3 control-label']) }}
     <div class="col-sm-7">
-        <textarea class="form-control" name="remarks">{{{ Input::old('remarks') ? Input::old('remarks') : '' }}}</textarea>
+        <textarea class="form-control" name="remarks">{{{ Input::old('remarks') ? Input::old('remarks') : $product->description }}}</textarea>
     </div>
 </div>
 
 <!-- Supplier -->
 <div class="form-group">
     {{ Form::label('supplier_id', 'Supplier:', ['class' =>'col-sm-3 control-label']) }}
-    <div class="col-sm-5">
-        {{ Form::select('supplier_id', $suppliers, null, ['class'=>'form-control', 'id'=>'supplier_id']) }}
-    </div>
+        <div class="col-sm-5">
+            @if(! empty($supplier))
+                <p class="form-control-static"><strong>{{ $supplier->name }}</strong></p>
+                {{Form::hidden('supplier_id', $supplier->id)}}
+            @else
+                {{Form::hidden('supplier_id', null )}}
+            @endif
+        </div>
 </div>
 
 <!-- Assigned To -->
@@ -272,7 +313,11 @@
               {
                 <optgroup label="{{$index}}">
                     @foreach($company as $id => $name)
+                        @if($product->assigned_user_id === $id)
+                            <option value="{{$id}}" selected>{{$name}}</option>
+                        @else
                             <option value="{{$id}}">{{$name}}</option>
+                        @endif
                     @endforeach
                 </optgroup>
               }
@@ -314,9 +359,8 @@
         $("#supplier_id").change(function() {
             var $userSelect = $("#assigned_user_id");
             $userSelect.empty();
-            var supplier = $("#supplier_id").val();
-            if(supplier )
-            $.getJSON("../cataloguing/supplier-users/" + $("#company_id").val() + '/' + $("#supplier_id").val(), function(data) {
+            $.getJSON("/catalogue/cataloguing/supplier-users/" + $("#company_id").val() + "/" + $("#supplier_id").val(), function(data) {
+                console.log(data);
                 for (var company in data) {
                   if (data.hasOwnProperty(company)) {
                     $userSelect.append('<optgroup label="' + company + '">');
@@ -332,33 +376,7 @@
 
         });
 
-        // Populate Assigned User and Supplier select based on customer selection
-        $("#company_id").change(function() {
-            var $userSelect = $("#assigned_user_id");
-            $userSelect.empty();
-            $.getJSON("../cataloguing/customer-users/" + $("#company_id").val(), function(data) {
-                for (var company in data) {
-                  if (data.hasOwnProperty(company)) {
-                    $userSelect.append('<optgroup label="' + company + '">');
 
-                    for (var key in data[company]) {
-                      if (data[company].hasOwnProperty(key)) {
-                        $userSelect.append('<option value="' + key +'">' + data[company][key] + '</option>');
-                      }
-                    }
-                  }
-                }
-            });
-
-            var $supplierSelect = $("#supplier_id");
-            $supplierSelect.empty();
-            $.getJSON("../cataloguing/suppliers/" + $("#company_id").val(), function(data) {
-                $supplierSelect.append('<option value="">[Select]</option>');
-                $.each(data, function(index, value) {
-                    $supplierSelect.append('<option value="' + index +'">' + value + '</option>');
-                });
-            });
-        });
 
 
 

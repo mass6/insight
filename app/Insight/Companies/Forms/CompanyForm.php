@@ -11,8 +11,16 @@ use Log;
 class CompanyForm extends FormValidator
 {
     protected $rules = [
-        'name'  => 'required|unique:companies',
-        'notes' => 'max:1000'
+        'name'                  => 'required|unique:companies',
+        'notes'                 => 'max:1000',
+        'address1_description'  => 'max:100|required_with:address1_body',
+        'address1_body'         => 'max:500',
+        'address2_description'  => 'max:100|required_with:address2_body',
+        'address2_body'         => 'max:500',
+        'address3_description'  => 'max:100|required_with:address3_body',
+        'address3_body'         => 'max:500',
+        'address4_description'  => 'max:100|required_with:address4_body',
+        'address4_body'         => 'max:500'
     ];
 
 

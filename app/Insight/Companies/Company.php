@@ -60,4 +60,12 @@ class Company extends \Eloquent {
         return $this->belongsToMany('Insight\Companies\Company', 'customer_supplier', 'supplier_id', 'customer_id');
     }
 
+    /**
+     * @return mixed
+     */
+    public function attributeSets()
+    {
+        return $this->hasMany('Insight\ProductDefinitions\AttributeSet');
+    }
+
 }

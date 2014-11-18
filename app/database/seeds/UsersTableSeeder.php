@@ -32,7 +32,7 @@ class UsersTableSeeder extends Seeder {
                 'last_name' => $faker->lastName,
                 'email' => $faker->unique()->email(),
                 'password' => 'secret',
-                'company_id' => $faker->numberBetween(1,5),
+                'company_id' => $faker->numberBetween(2,11),
                 'activated' => true
             ]);
         }

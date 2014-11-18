@@ -1,4 +1,7 @@
 <?php
+use Insight\ProductDefinitions\AttributeSet;
+use Insight\ProductDefinitions\Attribute;
+use Insight\Companies\Company;
 
 /*
 |--------------------------------------------------------------------------
@@ -12,7 +15,8 @@
 */
 
 // Authentication routes
-    Route::get('login', [
+
+Route::get('login', [
         'as' => 'login_path',
         'uses' => 'SessionsController@create'
     ]);
@@ -82,11 +86,26 @@ Route::group(array('before' => 'auth'), function()
     Route::group(array('prefix' => 'catalogue'), function()
     {
         Route::resource('product-definitions', 'ProductDefinitionsController');
-        Route::get('suppliers/{id}', array(
+        Route::get('cataloguing/suppliers/{cid}', array(
             'as' => 'catalogue.suppliers',
-            'uses' => 'ProductDefinitionsController@getAssignableUsers'
+            'uses' => 'ProductDefinitionsController@getSuppliers'
         ));
+        Route::get('cataloguing/supplier-users/{cid}/{sid}', array(
+            'as' => 'catalogue.supplier-users',
+            'uses' => 'ProductDefinitionsController@getAssignableSupplierUsers'
+        ));
+        Route::get('cataloguing/customer-users/{id}', array(
+            'as' => 'catalogue.customer-users',
+            'uses' => 'ProductDefinitionsController@getAssignableCustomerUsers'
+        ));
+
     });
+
+    /**
+     * Attachments
+     */
+    Route::get('images/{id}/delete', 'ImagesController@destroy' );
+    Route::get('attachments/{id}/delete', 'AttachmentsController@destroy' );
 
 
 

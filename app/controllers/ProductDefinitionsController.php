@@ -5,8 +5,15 @@ use Insight\Companies\CompanyRepository;
 use Insight\Core\CommandBus;
 use Insight\ProductDefinitions\AddNewProductDefinitionCommand;
 use Insight\ProductDefinitions\Forms\NewProductDefinitionForm;
+use Insight\ProductDefinitions\Forms\UpdateLimitedProductDefinitionForm;
+use Insight\ProductDefinitions\Forms\UpdateProductDefinitionForm;
 use Insight\ProductDefinitions\ProductDefinitionRepository;
 use Insight\ProductDefinitions\ProductDefinitionStatuses;
+use Insight\ProductDefinitions\Attribute;
+use Insight\ProductDefinitions\AttributeSet;
+use Insight\ProductDefinitions\ProductImage;
+use Insight\ProductDefinitions\UpdateLimitedProductDefinitionCommand;
+use Insight\ProductDefinitions\UpdateProductDefinitionCommand;
 
 class ProductDefinitionsController extends \BaseController {
 
@@ -29,13 +36,32 @@ class ProductDefinitionsController extends \BaseController {
      */
     private $user;
 
+    private $isInternalUser;
+    /**
+     * @var UpdateProductDefinitionForm
+     */
+    private $updateProductDefinitionForm;
+    /**
+     * @var UpdateLimitedProductDefinitionForm
+     */
+    private $updateLimitedProductDefinitionForm;
+
     public function __construct(ProductDefinitionRepository $productDefinitionRepository, CompanyRepository $companyRepository,
-                                NewProductDefinitionForm $newProductDefinitionForm)
+                                NewProductDefinitionForm $newProductDefinitionForm, UpdateProductDefinitionForm $updateProductDefinitionForm,
+                                UpdateLimitedProductDefinitionForm $updateLimitedProductDefinitionForm)
     {
+        $this->beforeFilter(function()
+        {
+            if(! Sentry::getUser()->hasAccess('cataloguing.products.edit'))
+                return Redirect::home();
+        });
+        $this->user = Sentry::getUser();
         $this->productDefinitionRepository = $productDefinitionRepository;
         $this->companyRepository = $companyRepository;
         $this->newProductDefinitionForm = $newProductDefinitionForm;
-        $this->user = Sentry::getUser();
+        $this->isInternalUser = $this->isInternal($this->user);
+        $this->updateProductDefinitionForm = $updateProductDefinitionForm;
+        $this->updateLimitedProductDefinitionForm = $updateLimitedProductDefinitionForm;
     }
 
 	/**
@@ -45,7 +71,9 @@ class ProductDefinitionsController extends \BaseController {
 	 */
 	public function index()
 	{
-		$products = $this->productDefinitionRepository->getPaginated(5);
+		$products = $this->isInternalUser
+            ? $this->productDefinitionRepository->getPaginated(5)
+            : $this->productDefinitionRepository->getFilteredAndPaginated($this->user, 5);
         return View::make('product-definitions.index', compact('products'));
     }
 
@@ -58,10 +86,13 @@ class ProductDefinitionsController extends \BaseController {
 	public function create()
 	{
         $user = $this->user;
+        $internalUser = $this->isInternalUser;
+        $companies = $this->companyRepository->getCustomersList();
         $suppliers = $this->companyRepository->getAssociatedSuppliersList($user->company);
+        $attributeSets = AttributeSet::with('attributes')->where('company_id', $user->company->id)->get();
         $statuses =  ProductDefinitionStatuses::lists('name', 'id');
         $assignableUsersList = $this->productDefinitionRepository->getAssignableUsersList($user->company);
-        return View::make('product-definitions.create', compact('user','suppliers', 'statuses', 'assignableUsersList'));
+        return View::make('product-definitions.create', compact('user','companies','suppliers', 'statuses', 'assignableUsersList', 'internalUser'));
     }
 
 
@@ -80,7 +111,7 @@ class ProductDefinitionsController extends \BaseController {
 
         extract($input);
         $product = $this->execute(new AddNewProductDefinitionCommand(
-            $code, $name, $user_id, $company_id, $category, $uom, $price, $currency, $description,
+            $code, $name, $user_id, $company_id, $category, $uom, $price, $currency, $description, $short_description,
             $attributes, $remarks, $supplier_id, $assigned_user_id, $status, $images, $attachments
         ));
 
@@ -114,10 +145,12 @@ class ProductDefinitionsController extends \BaseController {
 	{
 		$product = $this->productDefinitionRepository->find($id);
         $user = $this->user;
-        $suppliers = $this->companyRepository->getAssociatedSuppliersList($user->company);
+        $supplier = $product->supplier;
+        $suppliers = $this->companyRepository->getAssociatedSuppliersList($product->customer);
         $statuses =  ProductDefinitionStatuses::lists('name', 'id');
-        $assignableUsersList = $this->productDefinitionRepository->getAssignableUsersList($user->company);
-        return View::make('product-definitions.edit', compact('product','user','suppliers', 'statuses', 'assignableUsersList'));
+        $assignableUsersList = $this->productDefinitionRepository->getAssignableUsersList($product->customer, $supplier);
+        $form = $this->user->hasAccess('cataloguing.products.edit.full') ? '_form-edit' : '_form-edit-limited';
+        return View::make('product-definitions.edit', compact('product','user','supplier','suppliers','statuses', 'assignableUsersList', 'form'));
 	}
 
 
@@ -129,7 +162,30 @@ class ProductDefinitionsController extends \BaseController {
 	 */
 	public function update($id)
 	{
-		//
+
+        $input = Input::all();
+        $input['images'] = Input::file('images');
+        $input['attachments'] = Input::file('attachments');
+
+        $input['form-type'] === 'full'
+        ? $this->updateProductDefinitionForm->validate($input)
+        : $this->updateLimitedProductDefinitionForm->validate($input);
+
+        extract($input);
+
+        $input['form-type'] === 'full'
+        ? $product = $this->execute(new UpdateProductDefinitionCommand(
+            $id, $code, $name, $user_id, $company_id, $category, $uom, $price, $currency, $description, $short_description,
+            $attributes, $remarks, $supplier_id, $assigned_user_id, $status, $images, $attachments, 'full'
+        ))
+        : $product = $this->execute(new UpdateLimitedProductDefinitionCommand(
+            $id, $user_id, $description, $short_description, $attributes, $remarks,
+            $assigned_user_id, $status, $images, $attachments, 'limited'
+        ));
+
+        Flash::success("Product {$product->name} was successfully updated.");
+
+        return Redirect::route('catalogue.product-definitions.index');
 	}
 
 
@@ -144,10 +200,28 @@ class ProductDefinitionsController extends \BaseController {
 		//
 	}
 
-    public function getAssignableUsers($supplier_id)
+    private function isInternal($user)
     {
+        return $user->hasAccess('cataloguing.products.edit.limited') ? true : false;
+    }
+    public function getSuppliers($customer_id)
+    {
+        $customer = $this->companyRepository->findById($customer_id);
+        $suppliers = $this->companyRepository->getAssociatedSuppliersList($customer);
+        return Response::json($suppliers);
+    }
+    public function getAssignableSupplierUsers($customer_id, $supplier_id = null)
+    {
+        $customer = $this->companyRepository->findById($customer_id);
         $supplier = $this->companyRepository->findById($supplier_id);
-        $usersList = $this->productDefinitionRepository->getAssignableUsersList($this->user->company, $supplier);
+        $usersList = $this->productDefinitionRepository->getAssignableUsersList($customer, $supplier ? $supplier : null);
+
+        return Response::json($usersList);
+    }
+    public function getAssignableCustomerUsers($customer_id)
+    {
+        $customer = $this->companyRepository->findById($customer_id);
+        $usersList = $this->productDefinitionRepository->getAssignableUsersList($customer);
 
         return Response::json($usersList);
     }

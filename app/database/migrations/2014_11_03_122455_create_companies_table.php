@@ -17,9 +17,17 @@ class CreateCompaniesTable extends Migration {
 			$table->increments('id');
 			$table->string('name');
 			$table->string('type');
-			$table->text('notes');
-			$table->timestamps();
-		});
+			$table->text('notes')->nullable();
+            $table->string('address1_description')->nullable();
+            $table->text('address1_body')->nullable();
+            $table->string('address2_description')->nullable();
+            $table->text('address2_body')->nullable();
+            $table->string('address3_description')->nullable();
+            $table->text('address3_body')->nullable();
+            $table->string('address4_description')->nullable();
+            $table->text('address4_body')->nullable();
+            $table->timestamps();
+        });
 	}
 
 

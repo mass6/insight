@@ -23,6 +23,14 @@ class UpdateCompanyCommandHandler extends CompanyCommandHandlerAbstract
         $company->name = $command->name;
         $company->type = $command->type;
         $company->notes = $command->notes;
+        $company->address1_description = $command->address1_description;
+        $company->address1_body = $command->address1_body;
+        $company->address2_description = $command->address2_description;
+        $company->address2_body = $command->address2_body;
+        $company->address3_description = $command->address3_description;
+        $company->address3_body = $command->address3_body;
+        $company->address4_description = $command->address4_description;
+        $company->address4_body = $command->address4_body;
 
         $company->save();
 

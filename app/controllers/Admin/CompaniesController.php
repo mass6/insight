@@ -58,11 +58,18 @@ class CompaniesController extends AdminBaseController {
 	 */
 	public function store()
 	{
-        extract(Input::only('name', 'type', 'notes'));
+        $input = Input::all();
+        $this->companyForm->validate($input);
 
-        $this->companyForm->validate(compact('name', 'type', 'notes'));
+        extract(Input::only('name', 'type', 'notes',
+            'address1_description', 'address1_body','address2_description', 'address2_body',
+            'address3_description', 'address3_body','address4_description', 'address4_body'
+        ));
 
-        $this->execute(new AddNewCompanyCommand($name, $type, $notes));
+
+        $this->execute(new AddNewCompanyCommand($name, $type, $notes,
+            $address1_description, $address1_body, $address2_description, $address2_body,
+            $address3_description, $address3_body, $address4_description, $address4_body));
 
         Flash::message('Company was successfully created.');
         return Redirect::route('admin.companies.index');
@@ -106,9 +113,17 @@ class CompaniesController extends AdminBaseController {
 	 */
 	public function update($id)
 	{
-        extract(Input::only('name', 'type', 'notes'));
-        $this->companyForm->validate(compact('id', 'name', 'type', 'notes'));
-        $this->execute(new UpdateCompanyCommand($id, $name, $type, $notes));
+        $input = Input::all();
+        $input['id'] = $id;
+        $this->companyForm->validate($input);
+
+        extract(Input::only('name', 'type', 'notes',
+            'address1_description', 'address1_body','address2_description', 'address2_body',
+            'address3_description', 'address3_body','address4_description', 'address4_body'
+        ));
+        $this->execute(new UpdateCompanyCommand($id, $name, $type, $notes,
+            $address1_description, $address1_body, $address2_description, $address2_body,
+            $address3_description, $address3_body, $address4_description, $address4_body));
 
         Flash::message('Company was successfully updated.');
         return Redirect::route('admin.companies.index');

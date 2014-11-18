@@ -1,4 +1,4 @@
-<?php namespace Insight\ProductDefinitions;
+<?php namespace Insight\ProductDefinitions; 
 /**
  * Insight Client Management Portal:
  * Date: 11/7/14
@@ -9,8 +9,16 @@
  * Class AddNewProductDefinitionCommand
  * @package Insight\ProductDefinitions
  */
-class AddNewProductDefinitionCommand
+/**
+ * Class UpdateProductDefinitionCommand
+ * @package Insight\ProductDefinitions
+ */
+class UpdateProductDefinitionCommand
 {
+    /**
+     * @var
+     */
+    public $id;
     /**
      * @var
      */
@@ -50,7 +58,7 @@ class AddNewProductDefinitionCommand
     /**
      * @var
      */
-    private $short_description;
+    public $short_description;
     /**
      * @var
      */
@@ -75,12 +83,18 @@ class AddNewProductDefinitionCommand
      * @var
      */
     public  $images;
+
     /**
      * @var
      */
     public  $attachments;
+    /**
+     * @var
+     */
+    public $formType;
 
     /**
+     * @param $id
      * @param $code
      * @param $name
      * @param $user_id
@@ -98,10 +112,12 @@ class AddNewProductDefinitionCommand
      * @param $status
      * @param $images
      * @param $attachments
+     * @param $formType
      */
-    public function __construct($code, $name, $user_id, $company_id, $category, $uom, $price, $currency, $description, $short_description,
-                                $attributes, $remarks, $supplier_id, $assigned_user_id, $status, $images, $attachments)
+    public function __construct($id, $code, $name, $user_id, $company_id, $category, $uom, $price, $currency, $description, $short_description,
+                                $attributes, $remarks, $supplier_id, $assigned_user_id, $status, $images, $attachments, $formType)
     {
+        $this->id = $id;
         $this->code = $code;
         $this->name = $name;
         $this->user_id = $user_id;
@@ -111,7 +127,6 @@ class AddNewProductDefinitionCommand
         $this->price = $price;
         $this->currency = $currency;
         $this->description = $description;
-        $this->short_description = $short_description;
         $this->attributes = $attributes;
         $this->remarks = $remarks;
         $this->supplier_id = $supplier_id;
@@ -119,5 +134,7 @@ class AddNewProductDefinitionCommand
         $this->status = $status;
         $this->images = $images;
         $this->attachments = $attachments;
+        $this->formType = $formType;
+        $this->short_description = $short_description;
     }
-}
+} 

@@ -40,6 +40,8 @@ class ProductDefinition extends \Eloquent {
     protected $table = 'product_definitions';
 
     /**
+     * Company entity that this product is owned by
+     *
      * @return mixed
      */
     public function customer()
@@ -48,6 +50,8 @@ class ProductDefinition extends \Eloquent {
     }
 
     /**
+     * Supplier who is associated with this product
+     *
      * @return mixed
      */
     public function supplier()
@@ -56,6 +60,8 @@ class ProductDefinition extends \Eloquent {
     }
 
     /**
+     * User whom product is currently assigned to
+     *
      * @return mixed
      */
     public function assignedTo()
@@ -64,6 +70,18 @@ class ProductDefinition extends \Eloquent {
     }
 
     /**
+     * User whom originally created the product
+     *
+     * @return mixed
+     */
+    public function createdBy()
+    {
+        return $this->belongsTo('Insight\Users\User', 'user_id');
+    }
+
+    /**
+     * Associated images for this product
+     *
      * @return mixed
      */
     public function images()
@@ -72,6 +90,8 @@ class ProductDefinition extends \Eloquent {
     }
 
     /**
+     * Associated file attachments for this product
+     *
      * @return mixed
      */
     public function attachments()
@@ -79,16 +99,31 @@ class ProductDefinition extends \Eloquent {
         return $this->morphMany('Insight\ProductDefinitions\ProductAttachment', 'attachable');
     }
 
+    /**
+     * Returns the status name associated with the given status ID
+     *
+     * @return mixed
+     */
     public function statusName()
     {
         return $this->belongsTo('Insight\ProductDefinitions\ProductDefinitionStatuses', 'status');
     }
 
+    /**
+     * Mutates the database price to standard decimal format when retrieved from DB
+     *
+     * @return float|string
+     */
     public function displayPrice()
     {
         return $this->attributes['price'] ? $this->attributes['price'] / 100 : '';
     }
 
+    /**
+     * Mutates the price from web form into integer for persisting to DB
+     *
+     * @param $price
+     */
     public function setPriceAttribute($price)
     {
         if(! empty($price))

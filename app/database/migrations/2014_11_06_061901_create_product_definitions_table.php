@@ -24,6 +24,7 @@ class CreateProductDefinitionsTable extends Migration {
             $table->integer('price')->nullable();
             $table->string('currency')->nullable();
             $table->text('description')->nullable();
+            $table->text('short_description')->nullable();
             $table->text('attributes')->nullable();
             $table->text('remarks')->nullable();
             $table->integer('supplier_id')->unsigned()->nullable();

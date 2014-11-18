@@ -13,10 +13,10 @@
     <div class="row">
             @include('layouts.partials.errors')
 
-            {{ Form::model($product, ['route' => ['catalogue.product-definitions.update', $product->id], 'method' => 'PATCH', 'class' => 'form-horizontal form-groups-bordered']) }}
+            {{ Form::model($product, ['route' => ['catalogue.product-definitions.update', $product->id], 'method' => 'PATCH', 'class' => 'form-horizontal form-groups-bordered', 'files' => true]) }}
 
                 <?php $submit = 'Update'; ?>
-                @include('product-definitions._form')
+                @include('product-definitions.' . $form)
 
             {{ Form::close() }}
     </div>

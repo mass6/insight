@@ -170,13 +170,13 @@
             <li class="auto-inherit-active-class {{ isActive('catalogue', 1, true) }}">
                 <a href="#">
                     <i class="entypo-ticket"></i>
-                    <span>Cataloguing</span>
+                    <span>Product Cataloguing</span>
                 </a>
                 <ul>
                     <li class="auto-inherit-active-class">
                         <a href="{{ route('catalogue.product-definitions.index') }}">
                             <i class="entypo-ticket"></i>
-                            <span>Products</span>
+                            <span>Products Cataloguing Requests</span>
                         </a>
                     </li>
                 </ul>
