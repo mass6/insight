@@ -12,8 +12,8 @@
 {{Form::hidden('current_user_id', $user->id)}}
 <!-- Currency hard-coded to AED -->
 {{Form::hidden('currency', 'AED')}}
-<!-- Remarks -->
-{{--{{Form::hidden('remarks', '', ['id'=>'remarks'])}}--}}
+<!-- Supplier_ID -->
+{{Form::hidden('supplier_id', $product->supplier_id )}}
 
 
 
@@ -102,12 +102,12 @@
             </div>
             <div class="row">
 
-                <div class="col-md-4">
-                    <div class="form-group">
-                        <label class="control-label" for="supplier_id">Supplier</label>
-                        {{ Form::select('supplier_id', $suppliers, null, ['class'=>'form-control', 'id'=>'supplier_id']) }}
-                    </div>
-                </div>
+                {{--<div class="col-md-4">--}}
+                    {{--<div class="form-group">--}}
+                        {{--<label class="control-label" for="supplier_id">Supplier</label>--}}
+                        {{--{{ Form::select('supplier_id', $suppliers, null, ['class'=>'form-control', 'id'=>'supplier_id']) }}--}}
+                    {{--</div>--}}
+                {{--</div>--}}
 
             </div>
 
