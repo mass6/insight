@@ -60,6 +60,11 @@ class Company extends \Eloquent {
         return $this->belongsToMany('Insight\Companies\Company', 'customer_supplier', 'supplier_id', 'customer_id');
     }
 
+    public function primaryContact()
+    {
+        return $this->hasOne('Insight\Users\User', 'id', 'primary_contact_user_id');
+    }
+
     /**
      * @return mixed
      */

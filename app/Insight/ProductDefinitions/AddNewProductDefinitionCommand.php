@@ -14,6 +14,10 @@ class AddNewProductDefinitionCommand
     /**
      * @var
      */
+    public $user;
+    /**
+     * @var
+     */
     public $code;
     /**
      * @var
@@ -50,7 +54,7 @@ class AddNewProductDefinitionCommand
     /**
      * @var
      */
-    private $short_description;
+    public $short_description;
     /**
      * @var
      */
@@ -74,13 +78,31 @@ class AddNewProductDefinitionCommand
     /**
      * @var
      */
-    public  $images;
+    public $action;
+    /**
+     * @var
+     */
+    public  $image1;
+    /**
+     * @var
+     */
+    public  $image2;
+    /**
+     * @var
+     */
+    public  $image3;
+    /**
+     * @var
+     */
+    public  $image4;
     /**
      * @var
      */
     public  $attachments;
 
+
     /**
+     * @param $user
      * @param $code
      * @param $name
      * @param $user_id
@@ -94,13 +116,16 @@ class AddNewProductDefinitionCommand
      * @param $attributes
      * @param $remarks
      * @param $supplier_id
-     * @param $assigned_user_id
      * @param $status
-     * @param $images
+     * @param $action
+     * @param $image1
+     * @param $image2
+     * @param $image3
+     * @param $image4
      * @param $attachments
      */
-    public function __construct($code, $name, $user_id, $company_id, $category, $uom, $price, $currency, $description, $short_description,
-                                $attributes, $remarks, $supplier_id, $assigned_user_id, $status, $images, $attachments)
+    public function __construct($user, $code, $name, $user_id, $company_id, $category, $uom, $price, $currency, $description, $short_description,
+                                $attributes, $remarks, $supplier_id, $status, $action, $image1, $image2, $image3, $image4, $attachments)
     {
         $this->code = $code;
         $this->name = $name;
@@ -115,9 +140,13 @@ class AddNewProductDefinitionCommand
         $this->attributes = $attributes;
         $this->remarks = $remarks;
         $this->supplier_id = $supplier_id;
-        $this->assigned_user_id = $assigned_user_id;
         $this->status = $status;
-        $this->images = $images;
+        $this->image1 = $image1;
+        $this->image2 = $image2;
+        $this->image3 = $image3;
+        $this->image4 = $image4;
         $this->attachments = $attachments;
+        $this->user = $user;
+        $this->action = $action;
     }
 }

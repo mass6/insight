@@ -2,8 +2,9 @@
 
 @section('content')
 
-<h1>Product Cataloguing Requests</h1>
-    <p>{{ link_to_route('catalogue.product-definitions.create', 'New Request', null, ['class' => 'btn btn-primary']) }}</p>
+<h1>My Requests Queue</h1>
+<p>Below are all cataloguing request pending your action.</p>
+<br/>
     @if ($products->count())
     <table  id="sample" class="display table table-striped table-bordered">
         <thead>

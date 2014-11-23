@@ -61,3 +61,13 @@ body .navbar-inverse {
     width: 250px;
     height: 250px;
 }
+
+.is-required .form-control {
+    border-color: #1672FC;
+}
+.is-required .help-block, .is-required .control-label, .is-required .radio, .is-required .checkbox, .is-required .radio-inline, .is-required .checkbox-inline {
+    color: #0054FF;
+}
+p.error-label {margin-top:5px;}
+
+/*.form-group.attribute-group {margin-bottom: 20px;}*/

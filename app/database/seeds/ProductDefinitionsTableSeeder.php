@@ -20,6 +20,9 @@ class ProductDefinitionsTableSeeder extends Seeder {
     {
         if (App::environment('local'))
         {
+            Eloquent::unguard();
+            ProductDefinition::truncate();
+
             $faker = Faker::create();
 
             foreach(range(1, 10) as $index)
@@ -37,9 +40,12 @@ class ProductDefinitionsTableSeeder extends Seeder {
                     'price' => $faker->numberBetween(1, 999) * 100,
                     'currency' => 'AED',
                     'description' => $faker->sentence($faker->numberBetween(5,80)),
+                    'short_description' => $faker->sentence($faker->numberBetween(5,20)),
                     'supplier_id' => $faker->numberBetween(1,11),
                     'assigned_user_id' => $creator,
+                    'assigned_by_id' => $creator,
                     'status' => 1,
+                    'remarks' => $faker->sentence($faker->numberBetween(5,20)),
                     'created_at' => $faker->dateTime('now'),
                     'updated_at' => $faker->dateTime('now')
 

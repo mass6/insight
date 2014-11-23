@@ -44,7 +44,7 @@ class User extends Sentry implements UserInterface, RemindableInterface {
      */
     public function name()
     {
-        return $this->first_name . ' ' . $this->last_name;
+        return trim($this->first_name . ' ' . $this->last_name);
     }
 
     /**
@@ -124,6 +124,11 @@ class User extends Sentry implements UserInterface, RemindableInterface {
     public function productDefinitionsAssigned()
     {
         return $this->hasMany('Insight\ProductDefinitions\ProductDefinition', 'assigned_user_id');
+    }
+
+    public function comments()
+    {
+        return $this->hasMany('Insight\Comments\Comment');
     }
 
 

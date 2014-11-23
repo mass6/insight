@@ -1,7 +1,7 @@
 <?php $__env->startSection('content'); ?>
 
 <h1>Product Cataloguing Requests</h1>
-    <p><?php echo link_to_route('catalogue.product-definitions.create', 'Add new product', null, ['class' => 'btn btn-primary']); ?></p>
+    <p><?php echo link_to_route('catalogue.product-definitions.create', 'New Request', null, ['class' => 'btn btn-primary']); ?></p>
     <?php if($products->count()): ?>
     <table  id="sample" class="display table table-striped table-bordered">
         <thead>

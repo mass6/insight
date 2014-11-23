@@ -5,6 +5,19 @@
 <!-- Attributes: //Todo: add to form as input -->
 {{Form::hidden('attributes', '') }}
 
+{{ var_dump($errors) }}
+<!-- Buttons -->
+<div class="form-group">
+    {{ Form::label('', '', ['class' => 'col-sm-3 control-label']) }}
+    <div class="col-sm-5">
+        <!-- Submit button -->
+        {{ Form::submit(isset($submit)?$submit:'Submit', ['class' => 'form-control btn btn-primary']) }}
+        <!-- Cancel button -->
+        {{ link_to_route('catalogue.product-definitions.index', 'Cancel', null, array('class'=>'form-control btn btn-warning')) }}
+    </div>
+</div>
+
+
 {{-- Show company select box if usertype is internal --}}
 @if($internalUser)
     <!-- Customer -->
@@ -24,6 +37,7 @@
     {{ Form::label('code', 'Product Code:', ['class' => 'col-sm-3 control-label']) }}
     <div class="col-sm-5">
         {{ Form::text('code', '555', ['class' => 'form-control step1', 'id' => 'code', 'required', 'placeholder' => 'Item Code, Product Code, or SKU']) }}
+        {{ $errors->first('code', '<span class="label label-warning">:message</span>') }}
     </div>
 </div>
 
@@ -63,11 +77,58 @@
     </div>
 </div>
 
+
+
+{{-- Attributes --}}
+
+<input id="add-attribute" type="button" class="btn btn-success" value="+ add attribute" onClick="addNewAttributeInputs('new-attributes');">
+<div id="new-attributes">
+
+</div>
+
+
+<script type="text/javascript">
+    var attributeSerial = 1; // serial to append to new element id
+    var attributeCounter = 0; // current count/index of image
+    var attributeLimit = 5; // max amount of images allowed
+
+    function addNewAttributeInputs(divName){
+        if ((attributeCounter) == attributeLimit)  {
+            alert("You have reached the limit of adding " + attachmentLimit + " attributes");
+        }
+        else {
+            // add attribute name input
+            var newdiv = document.createElement('div');
+            var attnameid = 'attribute-name' + attributeSerial;
+            var attvalueid = 'attribute-value' + attributeSerial;
+            var inner = "<div class='form-group'>"
+                + "<label class='col-sm-3 control-label' for='" + attnameid + "'>Attribute " + attributeSerial + ": Name </label>"
+                + "<div class='col-sm-5'>"
+                + "<input id='" + attnameid + "' name='" + attnameid + "' class='form-control' placeholder='e.g. Color, Size, Material' />"
+                + "</div></div>"
+                + "<div class='form-group'>"
+                + "<label class='col-sm-3 control-label' for='" + attvalueid + "'>Attribute " + attributeSerial + ": Value </label>"
+                + "<div class='col-sm-5'>"
+                + "<input id='" + attvalueid + "' name='" + attvalueid + "' class='form-control' placeholder='e.g. White, Large, Steel' />"
+                + "</div></div><br/><hr/>";
+            newdiv.innerHTML = inner;
+            document.getElementById(divName).appendChild(newdiv);
+            newdiv.className = 'form-group attribute-group';
+
+            // increment counters
+            attributeSerial++;
+            attributeCounter++;
+        }
+    }
+</script>
+
+
+
 <!-- Description -->
 <div class="form-group">
     <label for="description" class="col-sm-3 control-label">Description</label>
     <div class="col-sm-8">
-        <textarea id="description" class="form-control wysihtml5" data-stylesheet-url="{{ URL::asset('css/wysihtml5-color.css') }} " name="description" id="sample_wysiwyg">{{{ Input::old('description') ? Input::old('description') : '' }}} </textarea>
+        <textarea id="description" class="form-control" data-stylesheet-url="{{ URL::asset('css/wysihtml5-color.css') }} " name="description" id="description">{{{ Input::old('description') ? Input::old('description') : '' }}}</textarea>
     </div>
 </div>
 
@@ -75,7 +136,7 @@
 <div class="form-group">
     <label for="short_description" class="col-sm-3 control-label">Short Description</label>
     <div class="col-sm-8">
-        <textarea id="short_description" class="form-control wysihtml5" data-stylesheet-url="{{ URL::asset('css/wysihtml5-color.css') }} " name="short_description" id="sample_wysiwyg">{{{ Input::old('short_description') ? Input::old('short_description') : '' }}} </textarea>
+        <textarea id="short_description" class="form-control" data-stylesheet-url="{{ URL::asset('css/wysihtml5-color.css') }} " name="short_description" id="short_description">{{{ Input::old('short_description') ? Input::old('short_description') : '' }}}</textarea>
     </div>
 </div>
 

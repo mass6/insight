@@ -1,4 +1,5 @@
 <?php namespace Insight\Listeners;
+use Insight\ProductDefinitions\Events\ProductDefinitionWasAssigned;
 use Insight\Users\Events\UserWasCreated;
 use Insight\Users\Events\UserWasUpdated;
 use Log, Mail;

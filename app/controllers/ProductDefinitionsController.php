@@ -4,7 +4,9 @@ use Cartalyst\Sentry\Users\Eloquent\User;
 use Insight\Companies\CompanyRepository;
 use Insight\Core\CommandBus;
 use Insight\ProductDefinitions\AddNewProductDefinitionCommand;
+use Insight\ProductDefinitions\Forms\DraftProductDefinitionForm;
 use Insight\ProductDefinitions\Forms\NewProductDefinitionForm;
+use Insight\ProductDefinitions\Forms\SupplierDraftProductDefinitionForm;
 use Insight\ProductDefinitions\Forms\UpdateLimitedProductDefinitionForm;
 use Insight\ProductDefinitions\Forms\UpdateProductDefinitionForm;
 use Insight\ProductDefinitions\ProductDefinitionRepository;
@@ -14,7 +16,11 @@ use Insight\ProductDefinitions\AttributeSet;
 use Insight\ProductDefinitions\ProductImage;
 use Insight\ProductDefinitions\UpdateLimitedProductDefinitionCommand;
 use Insight\ProductDefinitions\UpdateProductDefinitionCommand;
+use Laracasts\Utilities\JavaScript\Facades\JavaScript;
 
+/**
+ * Class ProductDefinitionsController
+ */
 class ProductDefinitionsController extends \BaseController {
 
     use CommandBus;
@@ -35,8 +41,6 @@ class ProductDefinitionsController extends \BaseController {
      * @var User
      */
     private $user;
-
-    private $isInternalUser;
     /**
      * @var UpdateProductDefinitionForm
      */
@@ -45,171 +49,266 @@ class ProductDefinitionsController extends \BaseController {
      * @var UpdateLimitedProductDefinitionForm
      */
     private $updateLimitedProductDefinitionForm;
+    /**
+     * @var DraftProductDefinitionForm
+     */
+    private $draftProductDefinitionForm;
+    /**
+     * @var SupplierDraftProductDefinitionForm
+     */
+    private $supplierDraftProductDefinitionForm;
 
-    public function __construct(ProductDefinitionRepository $productDefinitionRepository, CompanyRepository $companyRepository,
-                                NewProductDefinitionForm $newProductDefinitionForm, UpdateProductDefinitionForm $updateProductDefinitionForm,
-                                UpdateLimitedProductDefinitionForm $updateLimitedProductDefinitionForm)
+    /**
+     * @param ProductDefinitionRepository $productDefinitionRepository
+     * @param CompanyRepository $companyRepository
+     * @param DraftProductDefinitionForm $draftProductDefinitionForm
+     * @param SupplierDraftProductDefinitionForm $supplierDraftProductDefinitionForm
+     * @param NewProductDefinitionForm $newProductDefinitionForm
+     * @param UpdateProductDefinitionForm $updateProductDefinitionForm
+     * @param UpdateLimitedProductDefinitionForm $updateLimitedProductDefinitionForm
+     */
+    public function __construct(
+        ProductDefinitionRepository $productDefinitionRepository,
+        CompanyRepository $companyRepository,
+        NewProductDefinitionForm $newProductDefinitionForm,
+        UpdateProductDefinitionForm $updateProductDefinitionForm,
+        DraftProductDefinitionForm $draftProductDefinitionForm,
+        SupplierDraftProductDefinitionForm $supplierDraftProductDefinitionForm,
+        UpdateLimitedProductDefinitionForm $updateLimitedProductDefinitionForm
+    )
     {
         $this->beforeFilter(function()
         {
             if(! Sentry::getUser()->hasAccess('cataloguing.products.edit'))
                 return Redirect::home();
         });
+
         $this->user = Sentry::getUser();
         $this->productDefinitionRepository = $productDefinitionRepository;
         $this->companyRepository = $companyRepository;
         $this->newProductDefinitionForm = $newProductDefinitionForm;
-        $this->isInternalUser = $this->isInternal($this->user);
         $this->updateProductDefinitionForm = $updateProductDefinitionForm;
         $this->updateLimitedProductDefinitionForm = $updateLimitedProductDefinitionForm;
+        $this->draftProductDefinitionForm = $draftProductDefinitionForm;
+        $this->supplierDraftProductDefinitionForm = $supplierDraftProductDefinitionForm;
     }
 
-	/**
-	 * Display a listing of the resource.
-	 *
-	 * @return Response
-	 */
-	public function index()
-	{
-		$products = $this->isInternalUser
-            ? $this->productDefinitionRepository->getPaginated(5)
-            : $this->productDefinitionRepository->getFilteredAndPaginated($this->user, 5);
+    /**
+     * Display a listing of the resource.
+     *
+     * @return Response
+     */
+    public function index()
+    {
+        $products = $this->user->hasAccess('cataloguing.products.admin')
+            ? $this->productDefinitionRepository->getPaginated(10)
+            : $this->productDefinitionRepository->getFilteredAndPaginated($this->user, 10);
         return View::make('product-definitions.index', compact('products'));
     }
 
+    public function getQueue()
+    {
+        $products = $this->productDefinitionRepository->getUserQueue($this->user->id);
 
-	/**
-	 * Show the form for creating a new resource.
-	 *
-	 * @return Response
-	 */
-	public function create()
-	{
-        $user = $this->user;
-        $internalUser = $this->isInternalUser;
-        $companies = $this->companyRepository->getCustomersList();
-        $suppliers = $this->companyRepository->getAssociatedSuppliersList($user->company);
-        $attributeSets = AttributeSet::with('attributes')->where('company_id', $user->company->id)->get();
-        $statuses =  ProductDefinitionStatuses::lists('name', 'id');
-        $assignableUsersList = $this->productDefinitionRepository->getAssignableUsersList($user->company);
-        return View::make('product-definitions.create', compact('user','companies','suppliers', 'statuses', 'assignableUsersList', 'internalUser'));
+        return View::make('product-definitions.userqueue', compact('products'));
     }
 
 
-	/**
-	 * Store a newly created resource in storage.
-	 *
-	 * @return Response
-	 */
-	public function store()
-	{
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return Response
+     */
+    public function create()
+    {
+        $user = $this->user;
+        $companies = $this->companyRepository->getCustomersList();
+        $suppliers = $this->companyRepository->getAssociatedSuppliersList($user->company);
+        //$attributeSets = AttributeSet::with('attributes')->where('company_id', $user->company->id)->get();
+        //$statuses =  ProductDefinitionStatuses::lists('name', 'id');
+        //$assignableUsersList = $this->productDefinitionRepository->getAssignableUsersList($user->company);
+        return View::make('product-definitions.create', compact('user','companies','suppliers'));
+    }
+
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @return Response
+     */
+    public function store()
+    {
         $input = Input::all();
-        $input['images'] = Input::file('images');
+        $input['attributes'] = $this->parseAttributes($input);
+        //$input['images'] = Input::file('images');
         $input['attachments'] = Input::file('attachments');
 
-        $this->newProductDefinitionForm->validate($input);
+        if($input['action'] === 'save')
+            $this->draftProductDefinitionForm->validate($input);
+        elseif($input['action'] === 'assign-to-supplier')
+            $this->supplierDraftProductDefinitionForm->validate($input);
+        else
+            $this->newProductDefinitionForm->validate($input);
 
         extract($input);
         $product = $this->execute(new AddNewProductDefinitionCommand(
-            $code, $name, $user_id, $company_id, $category, $uom, $price, $currency, $description, $short_description,
-            $attributes, $remarks, $supplier_id, $assigned_user_id, $status, $images, $attachments
+            $this->user, $code, $name, $user_id, $company_id, $category, $uom, $price, $currency, $description, $short_description,
+            $attributes, $remarks, $supplier_id, $status, $action, $image1, $image2, $image3, $image4, $attachments
         ));
 
         Flash::success("Product {$product} was successfully created.");
 
         return Redirect::route('catalogue.product-definitions.index');
-	}
+    }
 
+    /**
+     * Iterates through the Input array and parses out the dynamic attributes, adding them to new array.
+     * Then, returns a new array with sub-arrays for each attribute name / value pair.
+     * @param $input
+     * @return array
+     */
+    private function parseAttributes($input)
+    {
+        $attributes = [];
+        if(isset($attributes)){
+            $attributeName = '';
+            foreach($input as $field => $value)
+            {
+                if(substr($field,0,14) === 'attribute-name'){
+                    $attributeName = $value; //substr($field,14,strlen($field)-14);
+                    continue;
+                }
+                if(substr($field,0,15) === 'attribute-value'){
+                    if($attributeName)
+                        $attributes[$attributeName] = $value;
+                }
 
-	/**
-	 * Display the specified resource.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
-	public function show($id)
-	{
-		$product = $this->productDefinitionRepository->find($id);
+            }
+            return count($attributes) ? $attributes : null;
+        }
+    }
 
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return Response
+     */
+    public function show($id)
+    {
+        $product = $this->productDefinitionRepository->findWithComments($id);
         return View::make('product-definitions.show', compact('product'));
     }
 
 
-	/**
-	 * Show the form for editing the specified resource.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
-	public function edit($id)
-	{
-		$product = $this->productDefinitionRepository->find($id);
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  int  $id
+     * @return Response
+     */
+    public function edit($id)
+    {
+        $product = $this->productDefinitionRepository->find($id);
         $user = $this->user;
-        $supplier = $product->supplier;
         $suppliers = $this->companyRepository->getAssociatedSuppliersList($product->customer);
-        $statuses =  ProductDefinitionStatuses::lists('name', 'id');
-        $assignableUsersList = $this->productDefinitionRepository->getAssignableUsersList($product->customer, $supplier);
-        $form = $this->user->hasAccess('cataloguing.products.edit.full') ? '_form-edit' : '_form-edit-limited';
-        return View::make('product-definitions.edit', compact('product','user','supplier','suppliers','statuses', 'assignableUsersList', 'form'));
-	}
+        // should be able to delete statuses variable below
+        //$statuses =  ProductDefinitionStatuses::lists('name', 'id');
+
+        //should be able to delete below variable
+        //$assignableUsersList = $this->productDefinitionRepository->getAssignableUsersList($product->customer, $product->supplier);
+
+        // pass attributes object to view as JS object
+        if(! empty($product->attributes)){
+            //return $product->attributes;
+            //JavaScript::put(['attributes' => true]);
+            JavaScript::put(['attributes' => object_to_array(json_decode($product->attributes))]);
+        }
+        else
+            JavaScript::put(['attributes' => false]);
+
+        $form = $this->user->hasAccess('cataloguing.products.edit.full') ? '_form-wizard-edit' : '_form-wizard-edit-limited';
+        return View::make('product-definitions.edit', compact('product','user','suppliers', 'form'));
+    }
 
 
-	/**
-	 * Update the specified resource in storage.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
-	public function update($id)
-	{
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  int  $id
+     * @return Response
+     */
+    public function update($id)
+    {
 
         $input = Input::all();
-        $input['images'] = Input::file('images');
+        $product = $this->productDefinitionRepository->find($id);
+        $input['existing_images'] = count($product->images) ? true : false;
+        $input['attributes'] = $this->parseAttributes($input);
+        //$input['images'] = Input::file('images');
         $input['attachments'] = Input::file('attachments');
+        $input['remarks'] = $input['remarks'] . $input['message'];
 
-        $input['form-type'] === 'full'
-        ? $this->updateProductDefinitionForm->validate($input)
-        : $this->updateLimitedProductDefinitionForm->validate($input);
+        if($input['action'] === 'save' && $input['status'] === '1')
+            $this->draftProductDefinitionForm->validate($input);
+        else
+            $this->updateProductDefinitionForm->validate($input);
+//        $input['form-type'] === 'full'
+//            ? $this->updateProductDefinitionForm->validate($input)
+//            : $this->updateLimitedProductDefinitionForm->validate($input);
 
         extract($input);
-
         $input['form-type'] === 'full'
-        ? $product = $this->execute(new UpdateProductDefinitionCommand(
-            $id, $code, $name, $user_id, $company_id, $category, $uom, $price, $currency, $description, $short_description,
-            $attributes, $remarks, $supplier_id, $assigned_user_id, $status, $images, $attachments, 'full'
+            ? $product = $this->execute(new UpdateProductDefinitionCommand(
+            $this->user, $id, $code, $name, $user_id, $current_user_id, $company_id, $category, $uom, $price, $currency, $description, $short_description,
+            $attributes, $remarks, $supplier_id, $status, $action, $assigned_by_id, $image1, $image2, $image3, $image4, $attachments, 'full'
         ))
-        : $product = $this->execute(new UpdateLimitedProductDefinitionCommand(
+            : $product = $this->execute(new UpdateLimitedProductDefinitionCommand(
             $id, $user_id, $description, $short_description, $attributes, $remarks,
-            $assigned_user_id, $status, $images, $attachments, 'limited'
+            $status, $image1, $image2, $image3, $image4, $attachments, 'limited'
         ));
 
         Flash::success("Product {$product->name} was successfully updated.");
 
         return Redirect::route('catalogue.product-definitions.index');
-	}
-
-
-	/**
-	 * Remove the specified resource from storage.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
-	public function destroy($id)
-	{
-		//
-	}
-
-    private function isInternal($user)
-    {
-        return $user->hasAccess('cataloguing.products.edit.limited') ? true : false;
     }
+
+    public function getCompleted()
+    {
+        $products = $this->user->hasAccess('cataloguing.products.admin')
+            ? $this->productDefinitionRepository->findCompleted(10)
+            : $this->productDefinitionRepository->findCompletedAndFiltered($this->user, 10);
+        return View::make('product-definitions.completed', compact('products'));
+    }
+
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return Response
+     */
+    public function destroy($id)
+    {
+        //
+    }
+
+    /**
+     * @param $customer_id
+     * @return mixed
+     */
     public function getSuppliers($customer_id)
     {
         $customer = $this->companyRepository->findById($customer_id);
         $suppliers = $this->companyRepository->getAssociatedSuppliersList($customer);
         return Response::json($suppliers);
     }
+
+    /**
+     * @param $customer_id
+     * @param null $supplier_id
+     * @return mixed
+     */
     public function getAssignableSupplierUsers($customer_id, $supplier_id = null)
     {
         $customer = $this->companyRepository->findById($customer_id);
@@ -218,6 +317,11 @@ class ProductDefinitionsController extends \BaseController {
 
         return Response::json($usersList);
     }
+
+    /**
+     * @param $customer_id
+     * @return mixed
+     */
     public function getAssignableCustomerUsers($customer_id)
     {
         $customer = $this->companyRepository->findById($customer_id);

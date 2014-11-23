@@ -18,6 +18,10 @@ class UpdateProductDefinitionCommand
     /**
      * @var
      */
+    public $user;
+    /**
+     * @var
+     */
     public $id;
     /**
      * @var
@@ -31,6 +35,10 @@ class UpdateProductDefinitionCommand
      * @var
      */
     public $user_id;
+    /**
+     * @var
+     */
+    public $current_user_id;
     /**
      * @var
      */
@@ -67,6 +75,7 @@ class UpdateProductDefinitionCommand
      * @var
      */
     public $remarks;
+
     /**
      * @var
      */
@@ -74,16 +83,35 @@ class UpdateProductDefinitionCommand
     /**
      * @var
      */
-    public $assigned_user_id;
-    /**
-     * @var
-     */
     public $status;
     /**
      * @var
      */
+    public $action;
+    /**
+     * @var
+     */
     public  $images;
-
+    /**
+     * @var
+     */
+    public $formType;
+    /**
+     * @var
+     */
+    public $image1;
+    /**
+     * @var
+     */
+    public $image2;
+    /**
+     * @var
+     */
+    public $image3;
+    /**
+     * @var
+     */
+    public $image4;
     /**
      * @var
      */
@@ -91,13 +119,16 @@ class UpdateProductDefinitionCommand
     /**
      * @var
      */
-    public $formType;
+    public $assigned_by_id;
+
 
     /**
+     * @param $user
      * @param $id
      * @param $code
      * @param $name
      * @param $user_id
+     * @param $current_user_id
      * @param $company_id
      * @param $category
      * @param $uom
@@ -108,19 +139,23 @@ class UpdateProductDefinitionCommand
      * @param $attributes
      * @param $remarks
      * @param $supplier_id
-     * @param $assigned_user_id
      * @param $status
-     * @param $images
+     * @param $action
+     * @param $assigned_by_id
+     * @param $image1
+     * @param $image2
+     * @param $image3
+     * @param $image4
      * @param $attachments
      * @param $formType
      */
-    public function __construct($id, $code, $name, $user_id, $company_id, $category, $uom, $price, $currency, $description, $short_description,
-                                $attributes, $remarks, $supplier_id, $assigned_user_id, $status, $images, $attachments, $formType)
+    public function __construct($user, $id, $code, $name, $user_id, $current_user_id, $company_id, $category, $uom, $price, $currency, $description, $short_description,
+                                $attributes, $remarks, $supplier_id, $status, $action, $assigned_by_id, $image1, $image2, $image3, $image4, $attachments, $formType)
     {
         $this->id = $id;
         $this->code = $code;
         $this->name = $name;
-        $this->user_id = $user_id;
+        $this->current_user_id = $current_user_id;
         $this->company_id = $company_id;
         $this->category = $category;
         $this->uom = $uom;
@@ -130,11 +165,17 @@ class UpdateProductDefinitionCommand
         $this->attributes = $attributes;
         $this->remarks = $remarks;
         $this->supplier_id = $supplier_id;
-        $this->assigned_user_id = $assigned_user_id;
         $this->status = $status;
-        $this->images = $images;
-        $this->attachments = $attachments;
+        $this->action = $action;
         $this->formType = $formType;
         $this->short_description = $short_description;
+        $this->image1 = $image1;
+        $this->image2 = $image2;
+        $this->image3 = $image3;
+        $this->image4 = $image4;
+        $this->attachments = $attachments;
+        $this->assigned_by_id = $assigned_by_id;
+        $this->user_id = $user_id;
+        $this->user = $user;
     }
 } 

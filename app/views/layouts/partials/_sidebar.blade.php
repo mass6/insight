@@ -169,14 +169,32 @@
         @if ($currentUser->hasAccess('cataloguing.*'))
             <li class="auto-inherit-active-class {{ isActive('catalogue', 1, true) }}">
                 <a href="#">
-                    <i class="entypo-ticket"></i>
+                    <i class="entypo-archive"></i>
                     <span>Product Cataloguing</span>
                 </a>
                 <ul>
-                    <li class="auto-inherit-active-class">
+                    <li class="auto-inherit-active-class {{ isActive('create', 3) }}">
+                        <a href="{{ route('catalogue.product-definitions.create') }}">
+                            <i class="entypo-plus-squared"></i>
+                            <span>New Request</span>
+                        </a>
+                    </li>
+                    <li class="auto-inherit-active-class {{ isActive('myrequests', 3) }}">
+                        <a href="{{ route('catalogue.product-definitions.queue') }}">
+                            <i class="entypo-inbox"></i>
+                            <span>My Requests Queue</span>
+                        </a>
+                    </li>
+                    <li class="auto-inherit-active-class {{ isActive('', 3) }}">
                         <a href="{{ route('catalogue.product-definitions.index') }}">
-                            <i class="entypo-ticket"></i>
-                            <span>Products Cataloguing Requests</span>
+                            <i class="entypo-doc-text"></i>
+                            <span>All Cataloguing Requests</span>
+                        </a>
+                    </li>
+                    <li class="auto-inherit-active-class {{ isActive('completed', 3) }}">
+                        <a href="{{ route('catalogue.product-definitions.completed') }}">
+                            <i class="entypo-check"></i>
+                            <span>Completed Requests</span>
                         </a>
                     </li>
                 </ul>

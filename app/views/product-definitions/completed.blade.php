@@ -2,7 +2,7 @@
 
 @section('content')
 
-<h1>Product Cataloguing Requests</h1>
+<h1>Completed Product Cataloguing Requests</h1>
     <p>{{ link_to_route('catalogue.product-definitions.create', 'New Request', null, ['class' => 'btn btn-primary']) }}</p>
     @if ($products->count())
     <table  id="sample" class="display table table-striped table-bordered">

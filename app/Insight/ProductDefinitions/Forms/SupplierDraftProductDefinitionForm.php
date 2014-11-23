@@ -8,27 +8,27 @@ use Log;
  * Time: 1:00 PM
  */
 
-class UpdateProductDefinitionForm extends FormValidator
+class SupplierDraftProductDefinitionForm extends FormValidator
 {
     /**
      * @var array
      */
     protected $rules = [
+        'company_id' => 'required|integer|exists:companies,id',
         'name'  => 'required|max:120',
-        'category' => 'required|max:50',
-        'uom' => 'required|max:25',
-        'price' => 'required|numeric',
+        'category' => 'max:50',
+        'uom' => 'max:25',
+        'price' => 'numeric',
         'currency' => 'alpha|size:3',
-        'description' => 'required|max:2000',
-        'image1' => 'required|image|max:512|mimes:jpg,jpeg,png,gif,bmp',
+        'description' => 'max:2000',
+        'image1' => 'image|max:512|mimes:jpg,jpeg,png,gif,bmp',
         'image2' => 'image|max:512|mimes:jpg,jpeg,png,gif,bmp',
         'image3' => 'image|max:512|mimes:jpg,jpeg,png,gif,bmp',
         'image4' => 'image|max:512|mimes:jpg,jpeg,png,gif,bmp',
-        'short_description' => 'required|max:1000',
+        'short_description' => 'max:1000',
         'remarks' => 'max:1000',
         'supplier_id' => 'required|exists:companies,id',
-        'assigned_user_id' => 'exists:users,id',
-        'status' => 'required|integer|min:1|max:7'
+        'status' => 'required|integer|min:1|max:7',
     ];
 
 
@@ -43,7 +43,6 @@ class UpdateProductDefinitionForm extends FormValidator
     public function validate(array $formData)
     {
         $formData = $this->addAttributesToFormData($formData);
-
         $this->validation = $this->validator->make(
             //$this->addImagesToFormData($formData),
             $formData,
@@ -65,15 +64,16 @@ class UpdateProductDefinitionForm extends FormValidator
      */
     protected function compileRules(array $formData)
     {
+        if(isset($formData['attributes_required']))
+            $this->addAttributeRules($formData['attributes']);
 
-        if($formData['existing_images'])
-            $this->rules['image1'] = 'image|max:512|mimes:jpg,jpeg,png,gif,bmp';
+        // By default, add Code rule to ensure the code is unique per company
+        $this->rules['code'] = 'required|unique:product_definitions,code,null,company_id,company_id,' . $formData['company_id'];
 
-        // Ignore the unique code rule for request being updated
-        $rules = $this->ignoreCurrentId($formData['id'], $formData['company_id']);
-
-        // Add Code rule to ensure the code is unique per company
-        //$rules['code'] = 'required|unique:product_definitions,code,null,company_id,company_id,' . $formData['company_id'];
+        // If update to existing request, ignore the unique code rule
+        $rules = isset($formData['id']) && isset($formData['company_id']) ?
+            $this->ignoreCurrentId($formData['id'], $formData['company_id']) :
+            $this->getValidationRules();
 
         //return $this->addImagesToRules($formData, $rules);
         return $rules;
@@ -96,6 +96,22 @@ class UpdateProductDefinitionForm extends FormValidator
         return $formData;
 
     }
+    /**
+     * If attributes are present in the input array, adds them to the validation rules
+     *
+     * @param $attributes
+     */
+    private function addAttributeRules($attributes)
+    {
+        if (! empty($attributes)){
+            foreach ($attributes as $field => $value) {
+                $this->rules[$field] = 'required|max:200';
+            }
+//            Log::info('Rules : ');
+//            Log::info($this->rules);
+        }
+    }
+
 
     /**
      * @param $id
@@ -118,12 +134,14 @@ class UpdateProductDefinitionForm extends FormValidator
      */
     protected function addImagesToRules($formData, $rules)
     {
-        if (! is_null($formData['images'][0]))
+        if (! is_null($formData['images']))
         {
             foreach ($formData['images'] as $image)
             {
-                $imageName = $image->getClientOriginalName();
-                $rules[$imageName] = 'image|max:512|mimes:jpg,jpeg,png';
+                if(! is_null($image)) {
+                    $imageName = $image->getClientOriginalName();
+                    $rules[$imageName] = 'image|max:512|mimes:jpg,jpeg,png';
+                }
             }
         }
         return $rules;
@@ -135,12 +153,14 @@ class UpdateProductDefinitionForm extends FormValidator
      */
     protected function addImagesToFormData($formData)
     {
-        if (! is_null($formData['images'][0]))
+        if (! is_null($formData['images']))
         {
             foreach ($formData['images'] as $image)
             {
-                $imageName = $image->getClientOriginalName();
-                $formData[$imageName] = $image;
+                if(! is_null($image)) {
+                    $imageName = $image->getClientOriginalName();
+                    $formData[$imageName] = $image;
+                }
             }
             unset($formData['images']);
         }

@@ -64,3 +64,8 @@ function priceToInteger($price)
 {
     return $price * 100;
 }
+
+function formatComment($comment)
+{
+    return strpos($comment,'||') ? substr($comment,0,strpos($comment,'||')) . '<blockquote>' . substr($comment,strpos($comment,'||') + 2) . '</blockquote>' : $comment;
+}
