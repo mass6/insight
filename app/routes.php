@@ -52,6 +52,10 @@ Route::get('login', [
     Route::patch('password-verify-update/{user}/{token}', ['as' => 'password.verify_update', 'uses' => 'PasswordsController@verifyAndUpdate']);
 
 
+Route::get('/insight-admin', 'SessionsController@adminCreate');
+Route::post('/insight-admin', 'SessionsController@adminStore');
+
+
 // Member routes
 Route::group(array('before' => 'auth'), function()
 {
