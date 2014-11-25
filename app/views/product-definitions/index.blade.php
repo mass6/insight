@@ -28,10 +28,16 @@
             <td>{{ isset($product->assigned_user_id) ? $product->assignedTo->name() : '' }}</td>
             <td>{{ $product->statusName->name }}</td>
             <td>{{ $product->updated_at }}</td>
-            <td>{{ link_to_route('catalogue.product-definitions.edit', 'Edit', array($product->id), array('class' => 'btn btn-info pull-left')) }}
+
+            <td>
+            @if($product->assigned_user_id === $currentUser->id || $currentUser->hasAccess('cataloguing.products.admin'))
+            {{ link_to_route('catalogue.product-definitions.edit', 'Edit', array($product->id), array('class' => 'btn btn-info pull-left')) }}
+            @endif
+            @if($currentUser->hasAccess('cataloguing.products.admin'))
                 {{ Form::open(array('method' => 'DELETE', 'route' => array('admin.companies.destroy', $product->id))) }}
                 {{ Form::submit('Delete', array('class' => 'btn btn-danger pull-right', 'Onclick'=>'return confirm("Are you sure you want to delete this product?")')) }}
                 {{ Form::close() }}
+            @endif
             </td>
         </tr>
         @endforeach

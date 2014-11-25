@@ -53,7 +53,9 @@ class ProductDefinitionRepository
      */
     public function getPaginated($num = 10)
     {
-        return ProductDefinition::orderBy('created_at', 'desc')->paginate($num);
+        return ProductDefinition::where('status', '<>', "4")
+            ->orderBy('created_at', 'desc')
+            ->paginate($num);
     }
 
     public function findCompleted($num = 10)
@@ -79,9 +81,13 @@ class ProductDefinitionRepository
      */
     public function getFilteredAndPaginated($user, $num = 10)
     {
-        return ProductDefinition::where('assigned_user_id', $user->id)
-            ->orWhere('user_id', $user->id)
-            ->orWhere('company_id', $user->company->id)
+        return ProductDefinition::where('status', '<>', "4")
+            ->Where(function($query) use ($user)
+            {
+                $query->where('assigned_user_id', $user->id)
+                    ->orWhere('user_id', $user->id)
+                    ->orWhere('company_id', $user->company->id);
+            })
             ->orderBy('created_at', 'desc')->paginate($num);
         //return ProductDefinition::orderBy('created_at', 'desc')->paginate($num);
     }
@@ -200,18 +206,23 @@ class ProductDefinitionRepository
     /**
      * Used to update product when used with the limited-edit web form
      *
-     * @param UpdateLimitedProductDefinitionCommand $product
+     * @param UpdateProductDefinitionCommand $command
      * @return mixed
      */
-    public function updateLimited(UpdateLimitedProductDefinitionCommand $product)
+    public function updateLimited(UpdateProductDefinitionCommand $command)
     {
-        $productToUpdate = $this->find($product->id);
-        $productToUpdate->description = $product->description;
-        $productToUpdate->short_description = $product->short_description;
-        $productToUpdate->attributes = $product->attributes;
-        $productToUpdate->remarks = $product->remarks;
-        $productToUpdate->assigned_user_id = $product->assigned_user_id;
-        $productToUpdate->status = $product->status;
+        $productToUpdate = $this->find($command->id);
+
+        $productToUpdate->description = $command->description;
+        $productToUpdate->short_description = $command->short_description;
+        $productToUpdate->attributes = $command->attributes;
+        $productToUpdate->remarks = $command->remarks;
+        $productToUpdate->updated_by_id = $command->current_user_id;
+        if($command->action !== 'save'){
+            $productToUpdate->assigned_user_id = $command->assigned_user_id;
+            $productToUpdate->assigned_by_id = $command->current_user_id;
+        }
+        $productToUpdate->status = $command->status;
 
         $productToUpdate->save();
 

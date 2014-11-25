@@ -26,6 +26,7 @@
 
 
                 <?php $submit = 'Submit'; ?>
+
                 <?php echo $__env->make('product-definitions._form-wizard-new', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
 
             <?php echo Form::close(); ?>

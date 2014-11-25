@@ -34,7 +34,7 @@ class AddNewProductDefinitionCommandHandler extends ProductDefinitionCommandHand
                 $command->attributes = json_encode($command->attributes);
 
             // determine the assigned user
-            $command->assigned_user_id = (int)$this->assignUserByStatusAndAction($command);
+            $command->assigned_user_id = (int)$this->setAssignedUser($command);
 
             //dd($command);
             // create the product request
@@ -45,7 +45,7 @@ class AddNewProductDefinitionCommandHandler extends ProductDefinitionCommandHand
                 $product->id,
                 get_class($product),
                 $product->user_id,
-                $this->compileComment($product)
+                $this->compileComment($product, $command->status, $command->action)
             ));
 
             // process images and attachments
@@ -64,30 +64,22 @@ class AddNewProductDefinitionCommandHandler extends ProductDefinitionCommandHand
         $this->dispatchEventsFor($product);
     }
 
-    protected function compileComment($product)
-    {
-        switch ($product->status){
-            case "1": // submitted
-                return 'Request draft created by ' . $product->createdBy->name() . '.';
-            case "2": // processing
-                return 'Request created by ' . $product->createdBy->name() . ' and submitted to ' . $product->assignedTo->name() . ' for review.';
-            case "3":
-                return 'Request created by ' . $product->createdBy->name() . ' and submitted to ' . $product->assignedTo->name() . ' for processing.';
-            default:
-                return 'Request created';
-        }
-    }
     /**
      * Determine who the request should be assigned to based on request status
      *
      * @param $command
      * @return mixed
      */
-    protected function assignUserByStatusAndAction($command)
+    protected function setAssignedUser($command)
     {
         switch ($command->status){
             case "1": // draft
-                if($command->action === 'assign-to-supplier')
+                if($command->action === 'assign-to-customer')
+                {
+                    $this->wasAssigned = true;
+                    return Company::find($command->company_id)->primaryContact->id;
+                }
+                elseif($command->action === 'assign-to-supplier')
                 {
                     $this->wasAssigned = true;
                     return Company::find($command->supplier_id)->primaryContact->id;
@@ -104,6 +96,29 @@ class AddNewProductDefinitionCommandHandler extends ProductDefinitionCommandHand
 
             default:
                 return $command->user_id;
+        }
+    }
+
+    protected function compileComment($product, $status, $action)
+    {
+        switch ($status){
+            case "1": // submitted
+                if($action === 'assign-to-customer')
+                {
+                    return 'Request created by ' . $product->createdBy->name() . ' and assigned to ' . $product->customer->primaryContact->name() . ' for input.';
+                }
+                elseif($action === 'assign-to-supplier')
+                {
+                    return 'Draft created by ' . $product->createdBy->name() . ' and assigned to supplier contact ' . $product->assignedTo->name() . ' for input.';
+                }
+                return 'Request draft created by ' . $product->createdBy->name() . '.';
+
+            case "2": // processing
+                return 'Request created by ' . $product->createdBy->name() . ' and submitted to ' . $product->assignedTo->name() . ' for review.';
+            case "3":
+                return 'Request created by ' . $product->createdBy->name() . ' and submitted to ' . $product->assignedTo->name() . ' for processing.';
+            default:
+                return 'Request created.';
         }
     }
 

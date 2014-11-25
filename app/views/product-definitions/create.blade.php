@@ -27,6 +27,7 @@
             {{ Form::open(['route' => 'catalogue.product-definitions.store', 'id' => 'rootwizard-2', 'name' => 'rootwizard-2', 'class' => 'form-wizard validate', 'files' => true]) }}
 
                 <?php $submit = 'Submit'; ?>
+
                 @include('product-definitions._form-wizard-new')
 
             {{ Form::close() }}

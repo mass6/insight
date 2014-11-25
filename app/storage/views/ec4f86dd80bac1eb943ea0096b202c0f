@@ -175,18 +175,21 @@
                     <span>Product Cataloguing</span>
                 </a>
                 <ul>
+                <?php if($currentUser->hasAccess('cataloguing.products.add')): ?>
                     <li class="auto-inherit-active-class <?php echo isActive('create', 3); ?>">
                         <a href="<?php echo route('catalogue.product-definitions.create'); ?>">
                             <i class="entypo-plus-squared"></i>
                             <span>New Request</span>
                         </a>
                     </li>
+                <?php endif; ?>
                     <li class="auto-inherit-active-class <?php echo isActive('myrequests', 3); ?>">
                         <a href="<?php echo route('catalogue.product-definitions.queue'); ?>">
                             <i class="entypo-inbox"></i>
                             <span>My Requests Queue</span>
                         </a>
                     </li>
+                <?php if($currentUser->hasAccess('cataloguing.products.customer')): ?>
                     <li class="auto-inherit-active-class <?php echo isActive('', 3); ?>">
                         <a href="<?php echo route('catalogue.product-definitions.index'); ?>">
                             <i class="entypo-doc-text"></i>
@@ -199,6 +202,7 @@
                             <span>Completed Requests</span>
                         </a>
                     </li>
+                <?php endif; ?>
                 </ul>
             </li>
         <?php endif; ?>

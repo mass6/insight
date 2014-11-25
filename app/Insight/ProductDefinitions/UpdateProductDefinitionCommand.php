@@ -6,10 +6,6 @@
  */
 
 /**
- * Class AddNewProductDefinitionCommand
- * @package Insight\ProductDefinitions
- */
-/**
  * Class UpdateProductDefinitionCommand
  * @package Insight\ProductDefinitions
  */
@@ -91,11 +87,15 @@ class UpdateProductDefinitionCommand
     /**
      * @var
      */
-    public  $images;
+    public  $assigned_user_id;
     /**
      * @var
      */
-    public $formType;
+    public $assigned_by_id;
+    /**
+     * @var
+     */
+    public  $images;
     /**
      * @var
      */
@@ -119,7 +119,7 @@ class UpdateProductDefinitionCommand
     /**
      * @var
      */
-    public $assigned_by_id;
+    public $formType;
 
 
     /**
@@ -141,6 +141,7 @@ class UpdateProductDefinitionCommand
      * @param $supplier_id
      * @param $status
      * @param $action
+     * @param $assigned_user_id
      * @param $assigned_by_id
      * @param $image1
      * @param $image2
@@ -150,7 +151,7 @@ class UpdateProductDefinitionCommand
      * @param $formType
      */
     public function __construct($user, $id, $code, $name, $user_id, $current_user_id, $company_id, $category, $uom, $price, $currency, $description, $short_description,
-                                $attributes, $remarks, $supplier_id, $status, $action, $assigned_by_id, $image1, $image2, $image3, $image4, $attachments, $formType)
+                                $attributes, $remarks, $supplier_id, $status, $action, $assigned_user_id, $assigned_by_id, $image1, $image2, $image3, $image4, $attachments, $formType)
     {
         $this->id = $id;
         $this->code = $code;
@@ -167,15 +168,16 @@ class UpdateProductDefinitionCommand
         $this->supplier_id = $supplier_id;
         $this->status = $status;
         $this->action = $action;
-        $this->formType = $formType;
         $this->short_description = $short_description;
         $this->image1 = $image1;
         $this->image2 = $image2;
         $this->image3 = $image3;
         $this->image4 = $image4;
         $this->attachments = $attachments;
+        $this->assigned_user_id = $assigned_user_id;
         $this->assigned_by_id = $assigned_by_id;
         $this->user_id = $user_id;
         $this->user = $user;
+        $this->formType = $formType;
     }
-} 
+}

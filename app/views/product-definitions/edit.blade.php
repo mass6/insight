@@ -4,8 +4,8 @@
 
 <div class="container">
     <div class="row">
-        <div class="col-sm-2">
-            <h2>Edit Product</h2>
+        <div class="col-md-12">
+            <h2>Editing: <small>{{$product->name}} [{{ $product->code }}]</small></h2>
         </div>
     </div>
 

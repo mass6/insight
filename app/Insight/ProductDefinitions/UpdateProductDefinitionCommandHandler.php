@@ -4,8 +4,9 @@ use Insight\ProductDefinitions\Events\ProductDefinitionWasUpdated;
 use Insight\ProductDefinitions\Events\ProductDefinitionWasAssigned;
 use Insight\ProductDefinitions\Events\ProductDefinitionWasCompleted;
 use Insight\Comments\AddNewCommentCommand;
-
+use Insight\Companies\Company;
 use Insight\Settings\Setting;
+
 /**
  * Insight Client Management Portal:
  * Date: 11/7/14
@@ -35,21 +36,21 @@ class UpdateProductDefinitionCommandHandler extends ProductDefinitionCommandHand
                 $command->attributes = json_encode($command->attributes);
 
             // determine the assigned user
-            $command->assigned_user_id = (int)$this->assignUserByStatusAndAction($command->status, $command->action, $command->user_id, $command->current_user_id);
+            $command->assigned_user_id = (int)$this->setAssignedUser($command);
 
             // determine if the order was assigned to another user
             $this->wasAssigned = $this->userWasAssigned($command->action);
 
             $this->isCompleted = $command->action === 'complete' ? true : false;
 
-            $product = $this->productDefinitionRepository->update($command);
+            $product = $command->formType === 'full' ? $this->productDefinitionRepository->update($command) : $this->productDefinitionRepository->updateLimited($command);
 
             // add the history comment
             $comment = $this->execute(new AddNewCommentCommand(
                 $product->id,
                 get_class($product),
                 $command->user->id,
-                $this->compileComment($product, $command->action) . ($command->remarks !== '' ? '||' . $command->remarks : '')
+                $this->compileComment($product, $command->action, $command->status) . ($command->remarks !== '' ? '||' . $command->remarks : '')
             ));
 
             //$this->attachImages($product, $command->images);
@@ -80,42 +81,81 @@ class UpdateProductDefinitionCommandHandler extends ProductDefinitionCommandHand
         return $product;
     }
 
+
     /**
-     * Determine who the request should be assigned to based on request status
+     * Determine who the request should be assigned to based on request action
      *
-     * @param $status
-     * @param $action
-     * @param $user_id
-     * @param $currentUserId
+     * @param $command
      * @return mixed
      */
-    protected function assignUserByStatusAndAction($status, $action, $user_id, $currentUserId)
+    protected function setAssignedUser($command)//$status, $action, $user_id, $currentUserId)
     {
-        switch ($status){
-            case "1": // draft
-                return $action === 'revert' ? $user_id : $currentUserId;
-            case "2": // submitted
+        switch ($command->action){
+            case "save": // draft
+                return $command->assigned_user_id;
+
+            case "assign-to-customer":
+                $this->wasAssigned = true;
+                return Company::find($command->company_id)->primaryContact->id;
+
+            case "assign-to-supplier":
+                $this->wasAssigned = true;
+                return Company::find($command->supplier_id)->primaryContact->id;
+
+            case "submit":
+                $this->wasAssigned = true;
                 return Setting::where('name', 'primary-cataloguer')->pluck('value');
-            case "3": // processing
+
+            case "process":
+                $this->wasAssigned = true;
                 return Setting::where('name', 'primary-provisioner')->pluck('value');
+
+//            case "revert":
+//                if($command->status === "1")
+//                {
+//                    $this->wasAssigned = true;
+//                    return Company::find($command->company_id)->primaryContact->id;
+//                }
+//                $this->wasAssigned = true;
+//                return Setting::where('name', 'primary-cataloguer')->pluck('value');
+
+            case "complete":
+                return $command->assigned_user_id;
+
             default:
-                return $currentUserId;
+                return $command->assigned_user_id;
         }
     }
 
-    protected function compileComment($product, $action)
+
+    protected function compileComment($product, $action, $status)
     {
         switch ($action){
-            case "revert":
-                return 'Request was reassigned back to ' . $product->createdBy->name() . ' by ' . $product->assignedBy->name() . '.';
             case "save":
                 return 'Request was updated by ' . $product->updatedBy->name() . '.';
+
+            case "assign-to-customer":
+                return 'Request assigned to ' . $product->assignedTo->name() . ' by ' . $product->assignedBy->name() . ' for input.';
+
+            case "assign-to-supplier":
+                return 'Request assigned to supplier contact ' . $product->assignedTo->name() . ' by ' . $product->assignedBy->name() . ' for input.';
+
+//            case "revert":
+//                if($status === 1)
+//                {
+//                    return 'Request was reassigned back to ' . $product->customer->primaryContact->name() . ' by ' . $product->assignedBy->name() . '.';
+//                }
+//                return 'Request was reassigned back to ' . $product->assignedTo->name() . ' by ' . $product->assignedBy->name() . '.';
+
             case "submit":
-                return 'Request was submitted to ' . $product->assignedTo->name() . ' for review.';
+                return 'Request was submitted to ' . $product->assignedTo->name() . ' by ' . $product->assignedBy->name() . ' for review.';
+
             case "process":
-                return 'Request was submitted to ' . $product->assignedTo->name() . ' for proccessing.';
+                return 'Request was submitted to ' . $product->assignedTo->name() . ' by ' . $product->assignedBy->name() . ' for processing.';
+
             case "complete":
                 return 'Request was completed by ' . $product->updatedBy->name() . '.';
+
             default:
                 return 'Request was updated by ' . $product->updatedBy->name() . '.';
         }

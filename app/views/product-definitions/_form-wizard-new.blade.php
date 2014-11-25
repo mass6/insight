@@ -318,9 +318,14 @@
 
                 {{-- Attributes --}}
 
+
+            @if($customAttributes)
+                @include('product-definitions.partials._' . $customAttributes . '-attributes');
+            @else
                 <input id="add-attribute" type="button" class="btn btn-success" value="+ add Attribute" > <span id="attribute-helper" style="display: none"><em>&leftarrow; Click to add more attributes</em></span><br/><br/>
                 <div id="new-attributes" class="well" style="min-height: 200px;">
                 </div>
+            @endif
 
 
 			</div>
@@ -357,10 +362,12 @@
                     <div class="form-group">
                         <button id="save" type="submit" class="btn btn-info">Save Draft</button>
                         @if($user->hasAccess('cataloguing.products.catalogue'))
+                            <button id="assign-to-customer" type="submit" class="btn btn-primary">Assign to Customer</button>
                             <button id="assign-to-supplier" type="submit" class="btn btn-gold">Assign to Supplier</button>
-                        @endif
-                        @if(! $user->hasAccess('cataloguing.products.submit'))
-                            <button id="submit" type="submit" class="btn btn-primary">Submit Now</button>
+                        @else
+                            @if($user->hasAccess('cataloguing.products.submit'))
+                                <button id="submit" type="submit" class="btn btn-primary">Submit Now</button>
+                            @endif
                         @endif
                         @if($user->hasAccess('cataloguing.products.catalogue'))
                             <button id="process" type="submit" class="btn btn-green">Submit for Processing</button>
@@ -410,6 +417,11 @@
 
     $('#assign-to-supplier').click(function(){
         $("#action").val('assign-to-supplier');
+        $("#status").val(1);
+    });
+
+    $('#assign-to-customer').click(function(){
+        $("#action").val('assign-to-customer');
         $("#status").val(1);
     });
 

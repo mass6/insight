@@ -127,7 +127,14 @@ class ProductDefinitionsController extends \BaseController {
         //$attributeSets = AttributeSet::with('attributes')->where('company_id', $user->company->id)->get();
         //$statuses =  ProductDefinitionStatuses::lists('name', 'id');
         //$assignableUsersList = $this->productDefinitionRepository->getAssignableUsersList($user->company);
-        return View::make('product-definitions.create', compact('user','companies','suppliers'));
+
+        $customAttributes = false;
+        if($user->company->settings()->getProductDefinitionTemplate)
+        {
+            $customAttributes = $user->company->settings()->ProductDefinitionTemplate;
+        }
+
+        return View::make('product-definitions.create', compact('user','companies','suppliers', 'customAttributes'));
     }
 
 
@@ -143,7 +150,7 @@ class ProductDefinitionsController extends \BaseController {
         //$input['images'] = Input::file('images');
         $input['attachments'] = Input::file('attachments');
 
-        if($input['action'] === 'save')
+        if($input['action'] === 'save' || $input['action'] === 'assign-to-customer')
             $this->draftProductDefinitionForm->validate($input);
         elseif($input['action'] === 'assign-to-supplier')
             $this->supplierDraftProductDefinitionForm->validate($input);
@@ -162,33 +169,6 @@ class ProductDefinitionsController extends \BaseController {
     }
 
     /**
-     * Iterates through the Input array and parses out the dynamic attributes, adding them to new array.
-     * Then, returns a new array with sub-arrays for each attribute name / value pair.
-     * @param $input
-     * @return array
-     */
-    private function parseAttributes($input)
-    {
-        $attributes = [];
-        if(isset($attributes)){
-            $attributeName = '';
-            foreach($input as $field => $value)
-            {
-                if(substr($field,0,14) === 'attribute-name'){
-                    $attributeName = $value; //substr($field,14,strlen($field)-14);
-                    continue;
-                }
-                if(substr($field,0,15) === 'attribute-value'){
-                    if($attributeName)
-                        $attributes[$attributeName] = $value;
-                }
-
-            }
-            return count($attributes) ? $attributes : null;
-        }
-    }
-
-    /**
      * Display the specified resource.
      *
      * @param  int  $id
@@ -200,7 +180,6 @@ class ProductDefinitionsController extends \BaseController {
         return View::make('product-definitions.show', compact('product'));
     }
 
-
     /**
      * Show the form for editing the specified resource.
      *
@@ -210,6 +189,14 @@ class ProductDefinitionsController extends \BaseController {
     public function edit($id)
     {
         $product = $this->productDefinitionRepository->find($id);
+
+        if($product->assigned_user_id !== $this->user->id && !$this->user->hasAccess('cataloguing.products.admin'))
+        {
+            Flash::error("Product is currently assigned to another user.");
+            return Redirect::back();
+        }
+
+
         $user = $this->user;
         $suppliers = $this->companyRepository->getAssociatedSuppliersList($product->customer);
         // should be able to delete statuses variable below
@@ -227,9 +214,16 @@ class ProductDefinitionsController extends \BaseController {
         else
             JavaScript::put(['attributes' => false]);
 
+        $customAttributes = false;
+        if($product->customer->settings()->getProductDefinitionTemplate)
+        {
+            $customAttributes = $product->customer->settings()->ProductDefinitionTemplate;
+            JavaScript::put(['customAttributes' => true]);
+        }
         $form = $this->user->hasAccess('cataloguing.products.edit.full') ? '_form-wizard-edit' : '_form-wizard-edit-limited';
-        return View::make('product-definitions.edit', compact('product','user','suppliers', 'form'));
+        return View::make('product-definitions.edit', compact('product','user','suppliers', 'customAttributes', 'form'));
     }
+
 
 
     /**
@@ -243,35 +237,45 @@ class ProductDefinitionsController extends \BaseController {
 
         $input = Input::all();
         $product = $this->productDefinitionRepository->find($id);
+        $formType = $input['form-type'] === 'full' ? 'full' : 'limited';
         $input['existing_images'] = count($product->images) ? true : false;
         $input['attributes'] = $this->parseAttributes($input);
         //$input['images'] = Input::file('images');
         $input['attachments'] = Input::file('attachments');
         $input['remarks'] = $input['remarks'] . $input['message'];
 
-        if($input['action'] === 'save' && $input['status'] === '1')
-            $this->draftProductDefinitionForm->validate($input);
-        else
-            $this->updateProductDefinitionForm->validate($input);
+        if($input['action'] === 'save' || $input['action'] === 'assign-to-customer' || $formType === 'limited')
+        $this->draftProductDefinitionForm->validate($input);
+    elseif($input['action'] === 'assign-to-supplier')
+        $this->supplierDraftProductDefinitionForm->validate($input);
+    else
+        $this->updateProductDefinitionForm->validate($input);
 //        $input['form-type'] === 'full'
 //            ? $this->updateProductDefinitionForm->validate($input)
 //            : $this->updateLimitedProductDefinitionForm->validate($input);
 
         extract($input);
-        $input['form-type'] === 'full'
-            ? $product = $this->execute(new UpdateProductDefinitionCommand(
+
+        $product = $this->execute(new UpdateProductDefinitionCommand(
             $this->user, $id, $code, $name, $user_id, $current_user_id, $company_id, $category, $uom, $price, $currency, $description, $short_description,
-            $attributes, $remarks, $supplier_id, $status, $action, $assigned_by_id, $image1, $image2, $image3, $image4, $attachments, 'full'
-        ))
-            : $product = $this->execute(new UpdateLimitedProductDefinitionCommand(
-            $id, $user_id, $description, $short_description, $attributes, $remarks,
-            $status, $image1, $image2, $image3, $image4, $attachments, 'limited'
+            $attributes, $remarks, $supplier_id, $status, $action, $assigned_user_id, $assigned_by_id,  $image1, $image2, $image3, $image4, $attachments, $formType
         ));
 
-        Flash::success("Product {$product->name} was successfully updated.");
+//        $input['form-type'] === 'full'
+//            ? $product = $this->execute(new UpdateProductDefinitionCommand(
+//            $this->user, $id, $code, $name, $user_id, $current_user_id, $company_id, $category, $uom, $price, $currency, $description, $short_description,
+//            $attributes, $remarks, $supplier_id, $status, $action, $assigned_user_id, $assigned_by_id,  $image1, $image2, $image3, $image4, $attachments, $formType
+//        ))
+//            : $product = $this->execute(new UpdateLimitedProductDefinitionCommand(
+//            $this->user, $id, $code, $name, $user_id, $current_user_id, $company_id, $category, $uom, $price, $currency, $description, $short_description,
+//            $attributes, $remarks, $supplier_id, $status, $action, $assigned_user_id, $assigned_by_id,  $image1, $image2, $image3, $image4, $attachments, 'limited'
+//        ));
+
+        Flash::success("Product ( {$product->code} : {$product->name} ) was successfully updated.");
 
         return Redirect::route('catalogue.product-definitions.index');
     }
+
 
     public function getCompleted()
     {
@@ -280,7 +284,6 @@ class ProductDefinitionsController extends \BaseController {
             : $this->productDefinitionRepository->findCompletedAndFiltered($this->user, 10);
         return View::make('product-definitions.completed', compact('products'));
     }
-
 
     /**
      * Remove the specified resource from storage.
@@ -292,6 +295,7 @@ class ProductDefinitionsController extends \BaseController {
     {
         //
     }
+
 
     /**
      * @param $customer_id
@@ -328,6 +332,33 @@ class ProductDefinitionsController extends \BaseController {
         $usersList = $this->productDefinitionRepository->getAssignableUsersList($customer);
 
         return Response::json($usersList);
+    }
+
+    /**
+     * Iterates through the Input array and parses out the dynamic attributes, adding them to new array.
+     * Then, returns a new array with sub-arrays for each attribute name / value pair.
+     * @param $input
+     * @return array
+     */
+    private function parseAttributes($input)
+    {
+        $attributes = [];
+        if(isset($attributes)){
+            $attributeName = '';
+            foreach($input as $field => $value)
+            {
+                if(substr($field,0,14) === 'attribute-name'){
+                    $attributeName = $value; //substr($field,14,strlen($field)-14);
+                    continue;
+                }
+                if(substr($field,0,15) === 'attribute-value'){
+                    if($attributeName)
+                        $attributes[$attributeName] = $value;
+                }
+
+            }
+            return count($attributes) ? $attributes : null;
+        }
     }
 
 

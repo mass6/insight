@@ -26,14 +26,20 @@
             <td><?php echo isset($product->assigned_user_id) ? $product->assignedTo->name() : ''; ?></td>
             <td><?php echo $product->statusName->name; ?></td>
             <td><?php echo $product->updated_at; ?></td>
-            <td><?php echo link_to_route('catalogue.product-definitions.edit', 'Edit', array($product->id), array('class' => 'btn btn-info pull-left')); ?>
 
+            <td>
+            <?php if($product->assigned_user_id === $currentUser->id || $currentUser->hasAccess('cataloguing.products.admin')): ?>
+            <?php echo link_to_route('catalogue.product-definitions.edit', 'Edit', array($product->id), array('class' => 'btn btn-info pull-left')); ?>
+
+            <?php endif; ?>
+            <?php if($currentUser->hasAccess('cataloguing.products.admin')): ?>
                 <?php echo Form::open(array('method' => 'DELETE', 'route' => array('admin.companies.destroy', $product->id))); ?>
 
                 <?php echo Form::submit('Delete', array('class' => 'btn btn-danger pull-right', 'Onclick'=>'return confirm("Are you sure you want to delete this product?")')); ?>
 
                 <?php echo Form::close(); ?>
 
+            <?php endif; ?>
             </td>
         </tr>
         <?php endforeach; ?>

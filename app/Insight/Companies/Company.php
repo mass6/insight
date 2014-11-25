@@ -1,5 +1,5 @@
 <?php namespace Insight\Companies;
-
+use Insight\Libraries\Settings;
 use Laracasts\Commander\Events\EventGenerator;
 
 /**
@@ -73,4 +73,13 @@ class Company extends \Eloquent {
         return $this->hasMany('Insight\ProductDefinitions\AttributeSet');
     }
 
+    public function settings()
+    {
+        //return object_to_array(json_decode($this->attributes['settings']))[$key];
+        return new Settings($this->attributes['settings']);
+        //return object_to_array(json_encode($this->attributes['settings']));
+
+    }
+
 }
+

@@ -6,6 +6,8 @@
 {{Form::hidden('company_id', $product->company_id, ['id' => 'company_id'])}}
 <!-- Created by UserId -->
 {{Form::hidden('user_id', $product->user_id)}}
+<!-- Assigned User -->
+{{Form::hidden('assigned_user_id', $product->assigned_user_id)}}
 <!-- Assigned By User -->
 {{Form::hidden('assigned_by_id', $product->assigned_by_id)}}
 <!-- Current User ID -->
@@ -42,6 +44,10 @@
 		</li>
 	</ul>
     <hr/>
+
+    {{-- Prodct Details Block --}}
+    @include('product-definitions.partials._request-details')
+
 	<div class="tab-content">
 		<div class="tab-pane active" id="tab2-1">
 
@@ -51,55 +57,7 @@
         </div>
 
         <div class="well">
-            <div class="well">
-                <div class="row">
-                    <div class="col-md-3">
-                        <div class="form-group">
-                            <label class="control-label" for="user_id">Created By:</label>
-                            <h5>{{ $product->createdBy->name() }}({{$product->user_id}})</h5>
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="form-group">
-                            <label class="control-label" for="user_id">Assigned To:</label>
-                            <h5>{{ $product->assignedTo->name() }}({{$product->assigned_user_id}})</h5>
-                            <h5>By: {{ $product->assignedBy->name() }}({{$product->assigned_by_id}})</h5>
-                        </div>
-                    </div>
-                    <div class="col-md-2">
-                        <div class="form-group">
-                            <label class="control-label">Status</label>
-                            <h5>{{ $product->statusName->name }}</h5>
-                        </div>
-                    </div>
-                    <div class="col-md-2">
-                        <div class="form-group">
-                            <label class="control-label" for="created_at">Created At:</label>
-                            <p><strong>{{ $product->updated_at }}</strong></p>
-                        </div>
-                    </div>
-                    <div class="col-md-2">
-                        <div class="form-group">
-                            <label class="control-label" for="updated_at">Last Updated:</label>
-                            <p><strong>{{ $product->updated_at }}</strong></p>
-                        </div>
-                    </div>
-                </div>
-                @if(! empty($product->remarks))
-                <div class="row">
-                    <div class="col-md-2">
-                        <div class="form-group">
-                            <label class="control-label">Latest remarks:</label>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <p>{{ $product->remarks }}</p>
-                        </div>
-                    </div>
-                </div>
-                @endif
-            </div>
+
             <div class="row">
 
                 <div class="col-md-4">
@@ -384,14 +342,15 @@
                 <br/>
             </div>
 
-            <div class="row">
-
+            @if($customAttributes)
+                @include('product-definitions.partials._' . $customAttributes . '-attributes')
+            @else
                 <input id="add-attribute" type="button" class="btn btn-success" value="+ add Attribute" > <span id="attribute-helper" style="display: none"><em>&leftarrow; Click to add more attributes</em></span><br/><br/>
+
                 <div id="attributes" class="well" style="min-height: 200px;">
                 </div>
+            @endif
 
-
-			</div>
 
 		</div>
 
@@ -437,27 +396,26 @@
                     <div class="form-group">
                         {{-- if status is Draft --}}
                         @if($product->status === 1)
-                            <button id="submit" type="submit" class="btn btn-primary">Submit Now</button>
                             <button id="save" type="submit" class="btn btn-info">Save Draft</button>
+                            @if($user->hasAccess('cataloguing.products.submit'))
+                                <button id="submit" type="submit" class="btn btn-primary">Submit Now</button>
+                            @endif
                         @endif
+
                         {{-- if status is Submitted --}}
                         @if($product->status === 2)
                             <button id="update" type="submit" class="btn btn-info">Save Changes</button>
-                            @if($user->hasAccess('cataloguing.products.catalogue'))
-                                <button id="assign-to-supplier" type="submit" class="btn btn-gold">Assign to Supplier</button>
-                            @endif
-
-                            @if($user->hasAccess('cataloguing.products.admin'))
-                                <button id="process" type="submit" class="btn btn-green">Submit for Processing</button>
-                                @if($user->id !== $product->assigned_by_id || $product->status === 2)
-                                    <button id="revert-requester" name="revert-requester" type="button" class="btn btn-danger">Revert to Requester</button>
-                                @endif
-                            @endif
                         @endif
+                        @if($user->hasAccess('cataloguing.products.catalogue'))
+                            <button id="assign-to-supplier" type="submit" class="btn btn-gold">Assign to Supplier</button>
+                            <button id="assign-to-customer" name="assign-to-customer" type="submit" class="btn btn-primary">Assign to Customer</button>
+                            <button id="process" type="submit" class="btn btn-green">Submit for Processing</button>
+                        @endif
+
                         {{-- if status is Processing --}}
-                        @if($product->status === 3)
+                        @if($product->status === 3 && $user->hasAccess('cataloguing.products.process'))
                             <button id="complete" type="submit" class="btn btn-green">Mark Complete</button>
-                            <button id="revert-cataloguer"  name="revert-cataloguer" type="button" class="btn btn-danger">Revert to Cataloguer</button>
+                            <button id="assign-to-cataloguer"  name="revert-cataloguer" type="submit" class="btn btn-danger">Assign to Cataloguer</button>
                         @endif
 
 
@@ -513,6 +471,31 @@
 		</ul>
 	</div>
 
+    <div id="comments" class="row">
+
+        <div class="col-md-10 col-md-offset-1">
+        <h3>History & Comments</h3>
+        <br/>
+
+            @foreach ($product->comments as $comment)
+            <div class="row">
+                <div class="col-sm-1">
+                    <a href="#" class="profile-picture">
+                        <img src="{{ $comment->user->profile ? $comment->user->profile->avatar->url('thumb') : URL::asset('images/user.jpeg') }}" class="img-responsive img-circle" />
+                    </a>
+                </div>
+                <div class="col-sm-6">
+                    <h5>{{ $comment->user->name() .' on ' . $comment->created_at }}</h5>
+                    <p>{{ formatComment($comment->body) }}</p>
+                </div>
+            </div>
+            <hr/>
+            @endforeach
+
+        </div>
+
+    </div>
+
 
 <script type="text/javascript">
 
@@ -520,6 +503,16 @@
 
     $('#save').click(function(){
         $("#action").val('save');
+        $("#status").val(1);
+    })
+
+    $('#assign-to-customer').click(function(){
+        $("#action").val('assign-to-customer');
+        $("#status").val(1);
+    });
+
+    $('#assign-to-supplier').click(function(){
+        $("#action").val('assign-to-supplier');
         $("#status").val(1);
     });
 
@@ -543,27 +536,49 @@
         $("#status").val(4);
     });
 
-    $('#revert-requester').click(function(){
-        $("#action").val('revert');
-        var remarks = $("#remarks").val();
-        document.getElementById('revert-message').style.display = 'block';
-        document.getElementById('message').value = remarks;
-        document.getElementById('revert-requester').style.display = 'none';
-        document.getElementById('div-remarks').style.display = 'none';
-        document.getElementById('remarks').value = '';
-        $("#status").val(1);
-    });
+//    $('#assign-to-customer').click(function(){
+//        $("#action").val('assign-to-customer');
+//        var remarks = $("#remarks").val();
+//        document.getElementById('revert-message').style.display = 'block';
+//        document.getElementById('message').value = remarks;
+//        document.getElementById('revert-requester').style.display = 'none';
+//        document.getElementById('div-remarks').style.display = 'none';
+//        document.getElementById('remarks').value = '';
+//        $("#status").val(1);
+//    });
+//
+//    $('#revert-cataloguer').click(function(){
+//        $("#action").val('assign-to-cataloguer');
+//        var remarks = $("#remarks").val();
+//        document.getElementById('revert-message').style.display = 'block';
+//        document.getElementById('message').value = remarks;
+//        document.getElementById('revert-cataloguer').style.display = 'none';
+//        document.getElementById('div-remarks').style.display = 'none';
+//        document.getElementById('remarks').value = '';
+//        $("#status").val(2);
+//    });
 
-    $('#revert-cataloguer').click(function(){
-        $("#action").val('revert');
-        var remarks = $("#remarks").val();
-        document.getElementById('revert-message').style.display = 'block';
-        document.getElementById('message').value = remarks;
-        document.getElementById('revert-cataloguer').style.display = 'none';
-        document.getElementById('div-remarks').style.display = 'none';
-        document.getElementById('remarks').value = '';
-        $("#status").val(2);
-    });
+//    $('#assign-to-customer').click(function(){
+//        $("#action").val('assign-to-customer');
+//        var remarks = $("#remarks").val();
+//        document.getElementById('revert-message').style.display = 'block';
+//        document.getElementById('message').value = remarks;
+//        document.getElementById('revert-requester').style.display = 'none';
+//        document.getElementById('div-remarks').style.display = 'none';
+//        document.getElementById('remarks').value = '';
+//        $("#status").val(1);
+//    });
+
+//    $('#revert-cataloguer').click(function(){
+//        $("#action").val('assign-to-cataloguer');
+//        var remarks = $("#remarks").val();
+//        document.getElementById('revert-message').style.display = 'block';
+//        document.getElementById('message').value = remarks;
+//        document.getElementById('revert-cataloguer').style.display = 'none';
+//        document.getElementById('div-remarks').style.display = 'none';
+//        document.getElementById('remarks').value = '';
+//        $("#status").val(2);
+//    });
 
     $('#cancel-revert').click(function(){
         document.getElementById('revert-message').style.display = 'none';
@@ -666,7 +681,7 @@
 //            }
 //        });
 
-        if(Insight.attributes){
+        if(Insight.attributes && !Insight.customAttributes){
             var attributes = Insight.attributes;
             //var attributeCounter = Object.keys(attributes).length;
             //console.log(attributeCount);
@@ -674,6 +689,21 @@
               if (attributes.hasOwnProperty(key)) {
                 addAttributeInputs('attributes', key, attributes[key] );
               }
+            }
+        }else if(Insight.customAttributes){
+            addCustomAttributes(Insight.attributes)
+        }
+
+        function addCustomAttributes(attributes){
+            var counter = 1;
+            for (var key in attributes) {
+
+              if (attributes.hasOwnProperty(key)) {
+                    var attributeField = document.getElementById('attribute-value' + counter);
+                    attributeField.value = attributes[key];
+                    counter++;
+              }
+
             }
         }
 
