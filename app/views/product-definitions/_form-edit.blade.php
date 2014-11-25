@@ -9,7 +9,8 @@
 <!-- Currency hard-coded to AED -->
 {{Form::hidden('currency', 'AED')}}
 <!-- Attributes: //Todo: add to form as input -->
-{{Form::hidden('attributes', '') }}
+{{--{{Form::hidden('attributes', '') }}--}}
+
 
 <!-- Code  -->
 <div class="form-group">
@@ -57,18 +58,26 @@
 
 <!-- Description -->
 <div class="form-group">
-    <label for="field-ta" class="col-sm-3 control-label">Description</label>
+    <label for="description" class="col-sm-3 control-label">Description</label>
     <div class="col-sm-8">
-        <textarea class="form-control wysihtml5" data-stylesheet-url="{{ URL::asset('css/wysihtml5-color.css') }} " name="description" id="sample_wysiwyg">{{{ Input::old('description') ? Input::old('description') : (isset($product) ? $product->description : '') }}}</textarea>
+        <textarea class="form-control wysihtml5" data-stylesheet-url="{{ URL::asset('css/wysihtml5-color.css') }} " name="description" id="description">{{{ Input::old('description') ? Input::old('description') : (isset($product) ? $product->description : '') }}}</textarea>
     </div>
 </div>
 
 <!-- Description -->
 <div class="form-group">
-    <label for="field-ta" class="col-sm-3 control-label">Short Description</label>
+    <label for="short_description" class="col-sm-3 control-label">Short Description</label>
     <div class="col-sm-8">
-        <textarea class="form-control wysihtml5" data-stylesheet-url="{{ URL::asset('css/wysihtml5-color.css') }} " name="short_description" id="sample_wysiwyg">{{{ Input::old('short_description') ? Input::old('short_description') : (isset($product) ? $product->short_description : '') }}}</textarea>
+        <textarea class="form-control wysihtml5" data-stylesheet-url="{{ URL::asset('css/wysihtml5-color.css') }} " name="short_description" id="short_description">{{{ Input::old('short_description') ? Input::old('short_description') : (isset($product) ? $product->short_description : '') }}}</textarea>
     </div>
+</div>
+
+{{-- Attributes --}}
+<div id="attributes">
+</div>
+
+<input id="add-attribute" type="button" class="btn btn-success" value="+ add attribute" >
+<div id="new-attributes">
 </div>
 
 <!-- Images -->
@@ -359,7 +368,82 @@
 
 <script type="text/javascript">
 
+(function() {
+
+    var attributeSerial = 1; // serial to append to new element id
+    var attributeCounter = 0; // current count/index of image
+    var attributeLimit = 5;
+
+    $('#add-attribute').click(function(){
+        if ((attributeCounter) == attributeLimit)  {
+             alert("You have reached the limit of adding " + attachmentLimit + " attributes");
+        }
+        else {
+             // add attribute name input
+             var newdiv = document.createElement('div');
+             var attnameid = 'attribute-name' + attributeSerial;
+             var attvalueid = 'attribute-value' + attributeSerial;
+             var inner = "<div class='form-group'>"
+                 + "<label class='col-sm-3 control-label' for='" + attnameid + "'>Attribute " + attributeSerial + ": Name </label>"
+                 + "<div class='col-sm-5'>"
+                 + "<input id='" + attnameid + "' name='" + attnameid + "' class='form-control' placeholder='e.g. Color, Size, Material' />"
+                 + "</div></div>"
+                 + "<div class='form-group'>"
+                 + "<label class='col-sm-3 control-label' for='" + attvalueid + "'>Attribute " + attributeSerial + ": Value </label>"
+                 + "<div class='col-sm-5'>"
+                 + "<input id='" + attvalueid + "' name='" + attvalueid + "' class='form-control' placeholder='e.g. White, Large, Steel' />"
+                 + "</div></div><br/><hr/>";
+             newdiv.innerHTML = inner;
+             document.getElementById('new-attributes').appendChild(newdiv);
+             newdiv.className = 'form-group attribute-group';
+
+             // increment counters
+             attributeSerial++;
+             attributeCounter++;
+             console.log(attributeSerial);
+             console.log(attributeCounter);
+        }
+    });
+
     $(document).ready(function() {
+
+        if(Insight.attributes){
+            var attributes = Insight.attributes;
+            //var attributeCounter = Object.keys(attributes).length;
+            //console.log(attributeCount);
+            for (var key in attributes) {
+              if (attributes.hasOwnProperty(key)) {
+                addAttributeInputs('attributes', key, attributes[key] );
+              }
+            }
+        }
+
+        function addAttributeInputs(divName, name, value){
+
+            // add attribute name input
+            var newdiv = document.createElement('div');
+            var attnameid = 'attribute-name' + attributeSerial;
+            var attvalueid = 'attribute-value' + attributeSerial;
+            var inner = "<div class='form-group'>"
+                + "<label class='col-sm-3 control-label' for='" + attnameid + "'>Attribute " + attributeSerial + ": Name </label>"
+                + "<div class='col-sm-5'>"
+                + "<input id='" + attnameid + "' name='" + attnameid + "' class='form-control' value='" + name + "' />"
+                + "</div></div>"
+                + "<div class='form-group'>"
+                + "<label class='col-sm-3 control-label' for='" + attvalueid + "'>Attribute " + attributeSerial + ": Value </label>"
+                + "<div class='col-sm-5'>"
+                + "<input id='" + attvalueid + "' name='" + attvalueid + "' class='form-control' value='" + value + "' />"
+                + "</div></div><br/><hr/>";
+            newdiv.innerHTML = inner;
+            document.getElementById(divName).appendChild(newdiv);
+            newdiv.className = 'form-group attribute-group';
+
+            // increment counters
+            attributeSerial++;
+            attributeCounter++;
+
+        }
+
 
         // Populate Assigned User select based on Supplier selection
         $("#supplier_id").change(function() {
@@ -381,9 +465,6 @@
             });
 
         });
-
-
-
 
 
     // Page Tour
@@ -432,6 +513,7 @@
         });
     });
 
+})();
 </script>
 
 <!-- Bottom Scripts -->

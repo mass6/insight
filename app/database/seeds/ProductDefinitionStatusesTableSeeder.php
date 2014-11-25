@@ -12,22 +12,20 @@ class ProductDefinitionStatusesTableSeeder extends Seeder {
 
     public function run()
     {
+        Eloquent::unguard();
+        ProductDefinitionStatuses::truncate();
 
-        // New
+        // Draft
         ProductDefinitionStatuses::create([
-            'name'  => 'New',
+            'name'  => 'Draft',
         ]);
-        // Pending Customer
+        // Submitted
         ProductDefinitionStatuses::create([
-            'name'  => 'Pending Customer',
+            'name'  => 'Submitted',
         ]);
-        // Pending Supplier
+        // Processing
         ProductDefinitionStatuses::create([
-            'name'  => 'Pending Supplier',
-        ]);
-        // Pending 36S
-        ProductDefinitionStatuses::create([
-            'name'  => 'Pending 36S',
+            'name'  => 'Processing',
         ]);
         // Complete
         ProductDefinitionStatuses::create([

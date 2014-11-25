@@ -5,6 +5,8 @@ return [
         'Insight\Listeners\ActivityLogger',
         'Insight\Listeners\EmailNotifier',
         'Insight\Listeners\PortalDataUpdatesNotifier',
+        'Insight\Listeners\ProductDefinitionHistoryLogger',
+        'Insight\Listeners\ProductDefinitionsNotifier',
     ],
     'customers' => [
         'emrill' => [

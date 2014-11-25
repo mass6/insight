@@ -5,6 +5,8 @@
  * @package Insight\ProductDefinitions
  */
 use Laracasts\Commander\Events\EventGenerator;
+use Insight\Users\User;
+use Insight\Settings\Setting;
 
 /**
  * Class ProductDefinition
@@ -27,10 +29,13 @@ class ProductDefinition extends \Eloquent {
         'price',
         'currency',
         'description',
+        'short_description',
         'attributes',
         'remarks',
         'supplier_id',
+        'updated_by_id',
         'assigned_user_id',
+        'assigned_by_id',
         'status',
     ];
 
@@ -70,6 +75,16 @@ class ProductDefinition extends \Eloquent {
     }
 
     /**
+     * User whom product was last assigned by
+     *
+     * @return mixed
+     */
+    public function assignedBy()
+    {
+        return $this->belongsTo('Insight\Users\User', 'assigned_by_id');
+    }
+
+    /**
      * User whom originally created the product
      *
      * @return mixed
@@ -77,6 +92,26 @@ class ProductDefinition extends \Eloquent {
     public function createdBy()
     {
         return $this->belongsTo('Insight\Users\User', 'user_id');
+    }
+
+    /**
+     * Last user to update the product
+     *
+     * @return mixed
+     */
+    public function updatedBy()
+    {
+        return $this->belongsTo('Insight\Users\User', 'updated_by_id');
+    }
+
+    public function cataloguer()
+    {
+        return User::find(Setting::where('name', 'primary-cataloguer')->pluck('value'));
+    }
+
+    public function processer()
+    {
+        return User::find(Setting::where('name', 'primary-provisioner')->pluck('value'));
     }
 
     /**
@@ -114,7 +149,7 @@ class ProductDefinition extends \Eloquent {
      *
      * @return float|string
      */
-    public function displayPrice()
+    public function getPriceAttribute()
     {
         return $this->attributes['price'] ? $this->attributes['price'] / 100 : '';
     }
@@ -128,6 +163,16 @@ class ProductDefinition extends \Eloquent {
     {
         if(! empty($price))
            $this->attributes['price'] = $price * 100;
+    }
+
+    /**
+     * Relation definition to Comment
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\MorphMany
+     */
+    public function comments()
+    {
+        return $this->morphMany('Insight\Comments\Comment', 'commentable')->orderBy('id', 'DESC');
     }
 
 }

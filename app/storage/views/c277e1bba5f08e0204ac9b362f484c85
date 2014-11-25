@@ -12,7 +12,7 @@
                 <p><strong>Code:</strong> <?php echo $product->code; ?></p>
                 <p><strong>Name:</strong> <?php echo $product->name; ?></p>
                 <p><strong>UOM:</strong> <?php echo $product->uom; ?></p>
-                <p><strong>Price:</strong> <?php echo $product->displayPrice(); ?></p>
+                <p><strong>Price:</strong> <?php echo $product->price; ?></p>
                 <p><strong>Category:</strong> <?php echo $product->category; ?></p>
                 <p><strong>Supplier:</strong> <?php echo $product->supplier ? $product->supplier->name : ''; ?></p>
                 <p><strong>Description:</strong> <?php echo $product->description; ?></p>
@@ -76,9 +76,45 @@
                 </div>
             </div>
 
-                <!-- Comments -->
+            <!-- Comments -->
 
-            </div>
+                <div class="row">
+                    <h2 class="">History</h2>
+                    <br/>
+                    <?php if(Session::has('comment_message')): ?>
+                    <div class="row alert <?php echo Session::get('success') ? 'alert-success' : 'alert-danger'; ?> clearfix" data-dismiss="alert">
+                        <?php echo Session::get('comment_message'); ?>
+
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                    </div>
+                    <?php endif; ?>
+                </div>
+
+                <?php foreach($product->comments as $comment): ?>
+                <div class="row">
+                    <div class="col-sm-1">
+                        <a href="#" class="profile-picture">
+                            <img src="<?php echo $comment->user->profile ? $comment->user->profile->avatar->url('thumb') : URL::asset('images/user.jpeg'); ?>" class="img-responsive img-circle" />
+                        </a>
+                    </div>
+                    <div class="col-sm-6">
+                        <h5><?php echo $comment->user->name() .' on ' . $comment->created_at; ?></h5>
+                        <p><?php echo formatComment($comment->body); ?></p>
+                    </div>
+                </div>
+                <hr/>
+                <?php endforeach; ?>
+
+
+
+                <div class="form-group">
+                    <?php //$type = 'Insight\Entities\ItemRequest'; ?>
+                    <?php //$id = $item_request['id']; ?>
+                    <?php /*<?php echo $__env->make('comments._form', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>*/ ?>
+                </div>
+
+
+
         </div>
     </div>
 

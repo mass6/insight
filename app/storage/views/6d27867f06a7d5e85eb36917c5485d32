@@ -21,12 +21,13 @@
             	<h4>Please fill the product details to create a new product cataloguing request.</h4>
             </div>
 
-            <?php /*<?php echo Form::open(['route' => 'catalogue.product-definitions.store', 'class' => 'form-horizontal form-groups-bordered', 'files' => true]); ?>*/ ?>
+<?php /*            <?php echo Form::open(['route' => 'catalogue.product-definitions.store', 'class' => 'form-horizontal form-groups-bordered', 'files' => true]); ?>*/ ?>
             <?php echo Form::open(['route' => 'catalogue.product-definitions.store', 'id' => 'rootwizard-2', 'name' => 'rootwizard-2', 'class' => 'form-wizard validate', 'files' => true]); ?>
 
 
                 <?php $submit = 'Submit'; ?>
-                <?php echo $__env->make('product-definitions._form-wizard', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+
+                <?php echo $__env->make('product-definitions._form-wizard-new', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
 
             <?php echo Form::close(); ?>
 

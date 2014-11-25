@@ -171,16 +171,38 @@
         <?php if($currentUser->hasAccess('cataloguing.*')): ?>
             <li class="auto-inherit-active-class <?php echo isActive('catalogue', 1, true); ?>">
                 <a href="#">
-                    <i class="entypo-ticket"></i>
+                    <i class="entypo-archive"></i>
                     <span>Product Cataloguing</span>
                 </a>
                 <ul>
-                    <li class="auto-inherit-active-class">
-                        <a href="<?php echo route('catalogue.product-definitions.index'); ?>">
-                            <i class="entypo-ticket"></i>
-                            <span>Products Cataloguing Requests</span>
+                <?php if($currentUser->hasAccess('cataloguing.products.add')): ?>
+                    <li class="auto-inherit-active-class <?php echo isActive('create', 3); ?>">
+                        <a href="<?php echo route('catalogue.product-definitions.create'); ?>">
+                            <i class="entypo-plus-squared"></i>
+                            <span>New Request</span>
                         </a>
                     </li>
+                <?php endif; ?>
+                    <li class="auto-inherit-active-class <?php echo isActive('myrequests', 3); ?>">
+                        <a href="<?php echo route('catalogue.product-definitions.queue'); ?>">
+                            <i class="entypo-inbox"></i>
+                            <span>My Requests Queue</span>
+                        </a>
+                    </li>
+                <?php if($currentUser->hasAccess('cataloguing.products.customer')): ?>
+                    <li class="auto-inherit-active-class <?php echo isActive('', 3); ?>">
+                        <a href="<?php echo route('catalogue.product-definitions.index'); ?>">
+                            <i class="entypo-doc-text"></i>
+                            <span>All Cataloguing Requests</span>
+                        </a>
+                    </li>
+                    <li class="auto-inherit-active-class <?php echo isActive('completed', 3); ?>">
+                        <a href="<?php echo route('catalogue.product-definitions.completed'); ?>">
+                            <i class="entypo-check"></i>
+                            <span>Completed Requests</span>
+                        </a>
+                    </li>
+                <?php endif; ?>
                 </ul>
             </li>
         <?php endif; ?>

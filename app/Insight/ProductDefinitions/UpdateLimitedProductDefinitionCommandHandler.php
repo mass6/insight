@@ -22,7 +22,8 @@ class UpdateLimitedProductDefinitionCommandHandler extends ProductDefinitionComm
         try
         {
             // serialize the attributes input array
-            $command->attributes = json_encode($command->attributes);
+            if(isset($command->attributes))
+                $command->attributes = json_encode($command->attributes);
             //$command->price = priceToInteger($command->price);
 
             $product = $this->productDefinitionRepository->updateLimited($command);

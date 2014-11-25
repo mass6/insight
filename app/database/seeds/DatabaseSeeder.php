@@ -13,6 +13,8 @@ class DatabaseSeeder extends Seeder {
     protected $seeders = [
         'GroupsTableSeeder',
         'CompaniesTableSeeder',
+        'SettingsTableSeeder',
+        'NotificationsTableSeeder',
         'UsersTableSeeder',
         'PermissionsTableSeeder',
         'ProductDefinitionStatusesTableSeeder',
@@ -26,11 +28,15 @@ class DatabaseSeeder extends Seeder {
      */
     public function run()
     {
+        // allow for mass assignment
         Eloquent::unguard();
 
-        $this->cleanDatabase();
+        DB::statement("SET foreign_key_checks = 0");
+
+        //$this->cleanDatabase();
 
         $this->seedDatabase();
+        DB::statement("SET foreign_key_checks = 1");
     }
 
     /**

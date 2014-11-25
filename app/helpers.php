@@ -54,6 +54,34 @@ function object_to_array($data)
     return $data;
 }
 
+function jsonToArray($jsonArray)
+{
+    if(isset($jsonArray))
+    {
+        $jsonArray = json_decode($jsonArray);
+
+        // final array to be returned
+        $attributes = array();
+
+        foreach ($jsonArray as $attribute)
+        {
+            // if only 1 index, add second blank index
+            if ( ! is_object($attribute)  ) {
+                $attribute = array($attribute => "");
+            }
+
+            foreach($attribute as $key => $val)
+            {
+                $attributes[] = array($key, $val);
+            }
+
+        }
+        return json_encode($attributes);
+    }
+    else
+        return false;
+}
+
 /**
  * Converts a price to integer for persisting to db
  *
@@ -63,4 +91,9 @@ function object_to_array($data)
 function priceToInteger($price)
 {
     return $price * 100;
+}
+
+function formatComment($comment)
+{
+    return strpos($comment,'||') ? substr($comment,0,strpos($comment,'||')) . '<blockquote>' . substr($comment,strpos($comment,'||') + 2) . '</blockquote>' : $comment;
 }

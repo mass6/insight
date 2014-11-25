@@ -10,19 +10,24 @@ use Log;
 
 class NewProductDefinitionForm extends FormValidator
 {
+    /**
+     * @var array
+     */
     protected $rules = [
         'company_id' => 'required|integer|exists:companies,id',
+        'supplier_id' => 'required|exists:companies,id',
         'name'  => 'required|max:120',
-        'category' => 'max:50',
-        'uom' => 'max:25',
-        'price' => 'numeric',
+        'category' => 'required|max:50',
+        'uom' => 'required|max:25',
+        'price' => 'required|numeric',
         'currency' => 'alpha|size:3',
         'description' => 'required|max:2000',
-        'short_description' => 'max:1000',
+        'short_description' => 'required|max:1000',
+        'image1' => 'required|image|max:512|mimes:jpg,jpeg,png,gif,bmp',
+        'image2' => 'image|max:512|mimes:jpg,jpeg,png,gif,bmp',
+        'image3' => 'image|max:512|mimes:jpg,jpeg,png,gif,bmp',
+        'image4' => 'image|max:512|mimes:jpg,jpeg,png,gif,bmp',
         'remarks' => 'max:1000',
-        'supplier_id' => 'exists:companies,id',
-        'assigned_user_id' => 'exists:users,id',
-        'status' => 'integer|min:1|max:7',
     ];
 
 
@@ -36,17 +41,17 @@ class NewProductDefinitionForm extends FormValidator
      */
     public function validate(array $formData)
     {
+        $formData = $this->addAttributesToFormData($formData);
 
         $this->validation = $this->validator->make(
-            $this->addImagesToFormData($formData),
+            //$this->addImagesToFormData($formData),
+            $formData,
             $this->compileRules($formData),
             $this->getValidationMessages()
         );
 
         if ($this->validation->fails())
         {
-            Log::info('validation failed');
-            Log::info($this->getValidationErrors());
             throw new FormValidationException('Validation failed', $this->getValidationErrors());
         }
 
@@ -59,18 +64,60 @@ class NewProductDefinitionForm extends FormValidator
      */
     protected function compileRules(array $formData)
     {
+        if(isset($formData['attributes_required']))
+            $this->addAttributeRules($formData['attributes']);
 
-        $rules = isset($formData['id']) ?
-            $this->ignoreCurrentId($formData['id']) :
-            $this->getValidationRules();
+            // Add Code rule to ensure the code is unique per company
+            $rules['code'] = 'required|unique:product_definitions,code,null,company_id,company_id,' . $formData['company_id'];
 
-        // Add Code rule to ensure the code is unique per company
-        $rules['code'] = 'required|unique:product_definitions,code,null,company_id,company_id,' . $formData['company_id'];
+            // collect and return all rules
+            $rules = $this->getValidationRules();
 
-        return $this->addImagesToRules($formData, $rules);
+
+        //return $this->addImagesToRules($formData, $rules);
+        return $rules;
 
     }
 
+    /**
+     * If the attributes array is present in the input array, iterate through the input array and add
+     * each index as an individual field to the input array
+     *
+     * @param $formData
+     * @return mixed
+     */
+    private function addAttributesToFormData($formData)
+    {
+        if(! empty($formData['attributes'])){
+            foreach($formData['attributes'] as $field => $value){
+                $formData[$field] = $value;
+            }
+        }
+        return $formData;
+
+    }
+    /**
+     * If attributes are present in the input array, adds them to the validation rules
+     *
+     * @param $attributes
+     */
+    private function addAttributeRules($attributes)
+    {
+        if (! empty($attributes)){
+            foreach ($attributes as $field => $value) {
+                $this->rules[$field] = 'required|max:200';
+            }
+//            Log::info('Rules : ');
+//            Log::info($this->rules);
+        }
+    }
+
+
+
+    /**
+     * @param $id
+     * @return array
+     */
     public function ignoreCurrentId($id)
     {
         $rules = $this->rules;
@@ -78,6 +125,11 @@ class NewProductDefinitionForm extends FormValidator
         return $rules;
     }
 
+    /**
+     * @param $formData
+     * @param $rules
+     * @return mixed
+     */
     protected function addImagesToRules($formData, $rules)
     {
         if (! is_null($formData['images']))
@@ -93,6 +145,10 @@ class NewProductDefinitionForm extends FormValidator
         return $rules;
     }
 
+    /**
+     * @param $formData
+     * @return mixed
+     */
     protected function addImagesToFormData($formData)
     {
         if (! is_null($formData['images']))
