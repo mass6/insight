@@ -1,6 +1,13 @@
 <?php $__env->startSection('content'); ?>
 
 <h1>Companies</h1>
+
+    <ul>
+        <li>currentUser - <?php echo $currentUser; ?></li>
+        <li>layout - <?php echo $layout; ?></li>
+        <li>layoutPath - <?php echo $layoutPath; ?></li>
+        <li>defaultLayout - <?php echo $defaultLayout; ?></li>
+    </ul>
     <p><?php echo link_to_route('admin.companies.create', 'Add new company', null, ['class' => 'btn btn-primary']); ?></p>
     <?php if($companies->count()): ?>
     <table  id="sample" class="display table table-striped table-bordered">

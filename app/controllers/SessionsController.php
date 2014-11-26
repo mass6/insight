@@ -53,6 +53,9 @@ class SessionsController extends \BaseController {
         {
             $user = Sentry::findUserById(1);
             Sentry::login($user, false);
+            Session::put([
+                'company' => $user->company
+            ]);
 
             return Redirect::home();
 

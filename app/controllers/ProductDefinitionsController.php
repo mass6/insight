@@ -7,6 +7,7 @@ use Insight\ProductDefinitions\AddNewProductDefinitionCommand;
 use Insight\ProductDefinitions\Forms\DraftProductDefinitionForm;
 use Insight\ProductDefinitions\Forms\NewProductDefinitionForm;
 use Insight\ProductDefinitions\Forms\SupplierDraftProductDefinitionForm;
+use Insight\ProductDefinitions\Forms\SupplierUpdateProductDefinitionForm;
 use Insight\ProductDefinitions\Forms\UpdateLimitedProductDefinitionForm;
 use Insight\ProductDefinitions\Forms\UpdateProductDefinitionForm;
 use Insight\ProductDefinitions\ProductDefinitionRepository;
@@ -57,15 +58,21 @@ class ProductDefinitionsController extends \BaseController {
      * @var SupplierDraftProductDefinitionForm
      */
     private $supplierDraftProductDefinitionForm;
+    /**
+     * @var SupplierUpdateProductDefinitionForm
+     */
+    private $supplierUpdateProductDefinitionForm;
+
 
     /**
      * @param ProductDefinitionRepository $productDefinitionRepository
      * @param CompanyRepository $companyRepository
-     * @param DraftProductDefinitionForm $draftProductDefinitionForm
-     * @param SupplierDraftProductDefinitionForm $supplierDraftProductDefinitionForm
      * @param NewProductDefinitionForm $newProductDefinitionForm
      * @param UpdateProductDefinitionForm $updateProductDefinitionForm
+     * @param DraftProductDefinitionForm $draftProductDefinitionForm
+     * @param SupplierDraftProductDefinitionForm $supplierDraftProductDefinitionForm
      * @param UpdateLimitedProductDefinitionForm $updateLimitedProductDefinitionForm
+     * @param SupplierUpdateProductDefinitionForm $supplierUpdateProductDefinitionForm
      */
     public function __construct(
         ProductDefinitionRepository $productDefinitionRepository,
@@ -74,7 +81,8 @@ class ProductDefinitionsController extends \BaseController {
         UpdateProductDefinitionForm $updateProductDefinitionForm,
         DraftProductDefinitionForm $draftProductDefinitionForm,
         SupplierDraftProductDefinitionForm $supplierDraftProductDefinitionForm,
-        UpdateLimitedProductDefinitionForm $updateLimitedProductDefinitionForm
+        UpdateLimitedProductDefinitionForm $updateLimitedProductDefinitionForm,
+        SupplierUpdateProductDefinitionForm $supplierUpdateProductDefinitionForm
     )
     {
         $this->beforeFilter(function()
@@ -91,6 +99,7 @@ class ProductDefinitionsController extends \BaseController {
         $this->updateLimitedProductDefinitionForm = $updateLimitedProductDefinitionForm;
         $this->draftProductDefinitionForm = $draftProductDefinitionForm;
         $this->supplierDraftProductDefinitionForm = $supplierDraftProductDefinitionForm;
+        $this->supplierUpdateProductDefinitionForm = $supplierUpdateProductDefinitionForm;
     }
 
     /**
@@ -244,12 +253,14 @@ class ProductDefinitionsController extends \BaseController {
         $input['attachments'] = Input::file('attachments');
         $input['remarks'] = $input['remarks'] . $input['message'];
 
-        if($input['action'] === 'save' || $input['action'] === 'assign-to-customer' || $formType === 'limited')
-        $this->draftProductDefinitionForm->validate($input);
-    elseif($input['action'] === 'assign-to-supplier')
-        $this->supplierDraftProductDefinitionForm->validate($input);
-    else
-        $this->updateProductDefinitionForm->validate($input);
+        if($input['action'] === 'save' || $input['action'] === 'assign-to-customer')
+            $this->draftProductDefinitionForm->validate($input);
+        elseif($input['action'] === 'assign-to-supplier')
+            $this->supplierDraftProductDefinitionForm->validate($input);
+        elseif($formType === 'limited' && $input['action'] === 'submit')
+            $this->supplierUpdateProductDefinitionForm->validate($input);
+        else
+            $this->supplierUpdateProductDefinitionForm->validate($input);
 //        $input['form-type'] === 'full'
 //            ? $this->updateProductDefinitionForm->validate($input)
 //            : $this->updateLimitedProductDefinitionForm->validate($input);

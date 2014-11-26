@@ -124,26 +124,9 @@
 		<div class="tab-pane" id="tab2-2">
 
             <div class="row">
-                <h3>Product Description</h3>
+                <h2>Product Description <small>(see example) &rightarrow;</small> <a href="{{URL::asset('images/product-description-sample.png')}}" target="_blank"><img src="{{URL::asset('images/product-description-sample.png')}}" width="70" style="border:1px solid #DDDDDD;"></a></h2>
                 <br />
                 <br />
-            </div>
-
-            <div class="well">
-                {{ $errors->first('description', '<span class="label label-danger">:message</span>') }}
-                <h3>Full Description</h3>
-                <div class="row">
-
-                    <div class="col-md-12">
-                        <div class="form-group">
-                            <p>Here is where you list the full product details. Be as descriptive as possible. Format the description as you wish it to appear on the portal.</p>
-                            <textarea class="form-control ckeditor" name="description" id="description">{{{ Input::old('description') ? Input::old('description') : '' }}}</textarea>
-
-                        </div>
-                    </div>
-
-                </div>
-
             </div>
 
             <div class="well">
@@ -153,13 +136,31 @@
 
                     <div class="col-md-12">
                         <div class="form-group">
-                            <p>Provide a short one or two line description.</p>
+                            <p style="font-size: 16px;" class="text text-info">Provide a short one or two line produc description.</p>
                             <textarea class="form-control" name="short_description" id="short_description" rows="5" placeholder="Short summary of the product">{{{ Input::old('short_description') ? Input::old('short_description') : '' }}}</textarea>
                         </div>
                     </div>
 
                 </div>
             </div>
+
+            <div class="well">
+                {{ $errors->first('description', '<span class="label label-danger">:message</span>') }}
+                <h3>Full Description</h3>
+                <div class="row">
+
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <p style="font-size: 16px;" class="text text-info">Here is where you list the full product details. Be as descriptive as possible. Format the description as you wish it to appear on the portal.</p>
+                            <textarea class="form-control ckeditor" name="description" id="description">{{{ Input::old('description') ? Input::old('description') : '' }}}</textarea>
+
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
 
 
 		</div>
