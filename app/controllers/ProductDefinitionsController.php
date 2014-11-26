@@ -186,7 +186,13 @@ class ProductDefinitionsController extends \BaseController {
     public function show($id)
     {
         $product = $this->productDefinitionRepository->findWithComments($id);
-        return View::make('product-definitions.show', compact('product'));
+        $attributes = object_to_array(json_decode($product->attributes));
+
+        if($product->customer->settings()->getProductDefinitionTemplate)
+        {
+            $customAttributes = $product->customer->settings()->ProductDefinitionTemplate;
+        }
+        return View::make('product-definitions.show', compact('product', 'attributes', 'customAttributes'));
     }
 
     /**
@@ -201,7 +207,7 @@ class ProductDefinitionsController extends \BaseController {
 
         if($product->assigned_user_id !== $this->user->id && !$this->user->hasAccess('cataloguing.products.admin'))
         {
-            Flash::error("Product is currently assigned to another user.");
+            Flash::error("Product is currently assigned to {$product->assignedTo->name()} and is locked for editing.");
             return Redirect::back();
         }
 

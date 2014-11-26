@@ -1,11 +1,54 @@
 @extends($layout)
 
+@section('links')
+    @parent
+    <link rel="stylesheet" type="text/css" href="{{ URL::asset('js/datatables/css/jquery.dataTables.css') }}">
+    {{--<link rel="stylesheet" type="text/css" href="//cdn.datatables.net/plug-ins/28e7751dbec/integration/bootstrap/3/dataTables.bootstrap.css">--}}
+
+<script class="init" type="text/javascript">
+    $(document).ready(function() {
+        $('#datatable').dataTable({
+            "sPaginationType": "bootstrap",
+            "sDom": "<'row'<'col-xs-6 col-left'l><'col-xs-6 col-right'<'export-data'T>f>r>t<'row'<'col-xs-6 col-left'i><'col-xs-6 col-right'p>>",
+            "order": [[0, 'desc']],
+            "oTableTools": {
+                "sSwfPath": "js/datatables/copy_csv_xls_pdf.swf",
+                "aButtons": [
+                    "print",
+                    {
+                        "sExtends": "pdf",
+                        "sFileName": "completed-product-cataloguing-requests.pdf"
+                    },
+                    {
+                        "sExtends": "csv",
+                        "sFileName": "completed-product-cataloguing-requests.csv"
+                    },
+                    {
+                        "sExtends": "xls",
+                        "sFileName": "completed-product-cataloguing-requests.xls"
+                    }
+                ]
+            }
+        });
+    });
+</script>
+
+@stop
+
 @section('content')
 
+<a href="{{URL::route('catalogue.product-definitions.create')}}" class="pull-right">
+    <button type="button" class="btn btn-info btn-icon icon-left">
+        New Request
+        <i class="entypo-plus"></i>
+    </button>
+</a>
+
 <h1>Completed Product Cataloguing Requests</h1>
-    <p>{{ link_to_route('catalogue.product-definitions.create', 'New Request', null, ['class' => 'btn btn-primary']) }}</p>
+    <p class="text text-info">Below are all <strong>completed</strong> cataloguing requests.</p>
+    <br/>
     @if ($products->count())
-    <table  id="sample" class="display table table-striped table-bordered">
+    <table id="datatable" class="table table-striped table-bordered">
         <thead>
         <tr>
             <th>Customer</th>
@@ -15,7 +58,7 @@
             <th>Assigned To</th>
             <th>Status</th>
             <th>Updated</th>
-            <th width="130px">Actions</th>
+            <th width="90px">Options</th>
         </tr>
         </thead>
         <tbody>
@@ -28,10 +71,18 @@
             <td>{{ isset($product->assigned_user_id) ? $product->assignedTo->name() : '' }}</td>
             <td>{{ $product->statusName->name }}</td>
             <td>{{ $product->updated_at }}</td>
-            <td>{{ link_to_route('catalogue.product-definitions.edit', 'Edit', array($product->id), array('class' => 'btn btn-info pull-left')) }}
-                {{ Form::open(array('method' => 'DELETE', 'route' => array('admin.companies.destroy', $product->id))) }}
-                {{ Form::submit('Delete', array('class' => 'btn btn-danger pull-right', 'Onclick'=>'return confirm("Are you sure you want to delete this product?")')) }}
-                {{ Form::close() }}
+            <td>
+                <div class="btn-group">
+                    <button type="button" class="btn btn-primary">Options</button>
+                    <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+                        <i class="caret"></i>
+                    </button>
+
+                    <ul class="dropdown-menu dropdown-blue" role="menu">
+                        <li><a href="{{URL::route('catalogue.product-definitions.show', ['id' => $product->id])}}"><i class="entypo-right"></i>View</a>
+                        </li>
+                    </ul>
+                </div>
             </td>
         </tr>
         @endforeach
@@ -41,5 +92,8 @@
         {{ $products->links() }}
     </div>
     @endif
+
+
+@include('portal.partials._datatables')
 
 @stop

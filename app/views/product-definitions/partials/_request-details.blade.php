@@ -1,30 +1,23 @@
-<div id="request-details" class="row">
-    <div class="col-md-10 col-md-offset-1">
+<blockquote class="blockquote-default" style="padding: 0;margin: 0;border-left: 5px solid #eeeeee;">
+    <table class="request-details" style="margin-bottom: 0;font-size: 10px;padding: 3px;">
+        <tbody class="request-details">
+        <tr>
+            <td width="80">Created By:</td>
+            <td width="180"><strong>{{ $product->createdBy->name() }}</strong></td>
+            <td width="80">Updated by:</td>
+            <td width="180"><strong>{{ $product->updatedBy->name() }}</strong></td>
+            <td width="80">Assigned to:</td>
+            <td width="180"><strong>{{ $product->assignedTo->name() }}</strong></td>
+        </tr>
+        <tr>
+            <td width="70">Created on:</td>
+            <td width="180">{{ $product->created_at->format('d-m-Y') }}</td>
+            <td width="70">Updated on:</td>
+            <td width="180">{{ $product->updated_at->format('d-m-Y g:i:s A') }}</td>
+            <td width="70">Status:</td>
+            <td width="180"><strong><span class="text-info">{{ $product->statusName->name }}</span></strong></td>
 
-
-        <blockquote class="blockquote-default" style="padding: 0;margin: 0;border-left: 5px solid #eeeeee;">
-            <table class="table" style="margin-bottom: 0;">
-                <tbody>
-                <tr>
-                    <td width="90">Created By:</td>
-                    <td width="200">{{ $product->createdBy->name() }}</td>
-                    <td width="90">Updated by:</td>
-                    <td width="200">{{ $product->updatedBy->name() }}</td>
-                    <td width="90">Assigned to:</td>
-                    <td>{{ $product->assignedTo->name() }}</td>
-                </tr>
-                <tr>
-                    <td width="90">Created on:</td>
-                    <td width="200">{{ $product->created_at }}</td>
-                    <td width="90">Updated on:</td>
-                    <td width="200">{{ $product->updated_at }}</td>
-                    <td width="90">Status:</td>
-                    <td>{{ $product->statusName->name }}</td>
-
-                </tr>
-                </tbody>
-            </table>
-        </blockquote>
-
-    </div>
-</div>
+        </tr>
+        </tbody>
+    </table>
+</blockquote>

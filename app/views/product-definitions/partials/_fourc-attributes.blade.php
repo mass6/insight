@@ -270,14 +270,14 @@
                                     <div class="form-group">
                                         {{Form::label('Shelf Life (months)')}}
                                         {{Form::hidden('attribute-name24', 'Shelf Life')}}
-                                        <input id="attribute-value24" name="attribute-value24" data-validate="number" class="form-control" placeholder="From order to loading date">
+                                        <input id="attribute-value24" name="attribute-value24" data-validate="number" class="form-control" placeholder="">
                                     </div>
                                 </div>
                                 <div class="col-md-3">
                                     <div class="form-group">
                                         {{Form::label('Storage Conditions')}}
                                         {{Form::hidden('attribute-name25', 'Storage Conditions')}}
-                                        <input id="attribute-value25" name="attribute-value25" class="form-control" placeholder="From order to loading date">
+                                        <input id="attribute-value25" name="attribute-value25" class="form-control" placeholder="">
                                     </div>
                                 </div>
 
@@ -313,7 +313,7 @@
                                     </div>
                                 </div>
                                 <div class="col-md-3">
-                                    {{Form::label('Weight (individual): Net')}}
+                                    {{Form::label('Weight (individual): Gross')}}
                                     <div class="input-group">
                                         {{Form::hidden('attribute-name29', 'Weight Individual Gross')}}
                                         <div class="input-group-addon">Kg</div>

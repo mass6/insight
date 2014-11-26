@@ -136,7 +136,7 @@
 
                     <div class="col-md-12">
                         <div class="form-group">
-                            <p style="font-size: 16px;" class="text text-info">Provide a short one or two line produc description.</p>
+                            <p style="font-size: 16px;" class="text text-info">Provide a short one or two line product description.</p>
                             <textarea class="form-control" name="short_description" id="short_description" rows="5" placeholder="Short summary of the product">{{{ Input::old('short_description') ? Input::old('short_description') : '' }}}</textarea>
                         </div>
                     </div>

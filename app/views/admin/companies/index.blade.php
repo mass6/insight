@@ -3,13 +3,6 @@
 @section('content')
 
 <h1>Companies</h1>
-
-    <ul>
-        <li>currentUser - {{$currentUser}}</li>
-        <li>layout - {{$layout}}</li>
-        <li>layoutPath - {{$layoutPath }}</li>
-        <li>defaultLayout - {{ $defaultLayout }}</li>
-    </ul>
     <p>{{ link_to_route('admin.companies.create', 'Add new company', null, ['class' => 'btn btn-primary']) }}</p>
     @if ($companies->count())
     <table  id="sample" class="display table table-striped table-bordered">

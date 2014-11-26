@@ -173,14 +173,6 @@
                     <span>Product Cataloguing</span>
                 </a>
                 <ul>
-                @if($currentUser->hasAccess('cataloguing.products.add'))
-                    <li class="auto-inherit-active-class {{ isActive('create', 3) }}">
-                        <a href="{{ route('catalogue.product-definitions.create') }}">
-                            <i class="entypo-plus-squared"></i>
-                            <span>New Request</span>
-                        </a>
-                    </li>
-                @endif
                     <li class="auto-inherit-active-class {{ isActive('myrequests', 3) }}">
                         <a href="{{ route('catalogue.product-definitions.queue') }}">
                             <i class="entypo-inbox"></i>
@@ -198,6 +190,14 @@
                         <a href="{{ route('catalogue.product-definitions.completed') }}">
                             <i class="entypo-check"></i>
                             <span>Completed Requests</span>
+                        </a>
+                    </li>
+                @endif
+                @if($currentUser->hasAccess('cataloguing.products.add'))
+                    <li class="auto-inherit-active-class {{ isActive('create', 3) }}">
+                        <a href="{{ route('catalogue.product-definitions.create') }}">
+                            <i class="entypo-plus-squared"></i>
+                            <span>New Request</span>
                         </a>
                     </li>
                 @endif

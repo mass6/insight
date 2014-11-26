@@ -47,8 +47,11 @@
     <hr/>
 
     {{-- Prodct Details Block --}}
-    @include('product-definitions.partials._request-details')
-
+    <div id="request-details" class="row">
+        <div class="col-md-8 col-md-offset-1">
+            @include('product-definitions.partials._request-details')
+        </div>
+    </div>
 	<div class="tab-content">
 		<div class="tab-pane active" id="tab2-1">
 
@@ -114,7 +117,7 @@
 
                     <div class="col-md-12">
                         <div class="form-group">
-                            <p style="font-size: 16px;" class="text text-info">Provide a short one or two line produc description.</p>
+                            <p style="font-size: 16px;" class="text text-info">Provide a short one or two line product description.</p>
                             <textarea class="form-control" name="short_description" id="short_description">{{{ Input::old('short_description') ? Input::old('short_description') : (isset($product) ? $product->short_description : '') }}}</textarea>
                         </div>
                     </div>
