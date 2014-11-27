@@ -290,7 +290,11 @@ class ProductDefinitionsController extends \BaseController {
 
         Flash::success("Product ( {$product->code} : {$product->name} ) was successfully updated.");
 
+        if($input['action'] === 'save')
+            return Redirect::back();
+
         return Redirect::route('catalogue.product-definitions.index');
+
     }
 
 

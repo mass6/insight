@@ -55,6 +55,9 @@
 	<div class="tab-content">
 		<div class="tab-pane active" id="tab2-1">
 
+        {{ link_to_route('catalogue.product-definitions.index', 'Cancel', null, array('class'=>'btn btn-danger pull-right', 'style' => 'margin-left:10px;')) }}
+        <button id="save" type="submit" class="save btn btn-info pull-right">Save</button>
+
 		<div class="row">
             <h3>Basic Product Information</h3>
             <br />
@@ -105,6 +108,9 @@
 
 		<div class="tab-pane" id="tab2-2">
 
+            {{ link_to_route('catalogue.product-definitions.index', 'Cancel', null, array('class'=>'btn btn-danger pull-right', 'style' => 'margin-left:10px;')) }}
+            <button id="save" type="submit" class="save btn btn-info pull-right">Save</button>
+
             <div class="row">
                 <h2>Product Description <small>(see example) &rightarrow;</small> <a href="{{URL::asset('images/product-description-sample.png')}}" target="_blank"><img src="{{URL::asset('images/product-description-sample.png')}}" width="70" style="border:1px solid #DDDDDD;"></a></h2>
                 <br />
@@ -142,6 +148,9 @@
 		</div>
 
 		<div class="tab-pane" id="tab2-3">
+
+            {{ link_to_route('catalogue.product-definitions.index', 'Cancel', null, array('class'=>'btn btn-danger pull-right', 'style' => 'margin-left:10px;')) }}
+            <button id="save" type="submit" class="save btn btn-info pull-right">Save</button>
 
             <div class="row">
                 <h3>Product Photos <small>512Kb max file size per photo</small></h3>
@@ -266,6 +275,9 @@
 
 		<div class="tab-pane" id="tab2-4">
 
+            {{ link_to_route('catalogue.product-definitions.index', 'Cancel', null, array('class'=>'btn btn-danger pull-right', 'style' => 'margin-left:10px;')) }}
+            <button id="save" type="submit" class="save btn btn-info pull-right">Save</button>
+
 			<div class="row">
                 <h3>File Attachments</h3>
                 <br />
@@ -314,6 +326,9 @@
 
 		<div class="tab-pane" id="tab2-5">
 
+            {{ link_to_route('catalogue.product-definitions.index', 'Cancel', null, array('class'=>'btn btn-danger pull-right', 'style' => 'margin-left:10px;')) }}
+            <button id="save" type="submit" class="save btn btn-info pull-right">Save</button>
+
 			<div class="row">
                 <h3>Product Attributes</h3>
                 <br />
@@ -336,6 +351,9 @@
 		</div>
 
 		<div class="tab-pane" id="tab2-6">
+
+		    {{ link_to_route('catalogue.product-definitions.index', 'Cancel', null, array('class'=>'btn btn-danger pull-right', 'style' => 'margin-left:10px;')) }}
+            <button id="save" type="submit" class="save btn btn-info pull-right">Save</button>
 
 			<div class="row">
                 <h3>Review & Assign</h3>
@@ -377,7 +395,6 @@
                     <div class="form-group">
                         {{-- if status is Draft --}}
                         @if($product->status === 1)
-                            <button id="save" type="submit" class="btn btn-info">Save Draft</button>
                             @if($user->hasAccess('cataloguing.products.submit'))
                                 <button id="submit" type="submit" class="btn btn-primary">Submit Now</button>
                             @endif
@@ -485,7 +502,12 @@
     $('#save').click(function(){
         $("#action").val('save');
         $("#status").val(1);
-    })
+    });
+
+    $('.save.btn.btn-info.pull-right').click(function(){
+        $("#action").val('save');
+        $("#status").val("<?php echo $product->status; ?>");
+    });
 
     $('#assign-to-customer').click(function(){
         $("#action").val('assign-to-customer');
