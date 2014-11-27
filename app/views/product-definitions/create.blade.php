@@ -1,10 +1,5 @@
 @extends($layout)
 
-@section('links')
-    @parent
-    <link rel="stylesheet" type="text/css" href="{{ URL::asset('js/bootstrap-tour/build/css/bootstrap-tour.min.css') }}">
-@stop
-
 @section('content')
 
 <div class="container">

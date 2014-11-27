@@ -48,7 +48,7 @@
                                     <div class="form-group">
                                         {{Form::label('Country of Manufacture')}}
                                         {{Form::hidden('attribute-name4', 'Country of Manufacture')}}
-                                        <input id="attribute-value4" name="attribute-value4" class="form-control" placeholder="">
+                                        {{Form::select('attribute-value4', getCountries(), null, ['class'=>'form-control', 'id'=>'attribute-value4']) }}
                                     </div>
                                 </div>
                                 <div class="col-md-3">
@@ -275,9 +275,14 @@
                                 </div>
                                 <div class="col-md-3">
                                     <div class="form-group">
-                                        {{Form::label('Storage Conditions')}}
-                                        {{Form::hidden('attribute-name25', 'Storage Conditions')}}
-                                        <input id="attribute-value25" name="attribute-value25" class="form-control" placeholder="Ambient, Chilled, Frozen">
+                                        {{Form::label('Storage Condition')}}
+                                        {{Form::hidden('attribute-name25', 'Storage Condition')}}
+                                        <select id="attribute-value25" name="attribute-value25" class="form-control">
+                                            <option value="Ambient">Ambient</option>
+                                            <option value="Chilled">Chilled</option>
+                                            <option value="Frozen">Frozen</option>
+                                            <option value="Non-food">Non-food</option>
+                                        </select>
                                     </div>
                                 </div>
 

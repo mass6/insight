@@ -918,4 +918,3 @@
 <script src="{{ URL::asset('js/bootstrap-datepicker.js') }}"></script>
 <script src="{{ URL::asset('js/bootstrap-switch.js') }}"></script>
 <script src="{{ URL::asset('js/jquery.multi-select.js') }}"></script>
-<script src="{{ URL::asset('js/bootstrap-tour/build/js/bootstrap-tour.min.js') }}"></script>
