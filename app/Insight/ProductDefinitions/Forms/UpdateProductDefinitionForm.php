@@ -20,10 +20,10 @@ class UpdateProductDefinitionForm extends FormValidator
         'price' => 'required|numeric',
         'currency' => 'alpha|size:3',
         'description' => 'required|max:2000',
-        'image1' => 'required|image|max:512|mimes:jpg,jpeg,png,gif,bmp',
-        'image2' => 'image|max:512|mimes:jpg,jpeg,png,gif,bmp',
-        'image3' => 'image|max:512|mimes:jpg,jpeg,png,gif,bmp',
-        'image4' => 'image|max:512|mimes:jpg,jpeg,png,gif,bmp',
+        'image1' => 'required|image|max:1024|mimes:jpg,jpeg,png,gif,bmp,gif',
+        'image2' => 'image|max:1024|mimes:jpg,jpeg,png,gif,bmp,gif',
+        'image3' => 'image|max:1024|mimes:jpg,jpeg,png,gif,bmp,gif',
+        'image4' => 'image|max:1024|mimes:jpg,jpeg,png,gif,bmp,gif',
         'short_description' => 'required|max:1000',
         'remarks' => 'max:1000',
         'supplier_id' => 'required|exists:companies,id',
@@ -67,7 +67,7 @@ class UpdateProductDefinitionForm extends FormValidator
     {
 
         if($formData['existing_images'])
-            $this->rules['image1'] = 'image|max:512|mimes:jpg,jpeg,png,gif,bmp';
+            $this->rules['image1'] = 'image|max:1024|mimes:jpg,jpeg,png,gif,bmp';
 
         // Ignore the unique code rule for request being updated
         $rules = $this->ignoreCurrentId($formData['id'], $formData['company_id']);

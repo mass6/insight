@@ -17,6 +17,10 @@ class UpdateLimitedProductDefinitionForm extends FormValidator
         'description' => 'max:2000',
         'short_description' => 'max:1000',
         'remarks' => 'max:1000',
+        'image1' => 'image|max:1024|mimes:jpg,jpeg,png,gif,bmp,gif',
+        'image2' => 'image|max:1024|mimes:jpg,jpeg,png,gif,bmp,gif',
+        'image3' => 'image|max:1024|mimes:jpg,jpeg,png,gif,bmp,gif',
+        'image4' => 'image|max:1024|mimes:jpg,jpeg,png,gif,bmp,gif',
         'assigned_user_id' => 'exists:users,id',
         'status' => 'integer|min:1|max:7',
     ];
@@ -92,7 +96,7 @@ class UpdateLimitedProductDefinitionForm extends FormValidator
             foreach ($formData['images'] as $image)
             {
                 $imageName = $image->getClientOriginalName();
-                $rules[$imageName] = 'image|max:512|mimes:jpg,jpeg,png';
+                $rules[$imageName] = 'image|max:1024|mimes:jpg,jpeg,png,bmp,gif';
             }
         }
         return $rules;

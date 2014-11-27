@@ -21,10 +21,10 @@ class DraftProductDefinitionForm extends FormValidator
         'price' => 'numeric',
         'currency' => 'alpha|size:3',
         'description' => 'max:2000',
-        'image1' => 'image|max:512|mimes:jpg,jpeg,png,gif,bmp',
-        'image2' => 'image|max:512|mimes:jpg,jpeg,png,gif,bmp',
-        'image3' => 'image|max:512|mimes:jpg,jpeg,png,gif,bmp',
-        'image4' => 'image|max:512|mimes:jpg,jpeg,png,gif,bmp',
+        'image1' => 'image|max:1024|mimes:jpg,jpeg,png,gif,bmp,gif',
+        'image2' => 'image|max:1024|mimes:jpg,jpeg,png,gif,bmp,gif',
+        'image3' => 'image|max:1024|mimes:jpg,jpeg,png,gif,bmp,gif',
+        'image4' => 'image|max:1024|mimes:jpg,jpeg,png,gif,bmp,gif',
         'short_description' => 'max:1000',
         'remarks' => 'max:1000',
         'supplier_id' => 'exists:companies,id',
@@ -140,7 +140,7 @@ class DraftProductDefinitionForm extends FormValidator
             {
                 if(! is_null($image)) {
                     $imageName = $image->getClientOriginalName();
-                    $rules[$imageName] = 'image|max:512|mimes:jpg,jpeg,png';
+                    $rules[$imageName] = 'image|max:1024|mimes:jpg,jpeg,png,bmp,gif';
                 }
             }
         }
