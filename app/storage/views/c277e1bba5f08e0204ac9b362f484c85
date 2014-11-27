@@ -15,7 +15,7 @@
     <br/>
     <?php /* Prodct Details Block */ ?>
     <div id="request-details" class="row">
-        <div class="col-md-8">
+        <div class="col-md-10">
             <?php echo $__env->make('product-definitions.partials._request-details', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
         </div>
     </div>
@@ -24,191 +24,192 @@
     <div class="row">
 
 
-            <div class="col-md-8">
+        <div class="col-md-10">
 
-                    <div class="tabs-vertical-env">
+                <div class="tabs-vertical-env">
 
-                        <ul class="nav tabs-vertical"><!-- available classes "right-aligned" -->
-                            <li class="active"><a href="#v-general" data-toggle="tab">General</a></li>
-                            <li><a href="#v-description" data-toggle="tab">Description</a></li>
-                            <li><a href="#v-media" data-toggle="tab">Media</a></li>
-                            <li><a href="#v-attributes" data-toggle="tab">Attributes</a></li>
-                            <li><a href="#v-history" data-toggle="tab">History & Comments</a></li>
-                        </ul>
+                    <ul class="nav tabs-vertical"><!-- available classes "right-aligned" -->
+                        <li class="active"><a href="#v-general" data-toggle="tab">General</a></li>
+                        <li><a href="#v-description" data-toggle="tab">Description</a></li>
+                        <li><a href="#v-media" data-toggle="tab">Media</a></li>
+                        <li><a href="#v-attributes" data-toggle="tab">Attributes</a></li>
+                        <li><a href="#v-history" data-toggle="tab">History & Comments</a></li>
+                    </ul>
 
-                        <div class="tab-content">
-                            <div class="tab-pane active" id="v-general">
-                                <div>
-                                    <table>
-                                        <tbody>
-                                            <tr>
-                                                <td width="150"><p><strong>Customer:</strong></p></td>
-                                                <td><p><?php echo $product->customer->name; ?></p></td>
-                                            </tr>
-                                            <tr>
-                                                <td width="150"><p><strong>Supplier:</strong></p></td>
-                                                <td><p><?php echo $product->supplier ? $product->supplier->name : ''; ?></p></td>
-                                            </tr>
-                                            <tr>
-                                                <td width="150"><p><strong>Product Code:</strong></p></td>
-                                                <td><p><?php echo $product->code; ?></p></td>
-                                            </tr>
-                                            <tr>
-                                                <td width="150"><p><strong>Product Name:</strong></p></td>
-                                                <td><p><?php echo $product->name; ?></p></td>
-                                            </tr>
-                                            <tr>
-                                                <td width="150"><p><strong>Category:</strong></p></td>
-                                                <td><p><?php echo $product->category; ?></p></td>
-                                            </tr>
-                                            <tr>
-                                                <td width="150"><p><strong>UOM:</strong></p></td>
-                                                <td><p><?php echo $product->uom; ?></p></td>
-                                            </tr>
-                                            <tr>
-                                                <td width="150"><p><strong>Price:</strong></p></td>
-                                                <td><p><?php echo $product->price; ?></p></td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-
+                    <div class="tab-content">
+                        <div class="tab-pane active" id="v-general">
+                            <div>
+                                <table>
+                                    <tbody>
+                                        <tr>
+                                            <td width="150"><p><strong>Customer:</strong></p></td>
+                                            <td><p><?php echo $product->customer->name; ?></p></td>
+                                        </tr>
+                                        <tr>
+                                            <td width="150"><p><strong>Supplier:</strong></p></td>
+                                            <td><p><?php echo $product->supplier ? $product->supplier->name : ''; ?></p></td>
+                                        </tr>
+                                        <tr>
+                                            <td width="150"><p><strong>Product Code:</strong></p></td>
+                                            <td><p><?php echo $product->code; ?></p></td>
+                                        </tr>
+                                        <tr>
+                                            <td width="150"><p><strong>Product Name:</strong></p></td>
+                                            <td><p><?php echo $product->name; ?></p></td>
+                                        </tr>
+                                        <tr>
+                                            <td width="150"><p><strong>Category:</strong></p></td>
+                                            <td><p><?php echo $product->category; ?></p></td>
+                                        </tr>
+                                        <tr>
+                                            <td width="150"><p><strong>UOM:</strong></p></td>
+                                            <td><p><?php echo $product->uom; ?></p></td>
+                                        </tr>
+                                        <tr>
+                                            <td width="150"><p><strong>Price:</strong></p></td>
+                                            <td><p><?php echo $product->price; ?></p></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
                             </div>
-                            <div class="tab-pane" id="v-description">
 
-                                <h4>Short Description</h4>
-                                <p><?php echo $product->short_description; ?></p>
-                                <hr/>
-                                <br/>
+                        </div>
+                        <div class="tab-pane" id="v-description">
 
-                                <h4>Full Description</h4>
-                                <p><?php echo $product->description; ?></p>
+                            <h4>Short Description</h4>
+                            <p><?php echo $product->short_description; ?></p>
+                            <hr/>
+                            <br/>
 
-
-
-
-                            </div>
-                            <div class="tab-pane" id="v-media">
-
-                                <!-- Images -->
-                                <?php if($product->images): ?>
-                                    <div class="gallery-env">
-
-                                        <h4>Product Images</h4>
-
-                                        <div class="row">
-                                                 <?php foreach($product->images as $image): ?>
-                                                    <div class="col-sm-2 col-xs-4" data-tag="1d">
-                                                        <article class="image-thumb">
-                                                            <a href="<?php echo $image->image->url(); ?>" class="image" target="_blank">
-                                                                <img src="<?php echo $image->image->url('thumb'); ?>"/>
-                                                            </a>
-                                                        </article>
-                                                    </div>
-                                                <?php endforeach; ?>
-                                        </div>
-
-                                    </div>
-                                    <hr />
-                                <?php endif; ?>
+                            <h4>Full Description</h4>
+                            <p><?php echo $product->description; ?></p>
 
 
-                                <!-- Attachments -->
-                                <?php if($product->attachments): ?>
 
-                                    <h4>Attachments</h4>
+
+                        </div>
+                        <div class="tab-pane" id="v-media">
+
+                            <!-- Images -->
+                            <?php if($product->images): ?>
+                                <div class="gallery-env">
+
+                                    <h4>Product Images</h4>
 
                                     <div class="row">
-                                        <ul>
-                                             <?php foreach($product->attachments as $attachment): ?>
-                                                <li>
-                                                    <a href="<?php echo $attachment->attachment->url(); ?>" target="_blank">
-                                                        <?php echo $attachment->attachment->originalFilename(); ?>
-
-                                                    </a>
-                                                </li>
+                                             <?php foreach($product->images as $image): ?>
+                                                <div class="col-sm-2 col-xs-4" data-tag="1d">
+                                                    <article class="image-thumb">
+                                                        <a href="<?php echo $image->image->url(); ?>" class="image" target="_blank">
+                                                            <img src="<?php echo $image->image->url('thumb'); ?>"/>
+                                                        </a>
+                                                    </article>
+                                                </div>
                                             <?php endforeach; ?>
-                                        </ul>
                                     </div>
-                                <?php endif; ?>
+
+                                </div>
+                                <hr />
+                            <?php endif; ?>
+
+
+                            <!-- Attachments -->
+                            <?php if($product->attachments): ?>
+
+                                <h4>Attachments</h4>
+
+                                <div class="row">
+                                    <ul>
+                                         <?php foreach($product->attachments as $attachment): ?>
+                                            <li>
+                                                <a href="<?php echo $attachment->attachment->url(); ?>" target="_blank">
+                                                    <?php echo $attachment->attachment->originalFilename(); ?>
+
+                                                </a>
+                                            </li>
+                                        <?php endforeach; ?>
+                                    </ul>
+                                </div>
+                            <?php endif; ?>
 
 
 
-                            </div>
-                            <div class="tab-pane" id="v-attributes">
-                                    <?php if($attributes): ?>
+                        </div>
+                        <div class="tab-pane" id="v-attributes">
+                                <?php if($attributes): ?>
 
-                                        <?php if($customAttributes): ?>
-                                            <?php echo $__env->make('product-definitions.partials._' . $customAttributes . '-attributes', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
-                                        <?php else: ?>
+                                    <?php if($customAttributes): ?>
+                                        <?php echo $__env->make('product-definitions.partials._' . $customAttributes . '-attributes-data', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+                                    <?php else: ?>
 
 
-                                            <table>
-                                                <tbody>
-                                                <?php foreach($attributes as $key => $val): ?>
-                                                    <tr>
-                                                        <td width="150"><p><strong><?php echo $key; ?>:</strong></p></td>
-                                                        <td><p><?php echo $val; ?></p></td>
-                                                    </tr>
-                                                <?php endforeach; ?>
-                                                </tbody>
-                                            </table>
-                                        <?php endif; ?>
-
+                                        <table>
+                                            <tbody>
+                                            <?php foreach($attributes as $key => $val): ?>
+                                                <tr>
+                                                    <td width="150"><p><strong><?php echo $key; ?>:</strong></p></td>
+                                                    <td><p><?php echo $val; ?></p></td>
+                                                </tr>
+                                            <?php endforeach; ?>
+                                            </tbody>
+                                        </table>
                                     <?php endif; ?>
 
-                            </div>
-                            <div class="tab-pane" id="v-history">
-
-
-                                <!-- Comments -->
-                                <h4 class="">History</h4>
-                                <br/>
-                                <?php if(Session::has('comment_message')): ?>
-                                <div class="row alert <?php echo Session::get('success') ? 'alert-success' : 'alert-danger'; ?> clearfix" data-dismiss="alert">
-                                    <?php echo Session::get('comment_message'); ?>
-
-                                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-                                </div>
                                 <?php endif; ?>
 
-                                <?php foreach($product->comments as $comment): ?>
-                                <div class="row">
-                                    <div class="col-sm-2">
-                                        <a href="#" class="profile-picture">
-                                            <img src="<?php echo $comment->user->profile ? $comment->user->profile->avatar->url('thumb') : URL::asset('images/user.jpeg'); ?>" class="img-responsive img-circle" />
-                                        </a>
-                                    </div>
-                                    <div class="col-sm-6">
-                                        <h5><?php echo $comment->user->name() .' on ' . $comment->created_at; ?></h5>
-                                        <p><?php echo formatComment($comment->body); ?></p>
-                                    </div>
-                                </div>
-                                <hr/>
-                                <?php endforeach; ?>
-
-
-
-
-
-                            </div>
                         </div>
+                        <div class="tab-pane" id="v-history">
 
+
+                            <!-- Comments -->
+                            <h4 class="">History</h4>
+                            <br/>
+                            <?php if(Session::has('comment_message')): ?>
+                            <div class="row alert <?php echo Session::get('success') ? 'alert-success' : 'alert-danger'; ?> clearfix" data-dismiss="alert">
+                                <?php echo Session::get('comment_message'); ?>
+
+                                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                            </div>
+                            <?php endif; ?>
+
+                            <?php foreach($product->comments as $comment): ?>
+                            <div class="row">
+                                <div class="col-sm-2">
+                                    <a href="#" class="profile-picture">
+                                        <img src="<?php echo $comment->user->profile ? $comment->user->profile->avatar->url('thumb') : URL::asset('images/user.jpeg'); ?>" class="img-responsive img-circle" />
+                                    </a>
+                                </div>
+                                <div class="col-sm-6">
+                                    <h5><?php echo $comment->user->name() .' on ' . $comment->created_at; ?></h5>
+                                    <p><?php echo formatComment($comment->body); ?></p>
+                                </div>
+                            </div>
+                            <hr/>
+                            <?php endforeach; ?>
+
+
+
+
+
+                        </div>
                     </div>
 
                 </div>
 
-
             </div>
 
-    </div>
-
-    <div class="row">
-        <div class="col-sm-4">
-            <?php echo link_to_route('catalogue.product-definitions.index', 'Back', null, array('class'=>'btn btn-danger btn-sm')); ?>
 
         </div>
+
+        <div class="row">
+            <div class="col-sm-4">
+                <?php echo link_to_route('catalogue.product-definitions.index', 'Back', null, array('class'=>'btn btn-danger btn-sm')); ?>
+
+            </div>
+        </div>
+
     </div>
+
 
 
 

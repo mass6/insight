@@ -324,7 +324,7 @@
             </div>
 
             @if($customAttributes)
-                @include('product-definitions.partials._' . $customAttributes . '-attributes')
+                @include('product-definitions.partials._' . $customAttributes . '-attributes-form')
             @else
                 <input id="add-attribute" type="button" class="btn btn-success" value="+ add Attribute" > <span id="attribute-helper" style="display: none"><em>&leftarrow; Click to add more attributes</em></span><br/><br/>
 

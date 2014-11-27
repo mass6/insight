@@ -22,21 +22,21 @@
                                     <div class="form-group">
                                         {{Form::label('Brand')}}
                                         {{Form::hidden('attribute-name1', 'Brand')}}
-                                        <input id="attribute-value1" name="attribute-value1" class="form-control" placeholder="">
+                                        <input id="attribute-value1" name="attribute-value1" class="form-control" value="{{$attributes['Brand']}}" readonly>
                                     </div>
                                 </div>
                                 <div class="col-md-3">
                                     <div class="form-group">
                                         {{Form::label('HS Code')}}
                                         {{Form::hidden('attribute-name2', 'HS Code')}}
-                                        <input id="attribute-value2" name="attribute-value2" class="form-control" placeholder="">
+                                        <input id="attribute-value2" name="attribute-value2" class="form-control" value="{{$attributes['HS Code']}}" readonly>
                                     </div>
                                 </div>
                                 <div class="col-md-3">
                                     <div class="form-group">
                                         {{Form::label('Barcode Number')}}
                                         {{Form::hidden('attribute-name3', 'Barcode Number')}}
-                                        <input id="attribute-value3" name="attribute-value3" class="form-control" placeholder="">
+                                        <input id="attribute-value3" name="attribute-value3" class="form-control" value="{{$attributes['Barcode Number']}}" readonly>
                                     </div>
                                 </div>
 
@@ -48,14 +48,14 @@
                                     <div class="form-group">
                                         {{Form::label('Country of Manufacture')}}
                                         {{Form::hidden('attribute-name4', 'Country of Manufacture')}}
-                                        <input id="attribute-value4" name="attribute-value4" class="form-control" placeholder="">
+                                        <input id="attribute-value4" name="attribute-value4" class="form-control" value="{{$attributes['Country of Manufacture']}}" readonly>
                                     </div>
                                 </div>
                                 <div class="col-md-3">
                                     <div class="form-group">
                                         {{Form::label('Lead Time (days)')}}
                                         {{Form::hidden('attribute-name5', 'Lead Time')}}
-                                        <input id="attribute-value5" name="attribute-value5" class="form-control" placeholder="From order to loading date">
+                                        <input id="attribute-value5" name="attribute-value5" class="form-control" value="{{$attributes['Lead Time']}}" readonly>
                                     </div>
                                 </div>
 
@@ -79,9 +79,8 @@
                             <div class="row">
                                 <div class="col-md-12">
                                     <div class="form-group">
-                                        <p>Here is where you list the product ingredients. Be as detailed as possible.</p>
                                         {{Form::hidden('attribute-name6', 'Ingredients')}}
-                                        <textarea class="form-control" name="attribute-value6" id="attribute-value6"></textarea>
+                                        <textarea class="form-control" name="attribute-value6" id="attribute-value6" readonly>{{$attributes['Ingredients']}}</textarea>
                                     </div>
                                 </div>
                             </div>
@@ -99,7 +98,7 @@
                     </div>
                     <div id="collapseThree-2" class="panel-collapse collapse">
                         <div class="panel-body">
-                            <h5 class="text text-info">All quantities shall be specified per 100 gram serving.</h5>
+                            <h5 class="text text-info">All quantities are specified per 100 gram serving.</h5>
                             <br/>
 
                             <div class="row">
@@ -107,7 +106,7 @@
                                     {{Form::label('Calories')}}
                                     <div class="input-group">
                                         {{Form::hidden('attribute-name7', 'Calories')}}
-                                        <input id="attribute-value7" name="attribute-value7" class="form-control" placeholder="">
+                                        <input id="attribute-value7" name="attribute-value7" class="form-control" value="{{$attributes['Calories']}}" readonly>
                                         <div class="input-group-addon">g</div>
                                     </div>
                                 </div>
@@ -115,7 +114,7 @@
                                     {{Form::label('Calories From Fat')}}
                                     <div class="input-group">
                                         {{Form::hidden('attribute-name8', 'Calories From Fat')}}
-                                        <input id="attribute-value8" name="attribute-value8" class="form-control" placeholder="">
+                                        <input id="attribute-value8" name="attribute-value8" class="form-control" value="{{$attributes['Calories From Fat']}}" readonly>
                                         <div class="input-group-addon">g</div>
                                     </div>
                                 </div>
@@ -123,7 +122,7 @@
                                     {{Form::label('Total Fat')}}
                                     <div class="input-group">
                                         {{Form::hidden('attribute-name9', 'Total Fat')}}
-                                        <input id="attribute-value9" name="attribute-value9" class="form-control" placeholder="">
+                                        <input id="attribute-value9" name="attribute-value9" class="form-control" value="{{$attributes['Total Fat']}}" readonly>
                                         <div class="input-group-addon">g</div>
                                     </div>
                                 </div>
@@ -131,7 +130,7 @@
                                     {{Form::label('Saturated Fat')}}
                                     <div class="input-group">
                                         {{Form::hidden('attribute-name10', 'Saturated Fat')}}
-                                        <input id="attribute-value10" name="attribute-value10" class="form-control" placeholder="">
+                                        <input id="attribute-value10" name="attribute-value10" class="form-control" value="{{$attributes['Saturated Fat']}}" readonly>
                                         <div class="input-group-addon">g</div>
                                     </div>
                                 </div>
@@ -139,7 +138,7 @@
                                     {{Form::label('Trans Fat')}}
                                     <div class="input-group">
                                         {{Form::hidden('attribute-name11', 'Trans Fat')}}
-                                        <input id="attribute-value11" name="attribute-value11" class="form-control" placeholder="">
+                                        <input id="attribute-value11" name="attribute-value11" class="form-control" value="{{$attributes['Trans Fat']}}" readonly>
                                         <div class="input-group-addon">g</div>
                                     </div>
                                 </div>
@@ -147,7 +146,7 @@
                                     {{Form::label('Cholesterol')}}
                                     <div class="input-group">
                                         {{Form::hidden('attribute-name12', 'Cholesterol')}}
-                                        <input id="attribute-value12" name="attribute-value12" class="form-control" placeholder="">
+                                        <input id="attribute-value12" name="attribute-value12" class="form-control" value="{{$attributes['Cholesterol']}}" readonly>
                                         <div class="input-group-addon">g</div>
                                     </div>
                                 </div>
@@ -158,7 +157,7 @@
                                     {{Form::label('Sodium')}}
                                     <div class="input-group">
                                         {{Form::hidden('attribute-name13', 'Sodium')}}
-                                        <input id="attribute-value13" name="attribute-value13" class="form-control" placeholder="">
+                                        <input id="attribute-value13" name="attribute-value13" class="form-control" value="{{$attributes['Sodium']}}" readonly>
                                         <div class="input-group-addon">g</div>
                                     </div>
                                 </div>
@@ -166,7 +165,7 @@
                                     {{Form::label('Total Carbohydrates')}}
                                     <div class="input-group">
                                         {{Form::hidden('attribute-name14', 'Total Carbohydrates')}}
-                                        <input id="attribute-value14" name="attribute-value14" class="form-control" placeholder="">
+                                        <input id="attribute-value14" name="attribute-value14" class="form-control" value="{{$attributes['Total Carbohydrates']}}" readonly>
                                         <div class="input-group-addon">g</div>
                                     </div>
                                 </div>
@@ -174,7 +173,7 @@
                                     {{Form::label('Dietary Fiber')}}
                                     <div class="input-group">
                                         {{Form::hidden('attribute-name15', 'Dietary Fiber')}}
-                                        <input id="attribute-value15" name="attribute-value15" class="form-control" placeholder="">
+                                        <input id="attribute-value15" name="attribute-value15" class="form-control" value="{{$attributes['Dietary Fiber']}}" readonly>
                                         <div class="input-group-addon">g</div>
                                     </div>
                                 </div>
@@ -182,7 +181,7 @@
                                     {{Form::label('Sugars')}}
                                     <div class="input-group">
                                         {{Form::hidden('attribute-name16', 'Sugars')}}
-                                        <input id="attribute-value16" name="attribute-value16" class="form-control" placeholder="">
+                                        <input id="attribute-value16" name="attribute-value16" class="form-control" value="{{$attributes['Sugars']}}" readonly>
                                         <div class="input-group-addon">g</div>
                                     </div>
                                 </div>
@@ -190,7 +189,7 @@
                                     {{Form::label('Protein')}}
                                     <div class="input-group">
                                         {{Form::hidden('attribute-name17', 'Protein')}}
-                                        <input id="attribute-value17" name="attribute-value17" class="form-control" placeholder="">
+                                        <input id="attribute-value17" name="attribute-value17" class="form-control" value="{{$attributes['Protein']}}" readonly>
                                         <div class="input-group-addon">g</div>
                                     </div>
                                 </div>
@@ -203,7 +202,7 @@
                                     {{Form::label('Vitamin A')}}
                                     <div class="input-group">
                                         {{Form::hidden('attribute-name18', 'Vitamin A')}}
-                                        <input id="attribute-value18" name="attribute-value18" class="form-control" placeholder="">
+                                        <input id="attribute-value18" name="attribute-value18" class="form-control" value="{{$attributes['Vitamin A']}}" readonly>
                                         <div class="input-group-addon">%</div>
                                     </div>
                                 </div>
@@ -211,7 +210,7 @@
                                     {{Form::label('Vitamin C')}}
                                     <div class="input-group">
                                         {{Form::hidden('attribute-name19', 'Vitamin C')}}
-                                        <input id="attribute-value19" name="attribute-value19" class="form-control" placeholder="">
+                                        <input id="attribute-value19" name="attribute-value19" class="form-control" value="{{$attributes['Vitamin C']}}" readonly>
                                         <div class="input-group-addon">%</div>
                                     </div>
                                 </div>
@@ -219,7 +218,7 @@
                                     {{Form::label('Calcium')}}
                                     <div class="input-group">
                                         {{Form::hidden('attribute-name20', 'Calcium')}}
-                                        <input id="attribute-value20" name="attribute-value20" class="form-control" placeholder="">
+                                        <input id="attribute-value20" name="attribute-value20" class="form-control" value="{{$attributes['Calcium']}}" readonly>
                                         <div class="input-group-addon">%</div>
                                     </div>
                                 </div>
@@ -227,7 +226,7 @@
                                     {{Form::label('Iron')}}
                                     <div class="input-group">
                                         {{Form::hidden('attribute-name21', 'Iron')}}
-                                        <input id="attribute-value21" name="attribute-value21" class="form-control" placeholder="">
+                                        <input id="attribute-value21" name="attribute-value21" class="form-control" value="{{$attributes['Iron']}}" readonly>
                                         <div class="input-group-addon">%</div>
                                     </div>
                                 </div>
@@ -256,28 +255,28 @@
                                     <div class="form-group">
                                         {{Form::label('Packaging')}}
                                         {{Form::hidden('attribute-name22', 'Packaging')}}
-                                        <input id="attribute-value22" name="attribute-value22" class="form-control" placeholder="">
+                                        <input id="attribute-value22" name="attribute-value22" class="form-control" value="{{$attributes['Packaging']}}" readonly>
                                     </div>
                                 </div>
                                 <div class="col-md-3">
                                     <div class="form-group">
                                         {{Form::label('Packaging Type')}}
                                         {{Form::hidden('attribute-name23', 'Packaging Type')}}
-                                        <input id="attribute-value23" name="attribute-value23" class="form-control" placeholder="From order to loading date">
+                                        <input id="attribute-value23" name="attribute-value23" class="form-control" value="{{$attributes['Packaging Type']}}" readonly>
                                     </div>
                                 </div>
                                 <div class="col-md-3">
                                     <div class="form-group">
                                         {{Form::label('Shelf Life (months)')}}
                                         {{Form::hidden('attribute-name24', 'Shelf Life')}}
-                                        <input id="attribute-value24" name="attribute-value24" data-validate="number" class="form-control" placeholder="">
+                                        <input id="attribute-value24" name="attribute-value24" data-validate="number" class="form-control" value="{{$attributes['Shelf Life']}}" readonly>
                                     </div>
                                 </div>
                                 <div class="col-md-3">
                                     <div class="form-group">
                                         {{Form::label('Storage Conditions')}}
                                         {{Form::hidden('attribute-name25', 'Storage Conditions')}}
-                                        <input id="attribute-value25" name="attribute-value25" class="form-control" placeholder="">
+                                        <input id="attribute-value25" name="attribute-value25" class="form-control" value="{{$attributes['Storage Conditions']}}" readonly>
                                     </div>
                                 </div>
 
@@ -290,7 +289,7 @@
                                     <div class="input-group">
                                         {{Form::hidden('attribute-name26', 'Weight Case Net')}}
                                         <div class="input-group-addon">Kg</div>
-                                        <input id="attribute-value26" name="attribute-value26" class="form-control" placeholder="">
+                                        <input id="attribute-value26" name="attribute-value26" class="form-control" value="{{$attributes['Weight Case Net']}}" readonly>
                                     </div>
                                 </div>
                                 <div class="col-md-3">
@@ -298,7 +297,7 @@
                                     <div class="input-group">
                                         {{Form::hidden('attribute-name27', 'Weight Case Gross')}}
                                         <div class="input-group-addon">Kg</div>
-                                        <input id="attribute-value27" name="attribute-value27" class="form-control" placeholder="">
+                                        <input id="attribute-value27" name="attribute-value27" class="form-control" value="{{$attributes['Weight Case Gross']}}" readonly>
                                     </div>
                                 </div>
                             </div>
@@ -309,7 +308,7 @@
                                     <div class="input-group">
                                         {{Form::hidden('attribute-name28', 'Weight Individual Net')}}
                                         <div class="input-group-addon">g</div>
-                                        <input id="attribute-value28" name="attribute-value28" class="form-control" placeholder="">
+                                        <input id="attribute-value28" name="attribute-value28" class="form-control" value="{{$attributes['Weight Individual Net']}}" readonly>
                                     </div>
                                 </div>
                                 <div class="col-md-3">
@@ -317,7 +316,7 @@
                                     <div class="input-group">
                                         {{Form::hidden('attribute-name29', 'Weight Individual Gross')}}
                                         <div class="input-group-addon">Kg</div>
-                                        <input id="attribute-value29" name="attribute-value29" class="form-control" placeholder="">
+                                        <input id="attribute-value29" name="attribute-value29" class="form-control" value="{{$attributes['Weight Individual Gross']}}" readonly>
                                     </div>
                                 </div>
                                 <div class="col-md-3">
@@ -325,7 +324,7 @@
                                     <div class="input-group">
                                         {{Form::hidden('attribute-name30', 'Weight Individual Drain')}}
                                         <div class="input-group-addon">Kg</div>
-                                        <input id="attribute-value30" name="attribute-value30" class="form-control" placeholder="">
+                                        <input id="attribute-value30" name="attribute-value30" class="form-control" value="{{$attributes['Weight Individual Drain']}}" readonly>
                                     </div>
                                 </div>
 
