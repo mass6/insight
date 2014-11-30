@@ -278,6 +278,7 @@
                                         {{Form::label('Storage Condition')}}
                                         {{Form::hidden('attribute-name25', 'Storage Condition')}}
                                         <select id="attribute-value25" name="attribute-value25" class="form-control">
+                                            <option value="">Select</option>
                                             <option value="Ambient">Ambient</option>
                                             <option value="Chilled">Chilled</option>
                                             <option value="Frozen">Frozen</option>

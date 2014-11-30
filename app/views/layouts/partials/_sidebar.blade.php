@@ -193,6 +193,14 @@
                         </a>
                     </li>
                 @endif
+                @if($currentUser->hasAccess('cataloguing.products.admin'))
+                    <li class="auto-inherit-active-class {{ isActive('export', 3) }}">
+                        <a href="{{ route('catalogue.product-definitions.export') }}">
+                            <i class="entypo-export"></i>
+                            <span>Export Data</span>
+                        </a>
+                    </li>
+                @endif
                 @if($currentUser->hasAccess('cataloguing.products.add'))
                     <li class="auto-inherit-active-class {{ isActive('create', 3) }}">
                         <a href="{{ route('catalogue.product-definitions.create') }}">

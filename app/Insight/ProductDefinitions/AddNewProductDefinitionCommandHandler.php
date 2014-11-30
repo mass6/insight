@@ -29,9 +29,14 @@ class AddNewProductDefinitionCommandHandler extends ProductDefinitionCommandHand
         // Create the Company
         try
         {
+            //dd($command);
             // serialize the attributes in the input array
             if(isset($command->attributes))
                 $command->attributes = json_encode($command->attributes);
+//            if(!isset($command->attributes) && (int)$command->company_id === 2)
+//            {
+//                $command->attributes = '{"Brand":"","HS Code":"","Barcode Number":"","Country of Manufacture":"","Lead Time":"","Ingredients":"","Calories":"","Calories From Fat":"","Total Fat":"","Saturated Fat":"","Trans Fat":"","Cholesterol":"","Sodium":"","Total Carbohydrates":"","Dietary Fiber":"","Sugars":"","Protein":"","Vitamin A":"","Vitamin C":"","Calcium":"","Iron":"","Packaging":"","Packaging Type":"","Shelf Life":"","Storage Condition":"","Weight Case Net":"","Weight Case Gross":"","Weight Individual Net":"","Weight Individual Gross":"","Weight Individual Drain":""}';
+//            }
 
             // determine the assigned user
             $command->assigned_user_id = (int)$this->setAssignedUser($command);

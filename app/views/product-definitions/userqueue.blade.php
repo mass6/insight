@@ -57,7 +57,7 @@
         @endif
             <th>Assigned To</th>
             <th>Status</th>
-            <th>Completeness</th>
+            <th>Attributes</th>
             <th>Updated</th>
             <th width="90px">Options</th>
         </tr>

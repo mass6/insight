@@ -16,6 +16,7 @@ use Insight\ProductDefinitions\Attribute;
 use Insight\ProductDefinitions\AttributeSet;
 use Insight\ProductDefinitions\ProductImage;
 use Insight\ProductDefinitions\UpdateLimitedProductDefinitionCommand;
+use Insight\ProductDefinitions\FormatRequestDataForDownloadCommand;
 use Insight\ProductDefinitions\UpdateProductDefinitionCommand;
 use Laracasts\Utilities\JavaScript\Facades\JavaScript;
 
@@ -304,6 +305,34 @@ class ProductDefinitionsController extends \BaseController {
             ? $this->productDefinitionRepository->findCompleted(10)
             : $this->productDefinitionRepository->findCompletedAndFiltered($this->user, 10);
         return View::make('product-definitions.completed', compact('products'));
+    }
+
+    public function export()
+    {
+        return View::make('product-definitions.export');
+    }
+
+    public function download($filter = 'all', $format = 'csv')
+    {
+        $customerId = $this->user->company->id;
+        $data = $this->execute(new FormatRequestDataForDownloadCommand($filter, $format, $customerId));
+
+
+        //return $data;
+        $sheetName = ucfirst($filter) . 'ProductRequests';
+
+
+        Excel::create($sheetName . '_' . date('Ymd_g:i:s'), function($excel) use($data, $sheetName) {
+
+            $excel->sheet($sheetName, function($sheet) use($data) {
+
+                $sheet->fromArray($data, null, 'A1', false, false);
+
+            });
+
+
+        })->export($format);
+
     }
 
     /**

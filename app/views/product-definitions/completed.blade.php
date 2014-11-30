@@ -57,7 +57,7 @@
             <th>Supplier</th>
             <th>Assigned To</th>
             <th>Status</th>
-            <th>Cpmpleteness</th>
+            <th>Attributes</th>
             <th>Updated</th>
             <th width="90px">Options</th>
         </tr>

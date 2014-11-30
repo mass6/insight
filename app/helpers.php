@@ -98,6 +98,28 @@ function formatComment($comment)
     return strpos($comment,'||') ? substr($comment,0,strpos($comment,'||')) . '<blockquote>' . substr($comment,strpos($comment,'||') + 2) . '</blockquote>' : $comment;
 }
 
+function download_csv_results($data, $name = NULL)
+{
+    if( ! $name)
+    {
+        $name = md5(uniqid() . microtime(TRUE) . mt_rand()). '.csv';
+    }
+
+    header('Content-Type: text/csv');
+    header('Content-Disposition: attachment; filename='. $name);
+    header('Pragma: no-cache');
+    header("Expires: 0");
+
+    $outstream = fopen("php://output", "w");
+
+    foreach($data as $data)
+    {
+        fputcsv($outstream, $data);
+    }
+
+    fclose($outstream);
+}
+
 function getCountries()
 {
     return ["" => ""] + [

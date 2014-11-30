@@ -65,6 +65,18 @@ class ProductDefinitionRepository
             ->paginate($num);
     }
 
+    public function getAllByCustomer($company_id)
+    {
+        return ProductDefinition::where('company_id', $company_id)->get();
+    }
+
+    public function getCompletedByCustomer($company_id)
+    {
+        return ProductDefinition::where('company_id', $company_id)
+            ->where('status', '4')
+            ->get();
+    }
+
     public function findCompleted($num = 10)
     {
         return ProductDefinition::with('customer')
@@ -77,7 +89,11 @@ class ProductDefinitionRepository
 
     public function findCompletedAndFiltered($user, $num = 10)
     {
-        return ProductDefinition::where('status', '4')
+        return ProductDefinition::with('customer')
+            ->with('assignedTo')
+            ->with('supplier')
+            ->with('statusName')
+            ->where('status', '4')
             ->Where(function($query) use ($user)
             {
                 $query->where('user_id', $user->id)
@@ -93,7 +109,11 @@ class ProductDefinitionRepository
      */
     public function getFilteredAndPaginated($user, $num = 10)
     {
-        return ProductDefinition::where('status', '<>', "4")
+        return ProductDefinition::with('customer')
+            ->with('assignedTo')
+            ->with('supplier')
+            ->with('statusName')
+            ->where('status', '<>', "4")
             ->Where(function($query) use ($user)
             {
                 $query->where('assigned_user_id', $user->id)
@@ -211,6 +231,23 @@ class ProductDefinitionRepository
 
         $productToUpdate->save();
 
+        return $productToUpdate;
+
+    }
+
+    /**
+     * Used to update product attributes, specifically
+     *
+     * @param $id
+     * @param $attributes
+     * @internal param UpdateProductDefinitionCommand $command
+     * @return mixed
+     */
+    public function updateAttributes($id, $attributes)
+    {
+        $productToUpdate = $this->find($id);
+        $productToUpdate->attributes = $attributes;
+        $productToUpdate->save();
         return $productToUpdate;
 
     }

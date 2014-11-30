@@ -5,6 +5,7 @@
     <link rel="stylesheet" type="text/css" href="{{ URL::asset('js/datatables/css/jquery.dataTables.css') }}">
     {{--<link rel="stylesheet" type="text/css" href="//cdn.datatables.net/plug-ins/28e7751dbec/integration/bootstrap/3/dataTables.bootstrap.css">--}}
 
+
 <script class="init" type="text/javascript">
     $(document).ready(function() {
         $('#datatable').dataTable({

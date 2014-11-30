@@ -7,6 +7,7 @@ return [
         'Insight\Listeners\PortalDataUpdatesNotifier',
         'Insight\Listeners\ProductDefinitionHistoryLogger',
         'Insight\Listeners\ProductDefinitionsNotifier',
+        'Insight\Listeners\FourCornersProductDefinitionUpdater',
     ],
     'customers' => [
         'emrill' => [

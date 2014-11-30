@@ -148,10 +148,14 @@ class ProductDefinition extends \Eloquent {
     {
         $attributes = object_to_array(json_decode($this->attributes['attributes']));
         $completedCount = 0;
-        foreach($attributes as $key => $val)
+
+        if($attributes)
         {
-            if (!empty($val))
-                $completedCount++;
+            foreach($attributes as $key => $val)
+            {
+                if (!empty($val))
+                    $completedCount++;
+            }
         }
         $percentage = $completedCount === 0 ? $completedCount : round($completedCount / count($attributes)  * 100);
         $label = 'warning';

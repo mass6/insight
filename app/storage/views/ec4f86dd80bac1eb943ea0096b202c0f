@@ -195,6 +195,14 @@
                         </a>
                     </li>
                 <?php endif; ?>
+                <?php if($currentUser->hasAccess('cataloguing.products.admin')): ?>
+                    <li class="auto-inherit-active-class <?php echo isActive('export', 3); ?>">
+                        <a href="<?php echo route('catalogue.product-definitions.export'); ?>">
+                            <i class="entypo-export"></i>
+                            <span>Export Data</span>
+                        </a>
+                    </li>
+                <?php endif; ?>
                 <?php if($currentUser->hasAccess('cataloguing.products.add')): ?>
                     <li class="auto-inherit-active-class <?php echo isActive('create', 3); ?>">
                         <a href="<?php echo route('catalogue.product-definitions.create'); ?>">
