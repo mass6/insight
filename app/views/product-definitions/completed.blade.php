@@ -57,6 +57,7 @@
             <th>Supplier</th>
             <th>Assigned To</th>
             <th>Status</th>
+            <th>Cpmpleteness</th>
             <th>Updated</th>
             <th width="90px">Options</th>
         </tr>
@@ -70,6 +71,13 @@
             <td>{{ isset($product->supplier_id) ? $product->supplier->name : '' }}</td>
             <td>{{ isset($product->assigned_user_id) ? $product->assignedTo->name() : '' }}</td>
             <td>{{ $product->statusName->name }}</td>
+            <td>
+                <div class="progress progress-striped">
+                    <div class="progress-bar progress-bar-{{$product->attributeCompleteness()['label']}}" role="progressbar" aria-valuenow="{{ $product->attributeCompleteness()['percentage'] }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ $product->attributeCompleteness()['percentage'] }}%">
+                        <span class="sr-only">20% Complete (success)</span>
+                    </div>
+                </div>
+            </td>
             <td>{{ $product->updated_at }}</td>
             <td>
                 <div class="btn-group">

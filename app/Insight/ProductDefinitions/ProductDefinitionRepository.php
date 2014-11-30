@@ -34,7 +34,10 @@ class ProductDefinitionRepository
 
     public function getUserQueue($id)
     {
-        return ProductDefinition::where('assigned_user_id', $id)
+        return ProductDefinition::with('customer')
+            ->with('assignedTo')
+            ->with('statusName')
+            ->where('assigned_user_id', $id)
             ->whereNotIn('status', [4, 5, 6])
             ->paginate(10);
     }
@@ -53,14 +56,23 @@ class ProductDefinitionRepository
      */
     public function getPaginated($num = 10)
     {
-        return ProductDefinition::where('status', '<>', "4")
+        return ProductDefinition::with('customer')
+            ->with('supplier')
+            ->with('assignedTo')
+            ->with('statusName')
+            ->where('status', '<>', "4")
             ->orderBy('created_at', 'desc')
             ->paginate($num);
     }
 
     public function findCompleted($num = 10)
     {
-        return ProductDefinition::where('status', '4')->orderBy('updated_at', 'desc')->paginate($num);
+        return ProductDefinition::with('customer')
+            ->with('assignedTo')
+            ->with('supplier')
+            ->with('statusName')
+            ->where('status', '4')
+            ->orderBy('updated_at', 'desc')->paginate($num);
     }
 
     public function findCompletedAndFiltered($user, $num = 10)

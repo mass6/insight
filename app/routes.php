@@ -12,24 +12,6 @@ use Insight\Permissions\Permission;
 |
 */
 
-Route::get('zap', function(){
-    $user = Sentry::findUserById(1);
-    $resetCode = $user->getResetPasswordCode();
-
-    // Update the user
-    if ($user->save())
-
-    if ($user->attemptResetPassword($resetCode, 'secret'))
-    {
-        return 'Success';
-    }
-    else
-    {
-        return Redirect::back();
-    }
-
-});
-
 // Authentication routes
 
 Route::get('login', [

@@ -274,9 +274,9 @@
                                 </div>
                                 <div class="col-md-3">
                                     <div class="form-group">
-                                        {{Form::label('Storage Conditions')}}
-                                        {{Form::hidden('attribute-name25', 'Storage Conditions')}}
-                                        <input id="attribute-value25" name="attribute-value25" class="form-control" value="{{$attributes['Storage Conditions']}}" readonly>
+                                        {{Form::label('Storage Condition')}}
+                                        {{Form::hidden('attribute-name25', 'Storage Condition')}}
+                                        <input id="attribute-value25" name="attribute-value25" class="form-control" value="{{$attributes['Storage Condition']}}" readonly>
                                     </div>
                                 </div>
 
