@@ -144,6 +144,29 @@ class ProductDefinition extends \Eloquent {
         return $this->belongsTo('Insight\ProductDefinitions\ProductDefinitionStatuses', 'status');
     }
 
+    public function attributeCompleteness()
+    {
+        $attributes = object_to_array(json_decode($this->attributes['attributes']));
+        $completedCount = 0;
+
+        if($attributes)
+        {
+            foreach($attributes as $key => $val)
+            {
+                if (!empty($val))
+                    $completedCount++;
+            }
+        }
+        $percentage = $completedCount === 0 ? $completedCount : round($completedCount / count($attributes)  * 100);
+        $label = 'warning';
+        if ($percentage >= 40)
+            $label = 'info';
+        if ($percentage >= 80)
+            $label = 'success';
+
+        return ['percentage' => $percentage, 'label' => $label];
+    }
+
     /**
      * Mutates the database price to standard decimal format when retrieved from DB
      *

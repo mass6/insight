@@ -48,7 +48,7 @@
                                     <div class="form-group">
                                         {{Form::label('Country of Manufacture')}}
                                         {{Form::hidden('attribute-name4', 'Country of Manufacture')}}
-                                        <input id="attribute-value4" name="attribute-value4" class="form-control" placeholder="">
+                                        {{Form::select('attribute-value4', getCountries(), null, ['class'=>'form-control', 'id'=>'attribute-value4']) }}
                                     </div>
                                 </div>
                                 <div class="col-md-3">
@@ -256,28 +256,34 @@
                                     <div class="form-group">
                                         {{Form::label('Packaging')}}
                                         {{Form::hidden('attribute-name22', 'Packaging')}}
-                                        <input id="attribute-value22" name="attribute-value22" class="form-control" placeholder="">
+                                        <input id="attribute-value22" name="attribute-value22" class="form-control" placeholder="e.g. Case, Pallet, Individual">
                                     </div>
                                 </div>
                                 <div class="col-md-3">
                                     <div class="form-group">
                                         {{Form::label('Packaging Type')}}
                                         {{Form::hidden('attribute-name23', 'Packaging Type')}}
-                                        <input id="attribute-value23" name="attribute-value23" class="form-control" placeholder="From order to loading date">
+                                        <input id="attribute-value23" name="attribute-value23" class="form-control" placeholder="e.g. Packet, Tin, Bottle, etc.">
                                     </div>
                                 </div>
                                 <div class="col-md-3">
                                     <div class="form-group">
                                         {{Form::label('Shelf Life (months)')}}
                                         {{Form::hidden('attribute-name24', 'Shelf Life')}}
-                                        <input id="attribute-value24" name="attribute-value24" data-validate="number" class="form-control" placeholder="From order to loading date">
+                                        <input id="attribute-value24" name="attribute-value24" data-validate="number" class="form-control" placeholder="">
                                     </div>
                                 </div>
                                 <div class="col-md-3">
                                     <div class="form-group">
-                                        {{Form::label('Storage Conditions')}}
-                                        {{Form::hidden('attribute-name25', 'Storage Conditions')}}
-                                        <input id="attribute-value25" name="attribute-value25" class="form-control" placeholder="From order to loading date">
+                                        {{Form::label('Storage Condition')}}
+                                        {{Form::hidden('attribute-name25', 'Storage Condition')}}
+                                        <select id="attribute-value25" name="attribute-value25" class="form-control">
+                                            <option value="">Select</option>
+                                            <option value="Ambient">Ambient</option>
+                                            <option value="Chilled">Chilled</option>
+                                            <option value="Frozen">Frozen</option>
+                                            <option value="Non-food">Non-food</option>
+                                        </select>
                                     </div>
                                 </div>
 
@@ -313,7 +319,7 @@
                                     </div>
                                 </div>
                                 <div class="col-md-3">
-                                    {{Form::label('Weight (individual): Net')}}
+                                    {{Form::label('Weight (individual): Gross')}}
                                     <div class="input-group">
                                         {{Form::hidden('attribute-name29', 'Weight Individual Gross')}}
                                         <div class="input-group-addon">Kg</div>

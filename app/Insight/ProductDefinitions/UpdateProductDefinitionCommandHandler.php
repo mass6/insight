@@ -31,6 +31,7 @@ class UpdateProductDefinitionCommandHandler extends ProductDefinitionCommandHand
         // Create the Company
         try
         {
+
             // serialize the attributes input array
             if(isset($command->attributes))
                 $command->attributes = json_encode($command->attributes);

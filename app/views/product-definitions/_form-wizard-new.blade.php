@@ -38,6 +38,9 @@
 	<div class="tab-content">
 		<div class="tab-pane active" id="tab2-1">
 
+        {{ link_to_route('catalogue.product-definitions.index', 'Cancel', null, array('class'=>'btn btn-danger pull-right', 'style' => 'margin-left:10px;')) }}
+        <button id="save" type="submit" class="save btn btn-info pull-right">Save</button>
+
 		<div class="row">
             <h3>Basic Product Information</h3>
             <br />
@@ -123,27 +126,13 @@
 
 		<div class="tab-pane" id="tab2-2">
 
+            {{ link_to_route('catalogue.product-definitions.index', 'Cancel', null, array('class'=>'btn btn-danger pull-right', 'style' => 'margin-left:10px;')) }}
+            <button id="save" type="submit" class="save btn btn-info pull-right">Save</button>
+
             <div class="row">
-                <h3>Product Description</h3>
+                <h2>Product Description <small>(see example) &rightarrow;</small> <a href="{{URL::asset('images/product-description-sample.png')}}" target="_blank"><img src="{{URL::asset('images/product-description-sample.png')}}" width="70" style="border:1px solid #DDDDDD;"></a></h2>
                 <br />
                 <br />
-            </div>
-
-            <div class="well">
-                {{ $errors->first('description', '<span class="label label-danger">:message</span>') }}
-                <h3>Full Description</h3>
-                <div class="row">
-
-                    <div class="col-md-12">
-                        <div class="form-group">
-                            <p>Here is where you list the full product details. Be as descriptive as possible. Format the description as you wish it to appear on the portal.</p>
-                            <textarea class="form-control ckeditor" name="description" id="description">{{{ Input::old('description') ? Input::old('description') : '' }}}</textarea>
-
-                        </div>
-                    </div>
-
-                </div>
-
             </div>
 
             <div class="well">
@@ -153,7 +142,7 @@
 
                     <div class="col-md-12">
                         <div class="form-group">
-                            <p>Provide a short one or two line description.</p>
+                            <p style="font-size: 16px;" class="text text-info">Provide a short one or two line product description.</p>
                             <textarea class="form-control" name="short_description" id="short_description" rows="5" placeholder="Short summary of the product">{{{ Input::old('short_description') ? Input::old('short_description') : '' }}}</textarea>
                         </div>
                     </div>
@@ -161,10 +150,31 @@
                 </div>
             </div>
 
+            <div class="well">
+                {{ $errors->first('description', '<span class="label label-danger">:message</span>') }}
+                <h3>Full Description</h3>
+                <div class="row">
+
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <p style="font-size: 16px;" class="text text-info">Here is where you list the full product details. Be as descriptive as possible. Format the description as you wish it to appear on the portal.</p>
+                            <textarea class="form-control ckeditor" name="description" id="description">{{{ Input::old('description') ? Input::old('description') : '' }}}</textarea>
+
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+
 
 		</div>
 
 		<div class="tab-pane" id="tab2-3">
+
+            {{ link_to_route('catalogue.product-definitions.index', 'Cancel', null, array('class'=>'btn btn-danger pull-right', 'style' => 'margin-left:10px;')) }}
+            <button id="save" type="submit" class="save btn btn-info pull-right">Save</button>
 
             <div class="row">
                 <h3>Product Photos <small>512Kb max file size per photo</small></h3>
@@ -260,6 +270,9 @@
 
 		<div class="tab-pane" id="tab2-4">
 
+            {{ link_to_route('catalogue.product-definitions.index', 'Cancel', null, array('class'=>'btn btn-danger pull-right', 'style' => 'margin-left:10px;')) }}
+            <button id="save" type="submit" class="save btn btn-info pull-right">Save</button>
+
 			<div class="row">
                 <h3>File Attachments <small>2MB max file size per attachment</small></h3>
                 <br />
@@ -306,6 +319,9 @@
 
 		<div class="tab-pane" id="tab2-5">
 
+            {{ link_to_route('catalogue.product-definitions.index', 'Cancel', null, array('class'=>'btn btn-danger pull-right', 'style' => 'margin-left:10px;')) }}
+            <button id="save" type="submit" class="save btn btn-info pull-right">Save</button>
+
 			<div class="row">
                 <h3>Product Attributes</h3>
                 <br />
@@ -320,7 +336,7 @@
 
 
             @if($customAttributes)
-                @include('product-definitions.partials._' . $customAttributes . '-attributes');
+                @include('product-definitions.partials._' . $customAttributes . '-attributes-form');
             @else
                 <input id="add-attribute" type="button" class="btn btn-success" value="+ add Attribute" > <span id="attribute-helper" style="display: none"><em>&leftarrow; Click to add more attributes</em></span><br/><br/>
                 <div id="new-attributes" class="well" style="min-height: 200px;">
@@ -333,6 +349,9 @@
 		</div>
 
 		<div class="tab-pane" id="tab2-6">
+
+            {{ link_to_route('catalogue.product-definitions.index', 'Cancel', null, array('class'=>'btn btn-danger pull-right', 'style' => 'margin-left:10px;')) }}
+            <button id="save" type="submit" class="save btn btn-info pull-right">Save</button>
 
 			<div class="row">
                 <h3>Review & Assign</h3>
@@ -360,7 +379,6 @@
 			<div class="row">
                 <div class="col-md-6">
                     <div class="form-group">
-                        <button id="save" type="submit" class="btn btn-info">Save Draft</button>
                         @if($user->hasAccess('cataloguing.products.catalogue'))
                             <button id="assign-to-customer" type="submit" class="btn btn-primary">Assign to Customer</button>
                             <button id="assign-to-supplier" type="submit" class="btn btn-gold">Assign to Supplier</button>
@@ -414,6 +432,11 @@
         $("#action").val('save');
         $("#status").val(1);
     });
+
+    $('.save.btn.btn-info.pull-right').click(function(){
+        $("#action").val('save');
+        $("#status").val(1);
+    })
 
     $('#assign-to-supplier').click(function(){
         $("#action").val('assign-to-supplier');
@@ -722,4 +745,3 @@
 <script src="{{ URL::asset('js/bootstrap-datepicker.js') }}"></script>
 <script src="{{ URL::asset('js/bootstrap-switch.js') }}"></script>
 <script src="{{ URL::asset('js/jquery.multi-select.js') }}"></script>
-<script src="{{ URL::asset('js/bootstrap-tour/build/js/bootstrap-tour.min.js') }}"></script>

@@ -7,6 +7,7 @@ use Insight\ProductDefinitions\AddNewProductDefinitionCommand;
 use Insight\ProductDefinitions\Forms\DraftProductDefinitionForm;
 use Insight\ProductDefinitions\Forms\NewProductDefinitionForm;
 use Insight\ProductDefinitions\Forms\SupplierDraftProductDefinitionForm;
+use Insight\ProductDefinitions\Forms\SupplierUpdateProductDefinitionForm;
 use Insight\ProductDefinitions\Forms\UpdateLimitedProductDefinitionForm;
 use Insight\ProductDefinitions\Forms\UpdateProductDefinitionForm;
 use Insight\ProductDefinitions\ProductDefinitionRepository;
@@ -15,6 +16,7 @@ use Insight\ProductDefinitions\Attribute;
 use Insight\ProductDefinitions\AttributeSet;
 use Insight\ProductDefinitions\ProductImage;
 use Insight\ProductDefinitions\UpdateLimitedProductDefinitionCommand;
+use Insight\ProductDefinitions\FormatRequestDataForDownloadCommand;
 use Insight\ProductDefinitions\UpdateProductDefinitionCommand;
 use Laracasts\Utilities\JavaScript\Facades\JavaScript;
 
@@ -57,15 +59,21 @@ class ProductDefinitionsController extends \BaseController {
      * @var SupplierDraftProductDefinitionForm
      */
     private $supplierDraftProductDefinitionForm;
+    /**
+     * @var SupplierUpdateProductDefinitionForm
+     */
+    private $supplierUpdateProductDefinitionForm;
+
 
     /**
      * @param ProductDefinitionRepository $productDefinitionRepository
      * @param CompanyRepository $companyRepository
-     * @param DraftProductDefinitionForm $draftProductDefinitionForm
-     * @param SupplierDraftProductDefinitionForm $supplierDraftProductDefinitionForm
      * @param NewProductDefinitionForm $newProductDefinitionForm
      * @param UpdateProductDefinitionForm $updateProductDefinitionForm
+     * @param DraftProductDefinitionForm $draftProductDefinitionForm
+     * @param SupplierDraftProductDefinitionForm $supplierDraftProductDefinitionForm
      * @param UpdateLimitedProductDefinitionForm $updateLimitedProductDefinitionForm
+     * @param SupplierUpdateProductDefinitionForm $supplierUpdateProductDefinitionForm
      */
     public function __construct(
         ProductDefinitionRepository $productDefinitionRepository,
@@ -74,7 +82,8 @@ class ProductDefinitionsController extends \BaseController {
         UpdateProductDefinitionForm $updateProductDefinitionForm,
         DraftProductDefinitionForm $draftProductDefinitionForm,
         SupplierDraftProductDefinitionForm $supplierDraftProductDefinitionForm,
-        UpdateLimitedProductDefinitionForm $updateLimitedProductDefinitionForm
+        UpdateLimitedProductDefinitionForm $updateLimitedProductDefinitionForm,
+        SupplierUpdateProductDefinitionForm $supplierUpdateProductDefinitionForm
     )
     {
         $this->beforeFilter(function()
@@ -91,6 +100,7 @@ class ProductDefinitionsController extends \BaseController {
         $this->updateLimitedProductDefinitionForm = $updateLimitedProductDefinitionForm;
         $this->draftProductDefinitionForm = $draftProductDefinitionForm;
         $this->supplierDraftProductDefinitionForm = $supplierDraftProductDefinitionForm;
+        $this->supplierUpdateProductDefinitionForm = $supplierUpdateProductDefinitionForm;
     }
 
     /**
@@ -177,7 +187,13 @@ class ProductDefinitionsController extends \BaseController {
     public function show($id)
     {
         $product = $this->productDefinitionRepository->findWithComments($id);
-        return View::make('product-definitions.show', compact('product'));
+        $attributes = object_to_array(json_decode($product->attributes));
+
+        if($product->customer->settings()->getProductDefinitionTemplate)
+        {
+            $customAttributes = $product->customer->settings()->ProductDefinitionTemplate;
+        }
+        return View::make('product-definitions.show', compact('product', 'attributes', 'customAttributes'));
     }
 
     /**
@@ -192,7 +208,7 @@ class ProductDefinitionsController extends \BaseController {
 
         if($product->assigned_user_id !== $this->user->id && !$this->user->hasAccess('cataloguing.products.admin'))
         {
-            Flash::error("Product is currently assigned to another user.");
+            Flash::error("Product is currently assigned to {$product->assignedTo->name()} and is locked for editing.");
             return Redirect::back();
         }
 
@@ -244,12 +260,14 @@ class ProductDefinitionsController extends \BaseController {
         $input['attachments'] = Input::file('attachments');
         $input['remarks'] = $input['remarks'] . $input['message'];
 
-        if($input['action'] === 'save' || $input['action'] === 'assign-to-customer' || $formType === 'limited')
-        $this->draftProductDefinitionForm->validate($input);
-    elseif($input['action'] === 'assign-to-supplier')
-        $this->supplierDraftProductDefinitionForm->validate($input);
-    else
-        $this->updateProductDefinitionForm->validate($input);
+        if($input['action'] === 'save' || $input['action'] === 'assign-to-customer')
+            $this->draftProductDefinitionForm->validate($input);
+        elseif($input['action'] === 'assign-to-supplier')
+            $this->supplierDraftProductDefinitionForm->validate($input);
+        elseif($formType === 'limited' && $input['action'] === 'submit')
+            $this->supplierUpdateProductDefinitionForm->validate($input);
+        else
+            $this->supplierUpdateProductDefinitionForm->validate($input);
 //        $input['form-type'] === 'full'
 //            ? $this->updateProductDefinitionForm->validate($input)
 //            : $this->updateLimitedProductDefinitionForm->validate($input);
@@ -273,7 +291,11 @@ class ProductDefinitionsController extends \BaseController {
 
         Flash::success("Product ( {$product->code} : {$product->name} ) was successfully updated.");
 
+        if($input['action'] === 'save')
+            return Redirect::back();
+
         return Redirect::route('catalogue.product-definitions.index');
+
     }
 
 
@@ -283,6 +305,34 @@ class ProductDefinitionsController extends \BaseController {
             ? $this->productDefinitionRepository->findCompleted(10)
             : $this->productDefinitionRepository->findCompletedAndFiltered($this->user, 10);
         return View::make('product-definitions.completed', compact('products'));
+    }
+
+    public function export()
+    {
+        return View::make('product-definitions.export');
+    }
+
+    public function download($filter = 'all', $format = 'csv')
+    {
+        $customerId = $this->user->company->id;
+        $data = $this->execute(new FormatRequestDataForDownloadCommand($filter, $format, $customerId));
+
+
+        //return $data;
+        $sheetName = ucfirst($filter) . 'ProductRequests';
+
+
+        Excel::create($sheetName . '_' . date('Ymd_g:i:s'), function($excel) use($data, $sheetName) {
+
+            $excel->sheet($sheetName, function($sheet) use($data) {
+
+                $sheet->fromArray($data, null, 'A1', false, false);
+
+            });
+
+
+        })->export($format);
+
     }
 
     /**

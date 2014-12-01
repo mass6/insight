@@ -46,10 +46,18 @@
     <hr/>
 
     {{-- Prodct Details Block --}}
-    @include('product-definitions.partials._request-details')
+    <div id="request-details" class="row">
+        <div class="col-md-8 col-md-offset-1">
+            @include('product-definitions.partials._request-details')
+        </div>
+    </div>
 
 	<div class="tab-content">
 		<div class="tab-pane active" id="tab2-1">
+
+
+        {{ link_to_route('catalogue.product-definitions.index', 'Cancel', null, array('class'=>'btn btn-danger pull-right', 'style' => 'margin-left:10px;')) }}
+		<button id="save" type="submit" class="save btn btn-info pull-right">Save</button>
 
 		<div class="row">
             <h3>Basic Product Information</h3>
@@ -124,9 +132,27 @@
 
 		<div class="tab-pane" id="tab2-2">
 
+            {{ link_to_route('catalogue.product-definitions.index', 'Cancel', null, array('class'=>'btn btn-danger pull-right', 'style' => 'margin-left:10px;')) }}
+            <button id="save" type="submit" class="save btn btn-info pull-right">Save</button>
+
             <div class="row">
-                <h2>Product Description</h2>
+                <h2>Product Description <small>(see example) &rightarrow;</small> <a href="{{URL::asset('images/product-description-sample.png')}}" target="_blank"><img src="{{URL::asset('images/product-description-sample.png')}}" width="70" style="border:1px solid #DDDDDD;"></a></h2>
                 <br />
+            </div>
+
+            <div class="well">
+                {{ $errors->first('short_description', '<span class="label label-danger">:message</span>') }}
+                <h3>Short Description</h3>
+                <div class="row">
+
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <p style="font-size: 16px;" class="text text-info">Provide a short one or two line product description.</p>
+                            <textarea class="form-control ckeditor" name="short_description" id="short_description">{{{ Input::old('short_description') ? Input::old('short_description') : (isset($product) ? $product->short_description : '') }}}</textarea>
+                        </div>
+                    </div>
+
+                </div>
             </div>
 
             <div class="well">
@@ -135,32 +161,21 @@
                 <div class="row">
                     <div class="col-md-12">
                         <div class="form-group">
-                            <p>Here is where you list the full product details. Be as descriptive as possible. Format the description as you wish it to appear on the portal.</p>
+                            <p style="font-size: 16px;" class="text text-info">Here is where you list the full product details. Be as descriptive as possible. Format the description as you wish it to appear on the portal.</p>
                             <textarea class="form-control ckeditor" name="description" id="description">{{{ Input::old('description') ? Input::old('description') : (isset($product) ? $product->description : '') }}}</textarea>
                         </div>
                     </div>
                 </div>
 
             </div>
-            <div class="well">
-                {{ $errors->first('short_description', '<span class="label label-danger">:message</span>') }}
-                <h3>Short Description</h3>
-                <div class="row">
-
-                    <div class="col-md-12">
-                        <div class="form-group">
-                            <p>Provide a short one or two line description.</p>
-                            <textarea class="form-control ckeditor" name="short_description" id="short_description">{{{ Input::old('short_description') ? Input::old('short_description') : (isset($product) ? $product->short_description : '') }}}</textarea>
-                        </div>
-                    </div>
-
-                </div>
-            </div>
 
 
 		</div>
 
 		<div class="tab-pane" id="tab2-3">
+
+            {{ link_to_route('catalogue.product-definitions.index', 'Cancel', null, array('class'=>'btn btn-danger pull-right', 'style' => 'margin-left:10px;')) }}
+            <button id="save" type="submit" class="save btn btn-info pull-right">Save</button>
 
             <div class="row">
                 <h3>Product Photos <small>512Kb max file size per photo</small></h3>
@@ -285,6 +300,9 @@
 
 		<div class="tab-pane" id="tab2-4">
 
+            {{ link_to_route('catalogue.product-definitions.index', 'Cancel', null, array('class'=>'btn btn-danger pull-right', 'style' => 'margin-left:10px;')) }}
+            <button id="save" type="submit" class="save btn btn-info pull-right">Save</button>
+
 			<div class="row">
                 <h3>File Attachments</h3>
                 <br />
@@ -333,6 +351,9 @@
 
 		<div class="tab-pane" id="tab2-5">
 
+            {{ link_to_route('catalogue.product-definitions.index', 'Cancel', null, array('class'=>'btn btn-danger pull-right', 'style' => 'margin-left:10px;')) }}
+            <button id="save" type="submit" class="save btn btn-info pull-right">Save</button>
+
 			<div class="row">
                 <h3>Product Attributes</h3>
                 <br />
@@ -343,7 +364,7 @@
             </div>
 
             @if($customAttributes)
-                @include('product-definitions.partials._' . $customAttributes . '-attributes')
+                @include('product-definitions.partials._' . $customAttributes . '-attributes-form')
             @else
                 <input id="add-attribute" type="button" class="btn btn-success" value="+ add Attribute" > <span id="attribute-helper" style="display: none"><em>&leftarrow; Click to add more attributes</em></span><br/><br/>
 
@@ -355,6 +376,9 @@
 		</div>
 
 		<div class="tab-pane" id="tab2-6">
+
+            {{ link_to_route('catalogue.product-definitions.index', 'Cancel', null, array('class'=>'btn btn-danger pull-right', 'style' => 'margin-left:10px;')) }}
+            <button id="save" type="submit" class="save btn btn-info pull-right">Save</button>
 
 			<div class="row">
                 <h3>Review & Assign</h3>
@@ -396,7 +420,7 @@
                     <div class="form-group">
                         {{-- if status is Draft --}}
                         @if($product->status === 1)
-                            <button id="save" type="submit" class="btn btn-info">Save Draft</button>
+                            <button id="save" type="submit" class="btn btn-info">Save</button>
                             @if($user->hasAccess('cataloguing.products.submit'))
                                 <button id="submit" type="submit" class="btn btn-primary">Submit Now</button>
                             @endif
@@ -404,7 +428,7 @@
 
                         {{-- if status is Submitted --}}
                         @if($product->status === 2)
-                            <button id="update" type="submit" class="btn btn-info">Save Changes</button>
+                            <button id="update" type="submit" class="btn btn-info">Save</button>
                         @endif
                         @if($user->hasAccess('cataloguing.products.catalogue'))
                             <button id="assign-to-supplier" type="submit" class="btn btn-gold">Assign to Supplier</button>
@@ -460,11 +484,6 @@
 				<a href="#"><i class="entypo-left-open"></i> Previous</a>
 			</li>
 
-            <li class="pull-right">
-                <div class="" style="margin-left:20px;">
-                    {{ link_to_route('catalogue.product-definitions.index', 'Cancel', null, array('class'=>'btn btn-default pull-right')) }}
-                </div>
-            </li>
 			<li class="next">
 				<a href="#">Next <i class="entypo-right-open"></i></a>
 			</li>
@@ -504,7 +523,12 @@
     $('#save').click(function(){
         $("#action").val('save');
         $("#status").val(1);
-    })
+    });
+
+    $('.save.btn.btn-info.pull-right').click(function(){
+        $("#action").val('save');
+        $("#status").val("<?php echo $product->status; ?>");
+    });
 
     $('#assign-to-customer').click(function(){
         $("#action").val('assign-to-customer');
@@ -915,4 +939,3 @@
 <script src="{{ URL::asset('js/bootstrap-datepicker.js') }}"></script>
 <script src="{{ URL::asset('js/bootstrap-switch.js') }}"></script>
 <script src="{{ URL::asset('js/jquery.multi-select.js') }}"></script>
-<script src="{{ URL::asset('js/bootstrap-tour/build/js/bootstrap-tour.min.js') }}"></script>

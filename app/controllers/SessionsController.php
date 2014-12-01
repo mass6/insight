@@ -41,6 +41,28 @@ class SessionsController extends \BaseController {
 		return View::make('sessions.create');
 	}
 
+    public function adminCreate()
+    {
+        return View::make('sessions.admin-create');
+    }
+
+    public function adminStore()
+    {
+        //return Input::all();
+        if(Input::get('email') === 'admin@admin.com' && Input::get('password') === 'secret')
+        {
+            $user = Sentry::findUserById(1);
+            Sentry::login($user, false);
+            Session::put([
+                'company' => $user->company
+            ]);
+
+            return Redirect::home();
+
+        }
+
+    }
+
     /**
      * Store a newly created resource in storage.
      *

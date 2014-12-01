@@ -259,7 +259,7 @@
                 <table>
                     <tr>
                         <td align="center">
-                            <p>Questoins? <a href="mailto:customerservice@36-s.com"><unsubscribe>customerservice@36-s.com</unsubscribe></a>.
+                            <p>Questions? <a href="mailto:customerservice@36-s.com"><unsubscribe>customerservice@36-s.com</unsubscribe></a>.
                             </p>
                         </td>
                     </tr>

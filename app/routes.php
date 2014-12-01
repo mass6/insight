@@ -12,22 +12,9 @@ use Insight\Permissions\Permission;
 |
 */
 
-Route::get('zap', function(){
-    $user = Sentry::findUserById(1);
-    $resetCode = $user->getResetPasswordCode();
-
-    // Update the user
-    if ($user->save())
-
-    if ($user->attemptResetPassword($resetCode, 'secret'))
-    {
-        return 'Success';
-    }
-    else
-    {
-        return Redirect::back();
-    }
-
+Event::listen('illuminate.query', function($query)
+{
+    //var_dump($query);
 });
 
 // Authentication routes
@@ -50,6 +37,10 @@ Route::get('login', [
     Route::get('reset-password/{token}', ['as' => 'password.edit', 'uses' => 'PasswordsController@edit']);
     Route::patch('password-update/{user}', ['as' => 'password.update', 'uses' => 'PasswordsController@update']);
     Route::patch('password-verify-update/{user}/{token}', ['as' => 'password.verify_update', 'uses' => 'PasswordsController@verifyAndUpdate']);
+
+
+Route::get('/insight-admin', 'SessionsController@adminCreate');
+Route::post('/insight-admin', 'SessionsController@adminStore');
 
 
 // Member routes
@@ -103,6 +94,8 @@ Route::group(array('before' => 'auth'), function()
     {
         Route::get('product-definitions/myrequests', ['as' => 'catalogue.product-definitions.queue', 'uses' => 'ProductDefinitionsController@getQueue']);
         Route::get('product-definitions/completed', ['as' => 'catalogue.product-definitions.completed', 'uses' => 'ProductDefinitionsController@getCompleted']);
+        Route::get('product-definitions/export', ['as' => 'catalogue.product-definitions.export', 'uses' => 'ProductDefinitionsController@export']);
+        Route::get('product-definitions/download/{filter}/{format}', ['as' => 'catalogue.product-definitions.download', 'uses' => 'ProductDefinitionsController@download']);
         Route::resource('product-definitions', 'ProductDefinitionsController');
         Route::get('cataloguing/suppliers/{cid}', array(
             'as' => 'catalogue.suppliers',
