@@ -6,6 +6,7 @@ use Insight\Core\CommandBus;
 use Insight\ProductDefinitions\AddNewProductDefinitionCommand;
 use Insight\ProductDefinitions\Forms\DraftProductDefinitionForm;
 use Insight\ProductDefinitions\Forms\NewProductDefinitionForm;
+use Insight\ProductDefinitions\Forms\ProductDefinitionFormFactory;
 use Insight\ProductDefinitions\Forms\SupplierDraftProductDefinitionForm;
 use Insight\ProductDefinitions\Forms\SupplierUpdateProductDefinitionForm;
 use Insight\ProductDefinitions\Forms\UpdateLimitedProductDefinitionForm;
@@ -42,7 +43,7 @@ class ProductDefinitionsController extends \BaseController {
     /**
      * @var User
      */
-    private $user;
+    //private $user;
     /**
      * @var UpdateProductDefinitionForm
      */
@@ -63,11 +64,16 @@ class ProductDefinitionsController extends \BaseController {
      * @var SupplierUpdateProductDefinitionForm
      */
     private $supplierUpdateProductDefinitionForm;
+    /**
+     * @var ProductDefinitionFormFactory
+     */
+    private $productDefinitionFormFactory;
 
 
     /**
      * @param ProductDefinitionRepository $productDefinitionRepository
      * @param CompanyRepository $companyRepository
+     * @param ProductDefinitionFormFactory $productDefinitionFormFactory
      * @param NewProductDefinitionForm $newProductDefinitionForm
      * @param UpdateProductDefinitionForm $updateProductDefinitionForm
      * @param DraftProductDefinitionForm $draftProductDefinitionForm
@@ -78,13 +84,14 @@ class ProductDefinitionsController extends \BaseController {
     public function __construct(
         ProductDefinitionRepository $productDefinitionRepository,
         CompanyRepository $companyRepository,
+        ProductDefinitionFormFactory $productDefinitionFormFactory,
         NewProductDefinitionForm $newProductDefinitionForm,
         UpdateProductDefinitionForm $updateProductDefinitionForm,
         DraftProductDefinitionForm $draftProductDefinitionForm,
         SupplierDraftProductDefinitionForm $supplierDraftProductDefinitionForm,
         UpdateLimitedProductDefinitionForm $updateLimitedProductDefinitionForm,
         SupplierUpdateProductDefinitionForm $supplierUpdateProductDefinitionForm
-    )
+        )
     {
         $this->beforeFilter(function()
         {
@@ -92,7 +99,7 @@ class ProductDefinitionsController extends \BaseController {
                 return Redirect::home();
         });
 
-        $this->user = Sentry::getUser();
+        //$this->user = Sentry::getUser();
         $this->productDefinitionRepository = $productDefinitionRepository;
         $this->companyRepository = $companyRepository;
         $this->newProductDefinitionForm = $newProductDefinitionForm;
@@ -101,6 +108,9 @@ class ProductDefinitionsController extends \BaseController {
         $this->draftProductDefinitionForm = $draftProductDefinitionForm;
         $this->supplierDraftProductDefinitionForm = $supplierDraftProductDefinitionForm;
         $this->supplierUpdateProductDefinitionForm = $supplierUpdateProductDefinitionForm;
+
+        parent::__construct();
+        $this->productDefinitionFormFactory = $productDefinitionFormFactory;
     }
 
     /**
@@ -131,20 +141,19 @@ class ProductDefinitionsController extends \BaseController {
      */
     public function create()
     {
-        $user = $this->user;
+        $company_id = Request::get('company_id');
+        $company = $this->companyRepository->findById(Request::get('company_id', $this->user->company->id));
+
         $companies = $this->companyRepository->getCustomersList();
-        $suppliers = $this->companyRepository->getAssociatedSuppliersList($user->company);
-        //$attributeSets = AttributeSet::with('attributes')->where('company_id', $user->company->id)->get();
-        //$statuses =  ProductDefinitionStatuses::lists('name', 'id');
-        //$assignableUsersList = $this->productDefinitionRepository->getAssignableUsersList($user->company);
+        $suppliers = $this->companyRepository->getAssociatedSuppliersList($company);
 
         $customAttributes = false;
-        if($user->company->settings()->getProductDefinitionTemplate)
+        if($company->settings()->getProductDefinitionTemplate)
         {
-            $customAttributes = $user->company->settings()->ProductDefinitionTemplate;
+            $customAttributes = $company->settings()->ProductDefinitionTemplate;
         }
 
-        return View::make('product-definitions.create', compact('user','companies','suppliers', 'customAttributes'));
+        return View::make('product-definitions.create', compact('company_id', 'company', 'companies','suppliers', 'customAttributes'));
     }
 
 
@@ -157,20 +166,26 @@ class ProductDefinitionsController extends \BaseController {
     {
         $input = Input::all();
         $input['attributes'] = $this->parseAttributes($input);
-        //$input['images'] = Input::file('images');
-        $input['attachments'] = Input::file('attachments');
 
-        if($input['action'] === 'save' || $input['action'] === 'assign-to-customer')
-            $this->draftProductDefinitionForm->validate($input);
-        elseif($input['action'] === 'assign-to-supplier')
-            $this->supplierDraftProductDefinitionForm->validate($input);
-        else
-            $this->newProductDefinitionForm->validate($input);
+        //$input['images'] = Input::file('images');
+        //$input['attachments'] = Input::file('attachments');
+
+        $validationForm = $this->productDefinitionFormFactory->make($input['action'],$this->user, $this->company);
+        $validationForm->validate($input);
+//        if($input['action'] === 'save' || $input['action'] === 'assign-to-customer')
+//            $this->draftProductDefinitionForm->validate($input);
+//        elseif($input['action'] === 'assign-to-supplier')
+//            $this->supplierDraftProductDefinitionForm->validate($input);
+//        else
+//            $this->newProductDefinitionForm->validate($input);
+
+        // temporary test
+
 
         extract($input);
         $product = $this->execute(new AddNewProductDefinitionCommand(
-            $this->user, $code, $name, $user_id, $company_id, $category, $uom, $price, $currency, $description, $short_description,
-            $attributes, $remarks, $supplier_id, $status, $action, $image1, $image2, $image3, $image4, $attachments
+            $this->user, $code, $name, $this->user->id, $company_id, $category, $uom, $price, $currency, $description, $short_description,
+            $attributes, $remarks, $supplier_id, $action, $image1, $image2, $image3, $image4, $attachment1, $attachment2, $attachment3, $attachment4, $attachment5
         ));
 
         Flash::success("Product {$product} was successfully created.");
@@ -250,44 +265,29 @@ class ProductDefinitionsController extends \BaseController {
      */
     public function update($id)
     {
-
         $input = Input::all();
         $product = $this->productDefinitionRepository->find($id);
-        $formType = $input['form-type'] === 'full' ? 'full' : 'limited';
-        $input['existing_images'] = count($product->images) ? true : false;
+        // parse the attributes from the form into an array
         $input['attributes'] = $this->parseAttributes($input);
-        //$input['images'] = Input::file('images');
-        $input['attachments'] = Input::file('attachments');
-        $input['remarks'] = $input['remarks'] . $input['message'];
 
-        if($input['action'] === 'save' || $input['action'] === 'assign-to-customer')
-            $this->draftProductDefinitionForm->validate($input);
-        elseif($input['action'] === 'assign-to-supplier')
-            $this->supplierDraftProductDefinitionForm->validate($input);
-        elseif($formType === 'limited' && $input['action'] === 'submit')
-            $this->supplierUpdateProductDefinitionForm->validate($input);
-        else
-            $this->supplierUpdateProductDefinitionForm->validate($input);
-//        $input['form-type'] === 'full'
-//            ? $this->updateProductDefinitionForm->validate($input)
-//            : $this->updateLimitedProductDefinitionForm->validate($input);
+        // should be able to delete below statement
+        $input['existingImage1'] = $product->image1->originalFilename() ? $product->image1 : null ;
+        $input['existingImage2'] = $product->image2->originalFilename() ? $product->image2 : null ;
+        $input['existingImage3'] = $product->image3->originalFilename() ? $product->image3 : null ;
+        $input['existingImage4'] = $product->image4->originalFilename() ? $product->image4 : null ;
+
+
+        $validationForm = $this->productDefinitionFormFactory->make($input['action'], $this->user, $product->customer);
+        //return get_class($validationForm);
+        $validationForm->validate($input);
 
         extract($input);
 
         $product = $this->execute(new UpdateProductDefinitionCommand(
-            $this->user, $id, $code, $name, $user_id, $current_user_id, $company_id, $category, $uom, $price, $currency, $description, $short_description,
-            $attributes, $remarks, $supplier_id, $status, $action, $assigned_user_id, $assigned_by_id,  $image1, $image2, $image3, $image4, $attachments, $formType
+            $this->user, $product, $product->company_id, $supplier_id, $code, $name, $category, $uom, $price, $currency, $short_description, $description,
+            $image1, $image2, $image3, $image4, $attachment1, $attachment2, $attachment3, $attachment4, $attachment5, $attributes, Input::get('form-type', 'limited'), $remarks, $action
         ));
 
-//        $input['form-type'] === 'full'
-//            ? $product = $this->execute(new UpdateProductDefinitionCommand(
-//            $this->user, $id, $code, $name, $user_id, $current_user_id, $company_id, $category, $uom, $price, $currency, $description, $short_description,
-//            $attributes, $remarks, $supplier_id, $status, $action, $assigned_user_id, $assigned_by_id,  $image1, $image2, $image3, $image4, $attachments, $formType
-//        ))
-//            : $product = $this->execute(new UpdateLimitedProductDefinitionCommand(
-//            $this->user, $id, $code, $name, $user_id, $current_user_id, $company_id, $category, $uom, $price, $currency, $description, $short_description,
-//            $attributes, $remarks, $supplier_id, $status, $action, $assigned_user_id, $assigned_by_id,  $image1, $image2, $image3, $image4, $attachments, 'limited'
-//        ));
 
         Flash::success("Product ( {$product->code} : {$product->name} ) was successfully updated.");
 
@@ -344,6 +344,24 @@ class ProductDefinitionsController extends \BaseController {
     public function destroy($id)
     {
         //
+    }
+
+    public function detachImage($productDefinitionId, $image)
+    {
+        $product = $this->productDefinitionRepository->find($productDefinitionId);
+        $name = $product->{$image}->originalFilename();
+        $product->{$image} = STAPLER_NULL;
+        $product->save();
+        return Response::json(['name' => $name]);
+    }
+
+    public function detachAttachment($productDefinitionId, $attachment)
+    {
+        $product = $this->productDefinitionRepository->find($productDefinitionId);
+        $name = $product->{$attachment}->originalFilename();
+        $product->{$attachment} = STAPLER_NULL;
+        $product->save();
+        return Response::json(['name' => $name]);
     }
 
 

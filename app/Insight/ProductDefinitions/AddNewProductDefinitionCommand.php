@@ -5,6 +5,7 @@
  * Time: 2:11 PM
  */
 
+
 /**
  * Class AddNewProductDefinitionCommand
  * @package Insight\ProductDefinitions
@@ -74,10 +75,6 @@ class AddNewProductDefinitionCommand
     /**
      * @var
      */
-    public $status;
-    /**
-     * @var
-     */
     public $action;
     /**
      * @var
@@ -98,7 +95,23 @@ class AddNewProductDefinitionCommand
     /**
      * @var
      */
-    public  $attachments;
+    public $attachment1;
+    /**
+     * @var
+     */
+    public $attachment2;
+    /**
+     * @var
+     */
+    public $attachment3;
+    /**
+     * @var
+     */
+    public $attachment4;
+    /**
+     * @var
+     */
+    public $attachment5;
 
 
     /**
@@ -116,16 +129,20 @@ class AddNewProductDefinitionCommand
      * @param $attributes
      * @param $remarks
      * @param $supplier_id
-     * @param $status
      * @param $action
      * @param $image1
      * @param $image2
      * @param $image3
      * @param $image4
-     * @param $attachments
+     * @param $attachment1
+     * @param $attachment2
+     * @param $attachment3
+     * @param $attachment4
+     * @param $attachment5
+     * @internal param $attachments
      */
     public function __construct($user, $code, $name, $user_id, $company_id, $category, $uom, $price, $currency, $description, $short_description,
-                                $attributes, $remarks, $supplier_id, $status, $action, $image1, $image2, $image3, $image4, $attachments)
+                                $attributes, $remarks, $supplier_id, $action, $image1, $image2, $image3, $image4, $attachment1, $attachment2, $attachment3, $attachment4, $attachment5)
     {
         $this->code = $code;
         $this->name = $name;
@@ -140,13 +157,16 @@ class AddNewProductDefinitionCommand
         $this->attributes = $attributes;
         $this->remarks = $remarks;
         $this->supplier_id = $supplier_id;
-        $this->status = $status;
         $this->image1 = $image1;
         $this->image2 = $image2;
         $this->image3 = $image3;
         $this->image4 = $image4;
-        $this->attachments = $attachments;
-        $this->user = $user;
+        $this->attachment1 = $attachment1;
+        $this->attachment2 = $attachment2;
+        $this->attachment3 = $attachment3;
+        $this->attachment4 = $attachment4;
+        $this->attachment5 = $attachment5;
         $this->action = $action;
+        $this->user = $user;
     }
 }

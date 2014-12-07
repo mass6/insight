@@ -1,20 +1,15 @@
 <?php namespace Insight\ProductDefinitions;
-
-/**
- * Class Company
- * @package Insight\ProductDefinitions
- */
 use Laracasts\Commander\Events\EventGenerator;
 use Insight\Users\User;
 use Insight\Settings\Setting;
+use Codesleeve\Stapler\ORM\StaplerableInterface;
+use Codesleeve\Stapler\ORM\EloquentTrait;
 
 /**
  * Class ProductDefinition
  * @package Insight\ProductDefinitions
  */
-class ProductDefinition extends \Eloquent {
-
-    use EventGenerator;
+class ProductDefinition extends \Eloquent implements StaplerableInterface {
 
     /**
      * @var array
@@ -30,6 +25,15 @@ class ProductDefinition extends \Eloquent {
         'currency',
         'description',
         'short_description',
+        'image1',
+        'image2',
+        'image3',
+        'image4',
+        'attachment1',
+        'attachment2',
+        'attachment3',
+        'attachment4',
+        'attachment5',
         'attributes',
         'remarks',
         'supplier_id',
@@ -39,10 +43,66 @@ class ProductDefinition extends \Eloquent {
         'status',
     ];
 
+    use EventGenerator, EloquentTrait;
+
     /**
      * @var string
      */
     protected $table = 'product_definitions';
+
+    public function __construct(array $attributes = array())
+    {
+        $this->hasAttachedFile('image1', [
+            'styles' => [
+                'medium' => '300x300',
+                'thumb' => '150x150'
+            ],
+            'default_url' => '/images/products/:style/placeholder.png'
+        ]);
+        $this->hasAttachedFile('image2', [
+            'styles' => [
+                'medium' => '300x300',
+                'thumb' => '150x150'
+            ],
+            'default_url' => '/images/products/:style/placeholder.png'
+        ]);
+        $this->hasAttachedFile('image3', [
+            'styles' => [
+                'medium' => '300x300',
+                'thumb' => '150x150'
+            ],
+            'default_url' => '/images/products/:style/placeholder.png'
+        ]);
+        $this->hasAttachedFile('image4', [
+            'styles' => [
+                'medium' => '300x300',
+                'thumb' => '150x150'
+            ],
+            'default_url' => '/images/products/:style/placeholder.png'
+        ]);
+
+        $this->hasAttachedFile('attachment1', [
+
+        ]);
+
+        $this->hasAttachedFile('attachment2', [
+
+        ]);
+
+        $this->hasAttachedFile('attachment3', [
+
+        ]);
+
+        $this->hasAttachedFile('attachment4', [
+
+        ]);
+
+        $this->hasAttachedFile('attachment5', [
+
+        ]);
+
+        parent::__construct($attributes);
+    }
 
     /**
      * Company entity that this product is owned by

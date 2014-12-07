@@ -31,36 +31,42 @@ class UpdateProductDefinitionCommandHandler extends ProductDefinitionCommandHand
         // Create the Company
         try
         {
-
             // serialize the attributes input array
             if(isset($command->attributes))
                 $command->attributes = json_encode($command->attributes);
 
-            // determine the assigned user
-            $command->assigned_user_id = (int)$this->setAssignedUser($command);
+            // determine the status
+            $command->status = $this->setStatus($command->action);
 
-            // determine if the order was assigned to another user
-            $this->wasAssigned = $this->userWasAssigned($command->action);
+            // update the new request
+            //$product = $command->formType === 'full' ? $this->productDefinitionRepository->update($command) : $this->productDefinitionRepository->updateLimited($command);
+            $product = $this->productDefinitionRepository->update($command->product, $command);
 
+            // assign the request to designated user
+            $product->assigned_user_id = (int)$this->setAssignedUser($command);
+            if($this->wasAssigned)
+                $product->assigned_by_id = $command->user->id;
+            $product->save();
+
+            // determine if request is completed
             $this->isCompleted = $command->action === 'complete' ? true : false;
-
-            $product = $command->formType === 'full' ? $this->productDefinitionRepository->update($command) : $this->productDefinitionRepository->updateLimited($command);
 
             // add the history comment
             $comment = $this->execute(new AddNewCommentCommand(
                 $product->id,
                 get_class($product),
                 $command->user->id,
-                $this->compileComment($product, $command->action, $command->status) . ($command->remarks !== '' ? '||' . $command->remarks : '')
+                $this->compileComment($product, $command->action)
+                . ($command->remarks !== '' ? '||' . $command->remarks : '')
             ));
 
-            //$this->attachImages($product, $command->images);
-            $this->attachImage($product, $command->image1);
-            $this->attachImage($product, $command->image2);
-            $this->attachImage($product, $command->image3);
-            $this->attachImage($product, $command->image4);
+            // attach images & file attachments
+            //$this->attachImage($product, $command->image1);
+            //$this->attachImage($product, $command->image2);
+            //$this->attachImage($product, $command->image3);
+            //$this->attachImage($product, $command->image4);
 
-            $this->attachAttachments($product, $command->attachments);
+            //$this->attachAttachments($product, $command->attachments);
 
         }
         catch (Exception $e)
@@ -82,19 +88,32 @@ class UpdateProductDefinitionCommandHandler extends ProductDefinitionCommandHand
         return $product;
     }
 
+    protected function setStatus($action)
+    {
+        switch ($action){
+            case "save":
+            case "assign-to-customer":
+            case "assign-to-supplier":
+                return 1; // draft
+            case "submit":
+            case "update":
+                return 2; // submitted
+            case "process":
+                return 3; // processing
+            case "complete":
+                return 4;
+        }
+    }
 
     /**
-     * Determine who the request should be assigned to based on request action
+     * Determine who the request should be assigned to based on request status
      *
      * @param $command
      * @return mixed
      */
-    protected function setAssignedUser($command)//$status, $action, $user_id, $currentUserId)
+    protected function setAssignedUser($command)
     {
         switch ($command->action){
-            case "save": // draft
-                return $command->assigned_user_id;
-
             case "assign-to-customer":
                 $this->wasAssigned = true;
                 return Company::find($command->company_id)->primaryContact->id;
@@ -103,36 +122,25 @@ class UpdateProductDefinitionCommandHandler extends ProductDefinitionCommandHand
                 $this->wasAssigned = true;
                 return Company::find($command->supplier_id)->primaryContact->id;
 
-            case "submit":
+            case "submit": // submitted
                 $this->wasAssigned = true;
                 return Setting::where('name', 'primary-cataloguer')->pluck('value');
 
-            case "process":
+            case "process": // processing
                 $this->wasAssigned = true;
                 return Setting::where('name', 'primary-provisioner')->pluck('value');
 
-//            case "revert":
-//                if($command->status === "1")
-//                {
-//                    $this->wasAssigned = true;
-//                    return Company::find($command->company_id)->primaryContact->id;
-//                }
-//                $this->wasAssigned = true;
-//                return Setting::where('name', 'primary-cataloguer')->pluck('value');
-
-            case "complete":
-                return $command->assigned_user_id;
-
-            default:
-                return $command->assigned_user_id;
+            default: // save, update or complete
+                return $command->user->id;
         }
     }
 
 
-    protected function compileComment($product, $action, $status)
+    protected function compileComment($product, $action)
     {
         switch ($action){
             case "save":
+            case "update":
                 return 'Request was updated by ' . $product->updatedBy->name() . '.';
 
             case "assign-to-customer":
@@ -140,13 +148,6 @@ class UpdateProductDefinitionCommandHandler extends ProductDefinitionCommandHand
 
             case "assign-to-supplier":
                 return 'Request assigned to supplier contact ' . $product->assignedTo->name() . ' by ' . $product->assignedBy->name() . ' for input.';
-
-//            case "revert":
-//                if($status === 1)
-//                {
-//                    return 'Request was reassigned back to ' . $product->customer->primaryContact->name() . ' by ' . $product->assignedBy->name() . '.';
-//                }
-//                return 'Request was reassigned back to ' . $product->assignedTo->name() . ' by ' . $product->assignedBy->name() . '.';
 
             case "submit":
                 return 'Request was submitted to ' . $product->assignedTo->name() . ' by ' . $product->assignedBy->name() . ' for review.';

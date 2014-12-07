@@ -29,44 +29,80 @@ class AddNewProductDefinitionCommandHandler extends ProductDefinitionCommandHand
         // Create the Company
         try
         {
-            //dd($command);
             // serialize the attributes in the input array
             if(isset($command->attributes))
                 $command->attributes = json_encode($command->attributes);
-//            if(!isset($command->attributes) && (int)$command->company_id === 2)
-//            {
-//                $command->attributes = '{"Brand":"","HS Code":"","Barcode Number":"","Country of Manufacture":"","Lead Time":"","Ingredients":"","Calories":"","Calories From Fat":"","Total Fat":"","Saturated Fat":"","Trans Fat":"","Cholesterol":"","Sodium":"","Total Carbohydrates":"","Dietary Fiber":"","Sugars":"","Protein":"","Vitamin A":"","Vitamin C":"","Calcium":"","Iron":"","Packaging":"","Packaging Type":"","Shelf Life":"","Storage Condition":"","Weight Case Net":"","Weight Case Gross":"","Weight Individual Net":"","Weight Individual Gross":"","Weight Individual Drain":""}';
-//            }
 
-            // determine the assigned user
-            $command->assigned_user_id = (int)$this->setAssignedUser($command);
+            // determine the status
+            $command->status = $this->setStatus($command->action);
 
-            //dd($command);
-            // create the product request
+            // persist the new request
             $product = $this->productDefinitionRepository->create($command);
+
+            // assign the request to designated user
+            $product->assigned_user_id = (int)$this->setAssignedUser($command);
+            $product->save();
 
             // add the history comment
             $comment = $this->execute(new AddNewCommentCommand(
                 $product->id,
                 get_class($product),
                 $product->user_id,
-                $this->compileComment($product, $command->status, $command->action)
+                $this->compileComment($product, $command->action)
             ));
 
+            // save the attached images
+            //$this->attachImages($product, [$command->image1, $command->image2, $command->image3, $command->image4]);
+
+            // save the attached file attachments
+            //$this->attachAttachments($product, $command->attachments);
+
+
+            //dd($command);
+
+//            if(!isset($command->attributes) && (int)$command->company_id === 2)
+//            {
+//                $command->attributes = '{"Brand":"","HS Code":"","Barcode Number":"","Country of Manufacture":"","Lead Time":"","Ingredients":"","Calories":"","Calories From Fat":"","Total Fat":"","Saturated Fat":"","Trans Fat":"","Cholesterol":"","Sodium":"","Total Carbohydrates":"","Dietary Fiber":"","Sugars":"","Protein":"","Vitamin A":"","Vitamin C":"","Calcium":"","Iron":"","Packaging":"","Packaging Type":"","Shelf Life":"","Storage Condition":"","Weight Case Net":"","Weight Case Gross":"","Weight Individual Net":"","Weight Individual Gross":"","Weight Individual Drain":""}';
+//            }
+
+
+
+            //dd($command);
+            // create the product request
+            //$product = $this->productDefinitionRepository->create($command);
+
+            // add the history comment
+
+
             // process images and attachments
-            $this->attachImages($product, [$command->image1, $command->image2, $command->image3, $command->image4]);
-            $this->attachAttachments($product, $command->attachments);
+
         }
         catch (Exception $e)
         {
             return 'Could not create product.';
         }
 
+        // raise and dispatch the events
         $product->raise(new ProductDefinitionWasCreated($product));
         if($this->wasAssigned)
             $product->raise(new ProductDefinitionWasAssigned($product, $command->remarks));
 
         $this->dispatchEventsFor($product);
+    }
+
+    protected function setStatus($action)
+    {
+        switch ($action){
+            case "save":
+            case "assign-to-customer":
+            case "assign-to-supplier":
+                return 1; // draft
+            case "submit":
+                return 2; // submitted
+            case "process":
+                return 3; // processing
+
+        }
     }
 
     /**
@@ -77,60 +113,46 @@ class AddNewProductDefinitionCommandHandler extends ProductDefinitionCommandHand
      */
     protected function setAssignedUser($command)
     {
-        switch ($command->status){
-            case "1": // draft
-                if($command->action === 'assign-to-customer')
-                {
-                    $this->wasAssigned = true;
-                    return Company::find($command->company_id)->primaryContact->id;
-                }
-                elseif($command->action === 'assign-to-supplier')
-                {
-                    $this->wasAssigned = true;
-                    return Company::find($command->supplier_id)->primaryContact->id;
-                }
-                return $command->user_id;
+        switch ($command->action){
+            case "assign-to-customer":
+                $this->wasAssigned = true;
+                return Company::find($command->company_id)->primaryContact->id;
 
-            case "2": // submitted
+            case "assign-to-supplier":
+                $this->wasAssigned = true;
+                return Company::find($command->supplier_id)->primaryContact->id;
+
+            case "submit": // submitted
                 $this->wasAssigned = true;
                 return Setting::where('name', 'primary-cataloguer')->pluck('value');
 
-            case "3": // processing
+            case "process": // processing
                 $this->wasAssigned = true;
                 return Setting::where('name', 'primary-provisioner')->pluck('value');
 
             default:
-                return $command->user_id;
+                return $command->user->id;
         }
     }
 
-    protected function compileComment($product, $status, $action)
+    protected function compileComment($product, $action)
     {
-        switch ($status){
-            case "1": // submitted
-                if($action === 'assign-to-customer')
-                {
-                    return 'Request created by ' . $product->createdBy->name() . ' and assigned to ' . $product->customer->primaryContact->name() . ' for input.';
-                }
-                elseif($action === 'assign-to-supplier')
-                {
-                    return 'Draft created by ' . $product->createdBy->name() . ' and assigned to supplier contact ' . $product->assignedTo->name() . ' for input.';
-                }
+        switch ($action){
+            case "save":
                 return 'Request draft created by ' . $product->createdBy->name() . '.';
-
-            case "2": // processing
+            case "assign-to-customer":
+                return 'Request created by ' . $product->createdBy->name() . ' and assigned to ' . $product->customer->primaryContact->name() . ' for input.';
+            case "assign-to-supplier":
+                 return 'Request created by ' . $product->createdBy->name() . ' and assigned to supplier contact ' . $product->assignedTo->name() . ' for input.';
+            case "submit":
                 return 'Request created by ' . $product->createdBy->name() . ' and submitted to ' . $product->assignedTo->name() . ' for review.';
-            case "3":
+            case "process":
                 return 'Request created by ' . $product->createdBy->name() . ' and submitted to ' . $product->assignedTo->name() . ' for processing.';
             default:
                 return 'Request created.';
         }
     }
 
-    protected function wasAssignedBy()
-    {
-
-    }
 
     /**
      * Persist each images to DB product_images table
