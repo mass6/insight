@@ -99,7 +99,7 @@ abstract class ProductDefinitionFormAbstract extends FormValidator {
     {
         for ($attachment = 1; $attachment <= 5; $attachment++ )
         {
-            if (isset($formData['existingImage' . $attachment]))
+            if (isset($formData['existingAttachment' . $attachment]))
                 $this->rules['attachment' . $attachment] = 'max:2048';
 
         }

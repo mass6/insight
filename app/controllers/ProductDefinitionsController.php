@@ -270,12 +270,16 @@ class ProductDefinitionsController extends \BaseController {
         // parse the attributes from the form into an array
         $input['attributes'] = $this->parseAttributes($input);
 
-        // should be able to delete below statement
+        //
         $input['existingImage1'] = $product->image1->originalFilename() ? $product->image1 : null ;
         $input['existingImage2'] = $product->image2->originalFilename() ? $product->image2 : null ;
         $input['existingImage3'] = $product->image3->originalFilename() ? $product->image3 : null ;
         $input['existingImage4'] = $product->image4->originalFilename() ? $product->image4 : null ;
-
+        $input['existingAttachment1'] = $product->attachment1->originalFilename() ? $product->attachment1 : null ;
+        $input['existingAttachment2'] = $product->attachment2->originalFilename() ? $product->attachment2 : null ;
+        $input['existingAttachment3'] = $product->attachment3->originalFilename() ? $product->attachment3 : null ;
+        $input['existingAttachment4'] = $product->attachment4->originalFilename() ? $product->attachment4 : null ;
+        $input['existingAttachment5'] = $product->attachment5->originalFilename() ? $product->attachment5 : null ;
 
         $validationForm = $this->productDefinitionFormFactory->make($input['action'], $this->user, $product->customer);
         //return get_class($validationForm);
