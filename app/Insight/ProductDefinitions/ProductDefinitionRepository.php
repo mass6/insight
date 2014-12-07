@@ -187,12 +187,21 @@ class ProductDefinitionRepository
             'uom' => $product->uom,
             'price' => $product->price,
             'currency' => $product->currency,
-            'description' => $product->description,
             'short_description' => $product->short_description,
+            'description' => $product->description,
+            'image1' => $product->image1,
+            'image2' => $product->image2,
+            'image3' => $product->image3,
+            'image4' => $product->image3,
+            'attachment1' => $product->attachment1,
+            'attachment2' => $product->attachment2,
+            'attachment3' => $product->attachment3,
+            'attachment4' => $product->attachment4,
+            'attachment5' => $product->attachment5,
             'attributes' => $product->attributes,
             'remarks' => $product->remarks,
             'supplier_id' => ! empty($product->supplier_id) ? $product->supplier_id: null,
-            'assigned_user_id' => $product->assigned_user_id,
+            'assigned_user_id' => $product->user_id,
             'assigned_by_id' => $product->user_id,
             'updated_by_id' => $product->user_id,
             'status' => $product->status,
@@ -204,33 +213,45 @@ class ProductDefinitionRepository
     /**
      * Used to update product when used with full edit web form
      *
+     * @param ProductDefinition $productToUpdate
      * @param UpdateProductDefinitionCommand $command
      * @return mixed
      */
-    public function update(UpdateProductDefinitionCommand $command)
+    public function update(ProductDefinition $productToUpdate, UpdateProductDefinitionCommand $command)
     {
-        $productToUpdate = $this->find($command->id);
-
+        $productToUpdate->supplier_id = ! empty($command->supplier_id) ? $command->supplier_id: null;
         $productToUpdate->code = $command->code;
         $productToUpdate->name = $command->name;
         $productToUpdate->category = $command->category;
         $productToUpdate->uom = $command->uom;
         $productToUpdate->price = $command->price;
         $productToUpdate->currency = $command->currency;
-        $productToUpdate->description = $command->description;
         $productToUpdate->short_description = $command->short_description;
+        $productToUpdate->description = $command->description;
+        if (!empty($command->image1))
+            $productToUpdate->image1 = $command->image1;
+        if (!empty($command->image2))
+            $productToUpdate->image2 = $command->image2;
+        if (!empty($command->image3))
+            $productToUpdate->image3 = $command->image3;
+        if (!empty($command->image4))
+            $productToUpdate->image4 = $command->image4;
+        if (!empty($command->attachment1))
+            $productToUpdate->attachment1 = $command->attachment1;
+        if (!empty($command->attachment2))
+            $productToUpdate->attachment2 = $command->attachment2;
+        if (!empty($command->attachment3))
+            $productToUpdate->attachment3 = $command->attachment3;
+        if (!empty($command->attachment4))
+            $productToUpdate->attachment4 = $command->attachment4;
+        if (!empty($command->attachment5))
+            $productToUpdate->attachment5 = $command->attachment5;
         $productToUpdate->attributes = $command->attributes;
         $productToUpdate->remarks = $command->remarks;
-        $productToUpdate->supplier_id = ! empty($command->supplier_id) ? $command->supplier_id: null;
-        $productToUpdate->updated_by_id = $command->current_user_id;
-        if($command->action !== 'save'){
-            $productToUpdate->assigned_user_id = $command->assigned_user_id;
-            $productToUpdate->assigned_by_id = $command->current_user_id;
-        }
         $productToUpdate->status = $command->status;
+        $productToUpdate->updated_by_id = $command->user->id;
 
         $productToUpdate->save();
-
         return $productToUpdate;
 
     }

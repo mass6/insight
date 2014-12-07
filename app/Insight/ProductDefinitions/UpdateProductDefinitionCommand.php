@@ -4,6 +4,8 @@
  * Date: 11/7/14
  * Time: 2:11 PM
  */
+use Insight\ProductDefinitions\Forms\ProductDefinitionForm;
+use Insight\Users\User;
 
 /**
  * Class UpdateProductDefinitionCommand
@@ -16,9 +18,17 @@ class UpdateProductDefinitionCommand
      */
     public $user;
     /**
+     * @var ProductDefinition
+     */
+    public $product;
+    /**
      * @var
      */
-    public $id;
+    public $company_id;
+    /**
+     * @var
+     */
+    public $supplier_id;
     /**
      * @var
      */
@@ -27,18 +37,6 @@ class UpdateProductDefinitionCommand
      * @var
      */
     public $name;
-    /**
-     * @var
-     */
-    public $user_id;
-    /**
-     * @var
-     */
-    public $current_user_id;
-    /**
-     * @var
-     */
-    public $company_id;
     /**
      * @var
      */
@@ -58,44 +56,11 @@ class UpdateProductDefinitionCommand
     /**
      * @var
      */
-    public $description;
-    /**
-     * @var
-     */
     public $short_description;
     /**
      * @var
      */
-    public $attributes;
-    /**
-     * @var
-     */
-    public $remarks;
-
-    /**
-     * @var
-     */
-    public $supplier_id;
-    /**
-     * @var
-     */
-    public $status;
-    /**
-     * @var
-     */
-    public $action;
-    /**
-     * @var
-     */
-    public  $assigned_user_id;
-    /**
-     * @var
-     */
-    public $assigned_by_id;
-    /**
-     * @var
-     */
-    public  $images;
+    public $description;
     /**
      * @var
      */
@@ -115,69 +80,90 @@ class UpdateProductDefinitionCommand
     /**
      * @var
      */
-    public  $attachments;
+    public $attachment1;
+    /**
+     * @var
+     */
+    public $attachment2;
+    /**
+     * @var
+     */
+    public $attachment3;
+    /**
+     * @var
+     */
+    public $attachment4;
+    /**
+     * @var
+     */
+    public $attachment5;
+    /**
+     * @var
+     */
+    public $attributes;
     /**
      * @var
      */
     public $formType;
+    /**
+     * @var
+     */
+    public $remarks;
+    /**
+     * @var
+     */
+    public $action;
 
 
     /**
-     * @param $user
-     * @param $id
+     * @param User $user
+     * @param ProductDefinition $product
+     * @param $company_id
+     * @param $supplier_id
      * @param $code
      * @param $name
-     * @param $user_id
-     * @param $current_user_id
-     * @param $company_id
      * @param $category
      * @param $uom
      * @param $price
      * @param $currency
-     * @param $description
      * @param $short_description
-     * @param $attributes
-     * @param $remarks
-     * @param $supplier_id
-     * @param $status
-     * @param $action
-     * @param $assigned_user_id
-     * @param $assigned_by_id
+     * @param $description
      * @param $image1
      * @param $image2
      * @param $image3
      * @param $image4
-     * @param $attachments
+     * @param $attributes
      * @param $formType
+     * @param $remarks
+     * @param $action
      */
-    public function __construct($user, $id, $code, $name, $user_id, $current_user_id, $company_id, $category, $uom, $price, $currency, $description, $short_description,
-                                $attributes, $remarks, $supplier_id, $status, $action, $assigned_user_id, $assigned_by_id, $image1, $image2, $image3, $image4, $attachments, $formType)
+    public function __construct(User $user, ProductDefinition $product, $company_id, $supplier_id, $code, $name, $category, $uom, $price, $currency, $short_description, $description,
+                                $image1, $image2, $image3, $image4, $attachment1, $attachment2, $attachment3, $attachment4, $attachment5, $attributes, $formType, $remarks, $action)
     {
-        $this->id = $id;
+        $this->user = $user;
+        $this->product = $product;
+        $this->company_id = $company_id;
+        $this->supplier_id = $supplier_id;
         $this->code = $code;
         $this->name = $name;
-        $this->current_user_id = $current_user_id;
-        $this->company_id = $company_id;
         $this->category = $category;
         $this->uom = $uom;
         $this->price = $price;
         $this->currency = $currency;
-        $this->description = $description;
-        $this->attributes = $attributes;
-        $this->remarks = $remarks;
-        $this->supplier_id = $supplier_id;
-        $this->status = $status;
-        $this->action = $action;
         $this->short_description = $short_description;
+        $this->description = $description;
         $this->image1 = $image1;
         $this->image2 = $image2;
         $this->image3 = $image3;
         $this->image4 = $image4;
-        $this->attachments = $attachments;
-        $this->assigned_user_id = $assigned_user_id;
-        $this->assigned_by_id = $assigned_by_id;
-        $this->user_id = $user_id;
-        $this->user = $user;
+        $this->attachment1 = $attachment1;
+        $this->attachment2 = $attachment2;
+        $this->attachment3 = $attachment3;
+        $this->attachment4 = $attachment4;
+        $this->attachment5 = $attachment5;
+        $this->attributes = $attributes;
         $this->formType = $formType;
+        $this->remarks = $remarks;
+        $this->action = $action;
     }
 }

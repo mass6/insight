@@ -9,7 +9,7 @@ use Insight\Sessions\LoginUserCommand;
 /**
  * Class SessionsController
  */
-class SessionsController extends \BaseController {
+class SessionsController extends Controller {
 
     use CommandBus;
 

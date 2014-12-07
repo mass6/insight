@@ -91,46 +91,114 @@
                         <div class="tab-pane" id="v-media">
 
                             <!-- Images -->
-                            <?php if($product->images): ?>
+
                                 <div class="gallery-env">
 
+                                    <?php $customImageLabels = $product->customer->settings()->getCustomImageLabels; ?>
                                     <h4>Product Images</h4>
 
                                     <div class="row">
-                                             <?php foreach($product->images as $image): ?>
-                                                <div class="col-sm-2 col-xs-4" data-tag="1d">
+
+                                                <div class="col-sm-3 col-xs-4" data-tag="1d">
+                                                    <span><?php echo isset($customImageLabels['imageLabel1']) ? $customImageLabels['imageLabel1'] : 'Image 1'; ?></span>
                                                     <article class="image-thumb">
-                                                        <a href="<?php echo $image->image->url(); ?>" class="image" target="_blank">
-                                                            <img src="<?php echo $image->image->url('thumb'); ?>"/>
+                                                        <a href="<?php echo $product->image1->url(); ?>" class="image" target="_blank">
+                                                            <img src="<?php echo $product->image1->url('thumb'); ?>"/>
                                                         </a>
                                                     </article>
                                                 </div>
-                                            <?php endforeach; ?>
+
+                                                <div class="col-sm-3 col-xs-4" data-tag="1d">
+                                                <span><?php echo isset($customImageLabels['imageLabel2']) ? $customImageLabels['imageLabel2'] : 'Image 2'; ?></span>
+                                                    <article class="image-thumb">
+                                                        <a href="<?php echo $product->image2->url(); ?>" class="image" target="_blank">
+                                                            <img src="<?php echo $product->image2->url('thumb'); ?>"/>
+                                                        </a>
+                                                    </article>
+                                                </div>
+
+                                                <div class="col-sm-3 col-xs-4" data-tag="1d">
+                                                <span><?php echo isset($customImageLabels['imageLabel3']) ? $customImageLabels['imageLabel3'] : 'Image 3'; ?></span>
+                                                    <article class="image-thumb">
+                                                        <a href="<?php echo $product->image3->url(); ?>" class="image" target="_blank">
+                                                            <img src="<?php echo $product->image3->url('thumb'); ?>"/>
+                                                        </a>
+                                                    </article>
+                                                </div>
+
+                                                <div class="col-sm-3 col-xs-4" data-tag="1d">
+                                                <span><?php echo isset($customImageLabels['imageLabel4']) ? $customImageLabels['imageLabel4'] : 'Image 4'; ?></span>
+                                                    <article class="image-thumb">
+                                                        <a href="<?php echo $product->image4->url(); ?>" class="image" target="_blank">
+                                                            <img src="<?php echo $product->image4->url('thumb'); ?>"/>
+                                                        </a>
+                                                    </article>
+                                                </div>
+
                                     </div>
 
                                 </div>
                                 <hr />
-                            <?php endif; ?>
+
 
 
                             <!-- Attachments -->
-                            <?php if($product->attachments): ?>
+
+                                <?php $customAttachmentLabels = $product->customer->settings()->getCustomAttachmentLabels; ?>
 
                                 <h4>Attachments</h4>
 
                                 <div class="row">
-                                    <ul>
-                                         <?php foreach($product->attachments as $attachment): ?>
-                                            <li>
-                                                <a href="<?php echo $attachment->attachment->url(); ?>" target="_blank">
-                                                    <?php echo $attachment->attachment->originalFilename(); ?>
+                                    <ul style="font-size: 14px;">
+                                        <?php if($product->attachment1->originalFilename()): ?>
+                                            <li><?php echo isset($customAttachmentLabels['attachmentLabel1']) ? '[' . $customAttachmentLabels['attachmentLabel1'] . '] : ' : ''; ?>
+
+                                                <a href="<?php echo $product->attachment1->url(); ?>" target="_blank">
+                                                    <?php echo $product->attachment1->originalFilename(); ?>
 
                                                 </a>
                                             </li>
-                                        <?php endforeach; ?>
+                                        <?php endif; ?>
+                                        <?php if($product->attachment2->originalFilename()): ?>
+                                            <li><?php echo isset($customAttachmentLabels['attachmentLabel2']) ? '[' . $customAttachmentLabels['attachmentLabel2'] . '] : ' : ''; ?>
+
+                                                <a href="<?php echo $product->attachment2->url(); ?>" target="_blank">
+                                                    <?php echo $product->attachment2->originalFilename(); ?>
+
+                                                </a>
+                                            </li>
+                                        <?php endif; ?>
+                                        <?php if($product->attachment3->originalFilename()): ?>
+                                            <li><?php echo isset($customAttachmentLabels['attachmentLabel3']) ? '[' . $customAttachmentLabels['attachmentLabel3'] . '] : ' : ''; ?>
+
+                                                <a href="<?php echo $product->attachment3->url(); ?>" target="_blank">
+                                                    <?php echo $product->attachment3->originalFilename(); ?>
+
+                                                </a>
+                                            </li>
+                                        <?php endif; ?>
+                                        <?php if($product->attachment4->originalFilename()): ?>
+                                            <li><?php echo isset($customAttachmentLabels['attachmentLabel4']) ? '[' . $customAttachmentLabels['attachmentLabel4'] . '] : ' : ''; ?>
+
+                                                <a href="<?php echo $product->attachment4->url(); ?>" target="_blank">
+                                                    <?php echo $product->attachment4->originalFilename(); ?>
+
+                                                </a>
+                                            </li>
+                                        <?php endif; ?>
+                                        <?php if($product->attachment5->originalFilename()): ?>
+                                            <li><?php echo isset($customAttachmentLabels['attachmentLabel5']) ? '[' . $customAttachmentLabels['attachmentLabel5'] . '] : ' : ''; ?>
+
+                                                <a href="<?php echo $product->attachment5->url(); ?>" target="_blank">
+                                                    <?php echo $product->attachment5->originalFilename(); ?>
+
+                                                </a>
+                                            </li>
+                                        <?php endif; ?>
+
                                     </ul>
                                 </div>
-                            <?php endif; ?>
+
 
 
 
@@ -139,7 +207,7 @@
                                 <?php if($attributes): ?>
 
                                     <?php if($customAttributes): ?>
-                                        <?php echo $__env->make('product-definitions.partials._' . $customAttributes . '-attributes-data', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+                                        <?php echo $__env->make('product-definitions.partials._' . strtolower($customAttributes) . '-attributes-data', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
                                     <?php else: ?>
 
 

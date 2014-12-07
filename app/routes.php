@@ -115,8 +115,8 @@ Route::group(array('before' => 'auth'), function()
     /**
      * Attachments
      */
-    Route::get('images/{id}/delete', 'ImagesController@destroy' );
-    Route::get('attachments/{id}/delete', 'AttachmentsController@destroy' );
+    Route::get('images/{productdefinition}/{id}/delete', 'ProductDefinitionsController@detachImage' );
+    Route::get('attachments/{productdefinition}/{id}/delete', 'ProductDefinitionsController@detachAttachment' );
 
 
 

@@ -93,45 +93,104 @@
                         <div class="tab-pane" id="v-media">
 
                             <!-- Images -->
-                            @if($product->images)
+
                                 <div class="gallery-env">
 
+                                    <?php $customImageLabels = $product->customer->settings()->getCustomImageLabels; ?>
                                     <h4>Product Images</h4>
 
                                     <div class="row">
-                                             @foreach ($product->images as $image)
-                                                <div class="col-sm-2 col-xs-4" data-tag="1d">
+
+                                                <div class="col-sm-3 col-xs-4" data-tag="1d">
+                                                    <span>{{ isset($customImageLabels['imageLabel1']) ? $customImageLabels['imageLabel1'] : 'Image 1' }}</span>
                                                     <article class="image-thumb">
-                                                        <a href="{{ $image->image->url() }}" class="image" target="_blank">
-                                                            <img src="{{ $image->image->url('thumb') }}"/>
+                                                        <a href="{{ $product->image1->url() }}" class="image" target="_blank">
+                                                            <img src="{{ $product->image1->url('thumb') }}"/>
                                                         </a>
                                                     </article>
                                                 </div>
-                                            @endforeach
+
+                                                <div class="col-sm-3 col-xs-4" data-tag="1d">
+                                                <span>{{ isset($customImageLabels['imageLabel2']) ? $customImageLabels['imageLabel2'] : 'Image 2' }}</span>
+                                                    <article class="image-thumb">
+                                                        <a href="{{ $product->image2->url() }}" class="image" target="_blank">
+                                                            <img src="{{ $product->image2->url('thumb') }}"/>
+                                                        </a>
+                                                    </article>
+                                                </div>
+
+                                                <div class="col-sm-3 col-xs-4" data-tag="1d">
+                                                <span>{{ isset($customImageLabels['imageLabel3']) ? $customImageLabels['imageLabel3'] : 'Image 3' }}</span>
+                                                    <article class="image-thumb">
+                                                        <a href="{{ $product->image3->url() }}" class="image" target="_blank">
+                                                            <img src="{{ $product->image3->url('thumb') }}"/>
+                                                        </a>
+                                                    </article>
+                                                </div>
+
+                                                <div class="col-sm-3 col-xs-4" data-tag="1d">
+                                                <span>{{ isset($customImageLabels['imageLabel4']) ? $customImageLabels['imageLabel4'] : 'Image 4' }}</span>
+                                                    <article class="image-thumb">
+                                                        <a href="{{ $product->image4->url() }}" class="image" target="_blank">
+                                                            <img src="{{ $product->image4->url('thumb') }}"/>
+                                                        </a>
+                                                    </article>
+                                                </div>
+
                                     </div>
 
                                 </div>
                                 <hr />
-                            @endif
+
 
 
                             <!-- Attachments -->
-                            @if($product->attachments)
+
+                                <?php $customAttachmentLabels = $product->customer->settings()->getCustomAttachmentLabels; ?>
 
                                 <h4>Attachments</h4>
 
                                 <div class="row">
-                                    <ul>
-                                         @foreach ($product->attachments as $attachment)
-                                            <li>
-                                                <a href="{{ $attachment->attachment->url() }}" target="_blank">
-                                                    {{$attachment->attachment->originalFilename()}}
+                                    <ul style="font-size: 14px;">
+                                        @if ($product->attachment1->originalFilename())
+                                            <li>{{ isset($customAttachmentLabels['attachmentLabel1']) ? '[' . $customAttachmentLabels['attachmentLabel1'] . '] : ' : '' }}
+                                                <a href="{{ $product->attachment1->url() }}" target="_blank">
+                                                    {{$product->attachment1->originalFilename()}}
                                                 </a>
                                             </li>
-                                        @endforeach
+                                        @endif
+                                        @if ($product->attachment2->originalFilename())
+                                            <li>{{ isset($customAttachmentLabels['attachmentLabel2']) ? '[' . $customAttachmentLabels['attachmentLabel2'] . '] : ' : '' }}
+                                                <a href="{{ $product->attachment2->url() }}" target="_blank">
+                                                    {{$product->attachment2->originalFilename()}}
+                                                </a>
+                                            </li>
+                                        @endif
+                                        @if ($product->attachment3->originalFilename())
+                                            <li>{{ isset($customAttachmentLabels['attachmentLabel3']) ? '[' . $customAttachmentLabels['attachmentLabel3'] . '] : ' : '' }}
+                                                <a href="{{ $product->attachment3->url() }}" target="_blank">
+                                                    {{$product->attachment3->originalFilename()}}
+                                                </a>
+                                            </li>
+                                        @endif
+                                        @if ($product->attachment4->originalFilename())
+                                            <li>{{ isset($customAttachmentLabels['attachmentLabel4']) ? '[' . $customAttachmentLabels['attachmentLabel4'] . '] : ' : '' }}
+                                                <a href="{{ $product->attachment4->url() }}" target="_blank">
+                                                    {{$product->attachment4->originalFilename()}}
+                                                </a>
+                                            </li>
+                                        @endif
+                                        @if ($product->attachment5->originalFilename())
+                                            <li>{{ isset($customAttachmentLabels['attachmentLabel5']) ? '[' . $customAttachmentLabels['attachmentLabel5'] . '] : ' : '' }}
+                                                <a href="{{ $product->attachment5->url() }}" target="_blank">
+                                                    {{$product->attachment5->originalFilename()}}
+                                                </a>
+                                            </li>
+                                        @endif
+
                                     </ul>
                                 </div>
-                            @endif
+
 
 
 
@@ -140,7 +199,7 @@
                                 @if($attributes)
 
                                     @if($customAttributes)
-                                        @include('product-definitions.partials._' . $customAttributes . '-attributes-data')
+                                        @include('product-definitions.partials._' . strtolower($customAttributes) . '-attributes-data')
                                     @else
 
 
