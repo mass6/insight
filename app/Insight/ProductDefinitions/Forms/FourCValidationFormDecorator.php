@@ -69,7 +69,6 @@ class FourCValidationFormDecorator
         $this->productDefinitionForm->rules['attribute-value-weightcasegross'] = 'required';
         $this->productDefinitionForm->rules['attribute-value-weightindividualnet'] = 'required';
         $this->productDefinitionForm->rules['attribute-value-weightindividualgross'] = 'required';
-        $this->productDefinitionForm->rules['attribute-value-weightindividualdrain'] = 'required';
     }
 
     private function setMessages()
@@ -114,6 +113,5 @@ class FourCValidationFormDecorator
         $this->productDefinitionForm->setMessage('attribute-value-weightcasegross.required', 'The weight case (gross) is required.');
         $this->productDefinitionForm->setMessage('attribute-value-weightindividualnet.required', 'The weight individual (net) is required.');
         $this->productDefinitionForm->setMessage('attribute-value-weightindividualgross.required', 'The weight individual (gross) is required.');
-        $this->productDefinitionForm->setMessage('attribute-value-weightindividualdrain.required', 'The weight individual (drain) is required.');
     }
 } 
