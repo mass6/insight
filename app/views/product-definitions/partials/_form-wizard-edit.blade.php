@@ -993,6 +993,11 @@
           event.preventDefault();
           $("#images").replaceWith("<input type='file' id='images' name='images[]' multiple />");
         });
+
+        $("#uom").change(function() {
+            var $packaging = $("#attribute-value-packaging").val($(this).val());
+
+        });
     });
 
 })();
