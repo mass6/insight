@@ -122,7 +122,7 @@ require app_path().'/filters.php';
 */
 App::missing(function($exception)
 {
-    return Response::view('errors.error404', array(), 404);
+    //return Response::view('errors.error404', array(), 404);
     return Redirect::route('home');
 });
 

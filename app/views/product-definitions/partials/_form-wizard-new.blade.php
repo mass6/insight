@@ -596,56 +596,56 @@
 //    });
 
 
-//    var attributeSerial = 1; // serial to append to new element id
-//    var attributeCounter = 0; // current count/index of image
-//    var attributeLimit = 10;
-//
-//    $('#add-attribute').click(function(){
-//        if ((attributeCounter) == attributeLimit)  {
-//             alert("You have reached the limit of adding " + attributeLimit + " attributes");
-//        }
-//        else {
-//             // add attribute name input
-//             var newdiv = document.createElement('div');
-//             var attnameid = 'attribute-name' + attributeSerial;
-//             var attvalueid = 'attribute-value' + attributeSerial;
-//             var inner = "<div class='col-md-1'>"
-//                + "<label class='control-label'>&nbsp;</label>"
-//                 + "<p class='text-right'><span class='label label-info'>" + attributeSerial + "</span></p>"
-//                 + "</div>"
-//                 + "<div class='col-md-3'>"
-//                 + "<div class='form-group'>"
-//                 + "<label class='control-label' for='" + attnameid + "'>Name</label>";
-//                 if(attributeSerial === 1){
-//                    inner += "<input id='" + attnameid + "' name='" + attnameid + "' class='form-control' placeholder='e.g. Color, Size, Material' />"
-//                 } else {
-//                    inner += "<input id='" + attnameid + "' name='" + attnameid + "' class='form-control' />"
-//                 }
-//             inner += "</div></div>"
-//                 + "<div class='col-md-6'>"
-//                 + "<div class='form-group'>"
-//                 + "<label class='control-label' for='" + attvalueid + "'>Value</label>";
-//
-//                 if(attributeSerial === 1){
-//                     inner += "<input id='" + attvalueid + "' name='" + attvalueid + "' class='form-control' placeholder='e.g. White, Large, Steel' />"
-//                  } else {
-//                     inner += "<input id='" + attvalueid + "' name='" + attvalueid + "' class='form-control' />"
-//                  }
-//             inner += "</div></div>";
-//
-//             newdiv.innerHTML = inner;
-//             document.getElementById('new-attributes').appendChild(newdiv);
-//             newdiv.className = 'row';
-//             var bttn = document.getElementById('attribute-helper');
-//             bttn.style.display = 'inline';
-//
-//             // increment counters
-//             attributeSerial++;
-//             attributeCounter++;
-//             console.log(attributeSerial);
-//             console.log(attributeCounter);
-//        }
-//    });
+    var attributeSerial = 1; // serial to append to new element id
+    var attributeCounter = 0; // current count/index of image
+    var attributeLimit = 10;
+
+    $('#add-attribute').click(function(){
+        if ((attributeCounter) == attributeLimit)  {
+             alert("You have reached the limit of adding " + attributeLimit + " attributes");
+        }
+        else {
+             // add attribute name input
+             var newdiv = document.createElement('div');
+             var attnameid = 'attribute-name' + attributeSerial;
+             var attvalueid = 'attribute-value' + attributeSerial;
+             var inner = "<div class='col-md-1'>"
+                + "<label class='control-label'>&nbsp;</label>"
+                 + "<p class='text-right'><span class='label label-info'>" + attributeSerial + "</span></p>"
+                 + "</div>"
+                 + "<div class='col-md-3'>"
+                 + "<div class='form-group'>"
+                 + "<label class='control-label' for='" + attnameid + "'>Name</label>";
+                 if(attributeSerial === 1){
+                    inner += "<input id='" + attnameid + "' name='" + attnameid + "' class='form-control' placeholder='e.g. Color, Size, Material' />"
+                 } else {
+                    inner += "<input id='" + attnameid + "' name='" + attnameid + "' class='form-control' />"
+                 }
+             inner += "</div></div>"
+                 + "<div class='col-md-6'>"
+                 + "<div class='form-group'>"
+                 + "<label class='control-label' for='" + attvalueid + "'>Value</label>";
+
+                 if(attributeSerial === 1){
+                     inner += "<input id='" + attvalueid + "' name='" + attvalueid + "' class='form-control' placeholder='e.g. White, Large, Steel' />"
+                  } else {
+                     inner += "<input id='" + attvalueid + "' name='" + attvalueid + "' class='form-control' />"
+                  }
+             inner += "</div></div>";
+
+             newdiv.innerHTML = inner;
+             document.getElementById('new-attributes').appendChild(newdiv);
+             newdiv.className = 'row';
+             var bttn = document.getElementById('attribute-helper');
+             bttn.style.display = 'inline';
+
+             // increment counters
+             attributeSerial++;
+             attributeCounter++;
+             console.log(attributeSerial);
+             console.log(attributeCounter);
+        }
+    });
 
     $(document).ready(function() {
 
@@ -760,8 +760,9 @@
         });
 
         $("#uom").change(function() {
-            var $packaging = $("#attribute-value-packaging").val($(this).val());
-
+            if ( $( "#attribute-value-packaging" ).length ) {
+                $("#attribute-value-packaging").val($(this).val());
+            }
         });
     });
 

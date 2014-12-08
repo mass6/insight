@@ -204,6 +204,7 @@ class ProductDefinitionsController extends \BaseController {
         $product = $this->productDefinitionRepository->findWithComments($id);
         $attributes = object_to_array(json_decode($product->attributes));
 
+        $customAttributes = false;
         if($product->customer->settings()->getProductDefinitionTemplate)
         {
             $customAttributes = $product->customer->settings()->ProductDefinitionTemplate;

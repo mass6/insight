@@ -24,14 +24,18 @@ class FourCornersProductDefinitionUpdater extends EventListener {
     {
         $product = $event->productDefinition;
 
-        // retrieve product attributes and convert to normal array
-        $attributes = object_to_array(json_decode($product->attributes));
+        if ($product->customer->name === 'FourC')
+        {
+            // retrieve product attributes and convert to normal array
+            $attributes = object_to_array(json_decode($product->attributes));
 
-        // set the Packaging variable to be the same as the UOM
-        $attributes['Packaging'] = $product->uom;
+            // set the Packaging variable to be the same as the UOM
+            $attributes['Packaging'] = $product->uom;
 
-        // convert array back to json and persist to DB
-        $this->productDefinitionRepository->updateAttributes($product->id, json_encode($attributes));
+            // convert array back to json and persist to DB
+            $this->productDefinitionRepository->updateAttributes($product->id, json_encode($attributes));
+        }
+
 
     }
 

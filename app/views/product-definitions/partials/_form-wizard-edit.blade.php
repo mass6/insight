@@ -995,8 +995,9 @@
         });
 
         $("#uom").change(function() {
-            var $packaging = $("#attribute-value-packaging").val($(this).val());
-
+            if ( $( "#attribute-value-packaging" ).length ) {
+                $("#attribute-value-packaging").val($(this).val());
+            }
         });
     });
 
