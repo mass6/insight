@@ -255,9 +255,11 @@
                             <div class="row">
                                 <div class="col-md-3">
                                     <ul class="list-unstyled"><h5>Allergens</h5>
+                                    @if(isset($attributes['Allergens']))
                                         @foreach($attributes['Allergens'] as $allergen)
                                             <li><span class="entypo entypo-check"></span> {{ ucwords($allergen) }}</li>
                                         @endforeach
+                                    @endif
                                     </ul>
                                 </div>
                                 <div class="col-md-3">
