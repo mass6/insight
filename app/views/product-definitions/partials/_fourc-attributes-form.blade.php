@@ -262,6 +262,100 @@
                                 </div>
 
                             </div>
+                            <hr/>
+                            <h5 class="text text-info">Advisory Information</h5>
+                            <br/>
+                            <div class="row">
+
+                                <div class="col-md-7">
+
+                                    <div class="form-group">
+                                        <label class="col-sm-3 control-label">Allergens</label>
+
+                                        {{Form::hidden('attribute-name-allergens', 'Allergens')}}
+                                        <div class="col-sm-5">
+                                            <div class="checkbox checkbox-replace color-primary">
+{{--                                                {{ Form::hidden('attribute-value-allergens[gluten]', 'no')}}--}}
+                                                {{ Form::checkbox('attribute-value-allergens[]', 'gluten', false, ['id'=>'attribute-value-allergens-gluten']) }}
+                                                {{--<input type="checkbox" name="attribute-value-allergens[gluten]" id="chk-2">--}}
+                                                <label>Gluten</label>
+                                            </div>
+                                            <div class="checkbox checkbox-replace color-primary">
+                                                {{ Form::checkbox('attribute-value-allergens[]', 'crustaceans', false, ['id'=>'attribute-value-allergens-crustaceans']) }}
+                                                <label>Crustaceans</label>
+                                            </div>
+                                            <div class="checkbox checkbox-replace color-primary">
+                                                {{ Form::checkbox('attribute-value-allergens[]', 'eggs', false, ['id'=>'attribute-value-allergens-eggs']) }}
+                                                <label>Eggs</label>
+                                            </div>
+                                            <div class="checkbox checkbox-replace color-primary">
+                                                {{ Form::checkbox('attribute-value-allergens[]', 'fish', false, ['id'=>'attribute-value-allergens-fish']) }}
+                                                <label>Fish</label>
+                                            </div>
+                                            <div class="checkbox checkbox-replace color-primary">
+                                                {{ Form::checkbox('attribute-value-allergens[]', 'lupin', false, ['id'=>'attribute-value-allergens-lupin']) }}
+                                                <label>lupin</label>
+                                            </div>
+                                            <div class="checkbox checkbox-replace color-primary">
+                                                {{ Form::checkbox('attribute-value-allergens[]', 'milk', false, ['id'=>'attribute-value-allergens-milk']) }}
+                                                <label>Milk (including lactose)</label>
+                                            </div>
+                                            <div class="checkbox checkbox-replace color-primary">
+                                                {{ Form::checkbox('attribute-value-allergens[]', 'molluscs', false, ['id'=>'attribute-value-allergens-molluscs']) }}
+                                                <label>Molluscs</label>
+                                            </div>
+                                            <div class="checkbox checkbox-replace color-primary">
+                                                {{ Form::checkbox('attribute-value-allergens[]', 'mustard', false, ['id'=>'attribute-value-allergens-mustard']) }}
+                                                <label>Mustard</label>
+                                            </div>
+                                            <div class="checkbox checkbox-replace color-primary">
+                                                {{ Form::checkbox('attribute-value-allergens[]', 'nuts', false, ['id'=>'attribute-value-allergens-nuts']) }}
+                                                <label>Nuts</label>
+                                            </div>
+                                            <div class="checkbox checkbox-replace color-primary">
+                                                {{ Form::checkbox('attribute-value-allergens[]', 'peanuts', false, ['id'=>'attribute-value-allergens-peanuts']) }}
+                                                <label>Peanuts</label>
+                                            </div>
+                                            <div class="checkbox checkbox-replace color-primary">
+                                                {{ Form::checkbox('attribute-value-allergens[]', 'sesameseeds', false, ['id'=>'attribute-value-allergens-sesameseeds']) }}
+                                                <label>Sesame Seeds</label>
+                                            </div>
+                                            <div class="checkbox checkbox-replace color-primary">
+                                                {{ Form::checkbox('attribute-value-allergens[]', 'soybeans', false, ['id'=>'attribute-value-allergens-soybeans']) }}
+                                                <label>Soybeans</label>
+                                            </div>
+                                            <div class="checkbox checkbox-replace color-primary">
+                                                {{ Form::checkbox('attribute-value-allergens[]', 'so2', false, ['id'=>'attribute-value-allergens-so2']) }}
+                                                <label>SO2 (sulfites)</label>
+                                            </div>
+                                            <div class="checkbox checkbox-replace color-primary">
+                                                {{ Form::checkbox('attribute-value-allergens[]', 'celery', false, ['id'=>'attribute-value-allergens-celery']) }}
+                                                <label>Celery</label>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                                <div class="col-md-5">
+                                    <div class="form-group">
+                                        <label class="col-sm-3 control-label">Halal?</label>
+                                        {{Form::hidden('attribute-name-halal', 'Halal')}}
+                                        {{Form::hidden('attribute-value-halal', 'no')}}
+                                        <div class="col-sm-5">
+                                            <div class="checkbox checkbox-replace color-primary">
+                                                {{ Form::checkbox('attribute-value-halal', 'yes', false, ['id'=>'attribute-value-halal']) }}
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                                <script src="{{ URL::asset('js/bootstrap-switch.min.js') }}"></script>
+
+
+
+                            </div>
 
 
                         </div>

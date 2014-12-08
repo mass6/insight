@@ -903,7 +903,21 @@
                     console.log(attributeFieldName);
 
                     var attributeField = document.getElementById('attribute-value-' + attributeFieldName);
-                    attributeField.value = attributes[key];
+                    var fieldValue = attributes[key];
+                    if(fieldValue.constructor === Array) {
+
+                        for (var val in fieldValue){
+                            document.getElementById('attribute-value-' + attributeFieldName + '-' + fieldValue[val]).checked = true;
+                            console.log(fieldValue[val]);
+                        }
+
+                    } else {
+                        if (attributeField.type === 'checkbox') {
+                            attributeField.checked = true;
+                        } else {
+                            attributeField.value = attributes[key];
+                        }
+                    }
               }
 
             }
@@ -1126,3 +1140,16 @@
 <script src="{{ URL::asset('js/bootstrap-datepicker.js') }}"></script>
 <script src="{{ URL::asset('js/bootstrap-switch.js') }}"></script>
 <script src="{{ URL::asset('js/jquery.multi-select.js') }}"></script>
+
+
+	{{--<script src="assets/js/gsap/main-gsap.js"></script>--}}
+	{{----}}
+	{{--<script src="assets/js/jquery-ui/js/jquery-ui-1.10.3.minimal.min.js"></script>--}}
+	{{--<script src="assets/js/bootstrap.js"></script>--}}
+	{{--<script src="assets/js/joinable.js"></script>--}}
+	{{--<script src="assets/js/resizeable.js"></script>--}}
+	{{--<script src="assets/js/neon-api.js"></script>--}}
+	{{--<script src="assets/js/bootstrap-switch.min.js"></script>--}}
+	{{--<script src="assets/js/neon-chat.js"></script>--}}
+	{{--<script src="assets/js/neon-custom.js"></script>--}}
+	{{--<script src="assets/js/neon-demo.js"></script>--}}

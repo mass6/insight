@@ -413,6 +413,26 @@ class ProductDefinitionsController extends \BaseController {
      * @param $input
      * @return array
      */
+//    private function parseAttributes($input)
+//    {
+//        $attributes = [];
+//        if(isset($attributes)){
+//            $attributeName = '';
+//            foreach($input as $field => $value)
+//            {
+//                if(substr($field,0,14) === 'attribute-name'){
+//                    $attributeName = $value; //substr($field,14,strlen($field)-14);
+//                    continue;
+//                }
+//                if(substr($field,0,15) === 'attribute-value'){
+//                    if($attributeName)
+//                        $attributes[$attributeName] = $value;
+//                }
+//
+//            }
+//            return count($attributes) ? $attributes : null;
+//        }
+//    }
     private function parseAttributes($input)
     {
         $attributes = [];
@@ -420,13 +440,12 @@ class ProductDefinitionsController extends \BaseController {
             $attributeName = '';
             foreach($input as $field => $value)
             {
-                if(substr($field,0,14) === 'attribute-name'){
-                    $attributeName = $value; //substr($field,14,strlen($field)-14);
-                    continue;
-                }
+//                if(substr($field,0,14) === 'attribute-name'){
+//                    $attributeName = $value; //substr($field,14,strlen($field)-14);
+//                    continue;
+//                }
                 if(substr($field,0,15) === 'attribute-value'){
-                    if($attributeName)
-                        $attributes[$attributeName] = $value;
+                        $attributes[$input['attribute-name-' . substr($field,16)]] = $value;
                 }
 
             }
