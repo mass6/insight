@@ -9,5 +9,5 @@ composer.phar
 environment.php
 .DS_Store
 Thumbs.db
-/nodes_modules
+/nodes_modules/
 tests/_output/*
