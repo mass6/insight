@@ -17,7 +17,7 @@ class UpdateUserForm extends FormValidator
     protected $rules = [
         'email'     => 'required|email',
         'password'  => 'digits_between:6,30',
-        'company'   => 'required',
+        'company_id'   => 'required',
         'permissions_allowed' => 'array',
         'permissions_denied' => 'array'
     ];

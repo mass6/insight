@@ -1,0 +1,42 @@
+<?php $__env->startSection('content'); ?>
+
+<h2>Delegation of Authority</h2>
+<br/>
+
+<?php if(isset($doa)): ?>
+<div class="panel panel-primary">
+    <div class="panel-heading">
+        <div class="panel-title">DOA Business Rules</div>
+    </div>
+    <table class="table table-bordered table-responsive">
+        <thead>
+        <th>No</th>
+        <th>Customer</th>
+        <th>Name</th>
+        <th>Rule Condition</th>
+        <th>L1</th>
+        <th>L2</th>
+        <th>L3</th>
+        <th>L4</th>
+        <th>L5</th>
+        </thead>
+        <?php foreach($doa as $rule): ?>
+        <tr>
+            <td><?php echo $rule['rule_id']; ?></td>
+            <td><?php echo $rule['customer']; ?></td>
+            <td><?php echo $rule['name']; ?></td>
+            <td><?php echo $rule['orderamount']; ?></td>
+            <td><?php echo $rule['l1']; ?></td>
+            <td><?php echo $rule['l2']; ?></td>
+            <td><?php echo $rule['l3']; ?></td>
+            <td><?php echo $rule['l4']; ?></td>
+            <td><?php echo $rule['l5']; ?></td>
+        </tr>
+
+        <?php endforeach; ?>
+    </table>
+</div>
+<?php endif; ?>
+
+<?php $__env->stopSection(); ?>
+<?php echo $__env->make($layout, array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>

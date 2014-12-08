@@ -56,3 +56,23 @@ body .navbar-inverse {
 .navbar-inverse .brand, .navbar-inverse .nav>li>a {
     color: #bfccdb;
 }
+
+.ms-container .ms-list {
+    width: 250px;
+    height: 250px;
+}
+
+.is-required .form-control {
+    border-color: #1672FC;
+}
+.is-required .help-block, .is-required .control-label, .is-required .radio, .is-required .checkbox, .is-required .radio-inline, .is-required .checkbox-inline {
+    color: #0054FF;
+}
+p.error-label {margin-top:5px;}
+
+table.request-details, table.request-details th, table.request-details td {
+    padding: 3px;
+}
+table.request-details {margin-left: 5px;}
+
+/*.form-group.attribute-group {margin-bottom: 20px;}*/

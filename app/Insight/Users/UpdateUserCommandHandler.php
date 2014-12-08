@@ -26,7 +26,7 @@ class UpdateUserCommandHandler extends UserCommandAbstract
             $user->email = $command->email;
             $user->first_name = $command->first_name;
             $user->last_name = $command->last_name;
-            $user->company = $command->company;
+            $user->company_id = $command->company_id;
             unset($user->permissions);
             $user->permissions = $this->serializePermissions($command->permissionsAllowed, $command->permissionsDenied);
 

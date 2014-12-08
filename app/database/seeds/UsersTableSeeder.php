@@ -7,45 +7,54 @@
 
 use Faker\Factory as Faker;
 use Insight\Users\Profile;
+use Insight\Users\User;
 
 class UsersTableSeeder extends Seeder {
 
     public function run()
     {
-        //User::truncate();
 
-        $adminUser = Sentry::createUser([
-            'first_name' => 'Admin',
-            'email' => 'admin@admin.com',
-            'password' => 'admin',
-            'company' => '36s',
-            'activated' => true,
-            'permissions' => ['superuser' => 1]
-        ]);
+        if(! User::count())
+        {
+            $adminUser = Sentry::createUser([
+                'first_name' => 'Admin',
+                'email' => 'admin@admin.com',
+                'password' => 'admin',
+                'company_id' => '1',
+                'activated' => true,
+                'permissions' => ['superuser' => 1]
+            ]);
 
-        $adminUser->profile()->save(new Profile);
+            //delete previous/obsolete profiles
+            DB::table('profiles')->truncate();
 
-//        $faker = Faker::create();
-//
-//        foreach(range(1, 5) as $index)
-//        {
-//            Sentry::createUser([
-//                'first_name' => $faker->firstName,
-//                'last_name' => $faker->lastName,
-//                'email' => $faker->unique()->email(),
-//                'password' => 'secret',
-//                'company' => '36s',
-//                'activated' => true
-//            ]);
-//        }
+            $adminUser->profile()->save(new Profile);
 
-        // Assign users to groups
+            // Find the group using the group id
+            $adminGroup = Sentry::findGroupById(1);
 
-        // Find the group using the group id
-        $adminGroup = Sentry::findGroupById(1);
+            // Assign the group to the user
+            $adminUser->addGroup($adminGroup);
 
-        // Assign the group to the user
-        $adminUser->addGroup($adminGroup);
+            if(App::environment('local'))
+            {
+                $faker = Faker::create();
+
+                foreach(range(1, 10) as $index)
+                {
+                    Sentry::createUser([
+                        'first_name' => $faker->firstName,
+                        'last_name' => $faker->lastName,
+                        'email' => $faker->unique()->email(),
+                        'password' => 'secret',
+                        'company_id' => $faker->numberBetween(2,11),
+                        'activated' => true
+                    ]);
+                }
+
+            }
+        }
+
     }
 
 }

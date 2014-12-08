@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Neon Admin Panel" />
+    <meta name="author" content="" />
+
+    <title><?php echo isset($title)?$title:'Insight'; ?></title>
+
+
+    <?php echo $__env->make('layouts.partials._links', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+
+
+</head>
+<body class="page-body" data-url="">
+
+<div class="page-container"><!-- add class "sidebar-collapsed" to close sidebar by default, "chat-visible" to make chat appear always -->
+
+    <?php echo $__env->make('layouts.partials._sidebar', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+    <div class="main-content">
+
+    <?php echo $__env->make('layouts.partials._topbar', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+    <!--<?php echo $__env->make('layouts.partials._breadcrumbs', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>-->
+        <?php echo $__env->make('flash::message', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+
+        <?php echo $__env->yieldContent('content'); ?>
+
+    <!-- Footer -->
+        <?php echo $__env->make('layouts.partials._footer', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+
+</div>
+
+
+</body>
+</html>

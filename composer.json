@@ -15,7 +15,8 @@
         "laracasts/utilities": "~1.0",
         "guzzlehttp/guzzle": "~4.0",
         "iron-io/iron_mq": "1.4.8",
-		"kmd/logviewer": "dev-master"
+		"kmd/logviewer": "dev-master",
+        "maatwebsite/excel": "1.*"
     },
     "require-dev": {
         "way/generators": "~2.0",
@@ -46,8 +47,7 @@
 		],
 		"post-update-cmd": [
 			"php artisan clear-compiled",
-			"php artisan optimize",
-            "php artisan debugbar:publish"
+			"php artisan optimize"
 		],
 		"post-create-project-cmd": [
 			"php artisan key:generate"

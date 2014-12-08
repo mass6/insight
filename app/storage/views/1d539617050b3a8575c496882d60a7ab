@@ -1,0 +1,12 @@
+
+    <footer class="main">
+
+
+        &copy; 2014 <strong>36S</strong> - Procure Smarter | <a href="http://36-s.com" target="_blank">http://36-s.com</a>
+
+    </footer>
+</div>
+
+
+
+<?php echo $__env->make('layouts.partials._footerlinks', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>

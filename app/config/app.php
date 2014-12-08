@@ -128,11 +128,11 @@ return array(
         'Laracasts\Flash\FlashServiceProvider',
         'Laracasts\Utilities\UtilitiesServiceProvider',
         'Codesleeve\LaravelStapler\LaravelStaplerServiceProvider',
-        'Barryvdh\Debugbar\ServiceProvider',
         'Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider',
         'Insight\Core\RepositoryServiceProvider',
         'Insight\Listeners\EventingServiceProvider',
-        'Kmd\Logviewer\LogviewerServiceProvider'
+        'Kmd\Logviewer\LogviewerServiceProvider',
+        'Maatwebsite\Excel\ExcelServiceProvider',
 	),
 
 	/*
@@ -202,6 +202,7 @@ return array(
         'Carbon'            => 'Carbon\Carbon',
         'Sentry'            => 'Cartalyst\Sentry\Facades\Laravel\Sentry',
         'Flash'             => 'Laracasts\Flash\Flash',
+        'Excel'             => 'Maatwebsite\Excel\Facades\Excel',
 
 	),
 

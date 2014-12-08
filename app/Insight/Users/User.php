@@ -8,6 +8,10 @@ use Cartalyst\Sentry\Users\Eloquent\User as Sentry;
 use Laracasts\Commander\Events\DispatchableTrait;
 use Laracasts\Commander\Events\EventGenerator;
 
+/**
+ * Class User
+ * @package Insight\Users
+ */
 class User extends Sentry implements UserInterface, RemindableInterface {
 
 	use UserTrait, RemindableTrait, EventGenerator;
@@ -40,9 +44,8 @@ class User extends Sentry implements UserInterface, RemindableInterface {
      */
     public function name()
     {
-        return $this->first_name . ' ' . $this->last_name;
+        return trim($this->first_name . ' ' . $this->last_name);
     }
-
 
     /**
      * Gets the user's assigned group names in an indexed array
@@ -90,6 +93,14 @@ class User extends Sentry implements UserInterface, RemindableInterface {
     }
 
     /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function company()
+    {
+        return $this->belongsTo('Insight\Companies\Company');
+    }
+
+    /**
      * Relationship definition to Profile
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasOne
@@ -99,9 +110,25 @@ class User extends Sentry implements UserInterface, RemindableInterface {
         return $this->hasOne('Insight\Users\Profile');
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
     public function notifications()
     {
         return $this->belongsToMany('Insight\Notifications\Notification');
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function productDefinitionsAssigned()
+    {
+        return $this->hasMany('Insight\ProductDefinitions\ProductDefinition', 'assigned_user_id');
+    }
+
+    public function comments()
+    {
+        return $this->hasMany('Insight\Comments\Comment');
     }
 
 

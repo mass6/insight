@@ -55,13 +55,30 @@ App::error(function(Laracasts\Validation\FormValidationException $exception, $co
     return Redirect::back()->withInput()->withErrors($exception->getErrors());
 });
 
+App::error(function(Illuminate\Database\Eloquent\ModelNotFoundException $exception, $code)
+{
+    Log::error('ModelNotFoundException');
+    Flash::error('Sorry, the page you were looking for was not found or does not exist.');
+    return Redirect::home();
+});
+
+App::error(function(Symfony\Component\HttpKernel\Exception\NotFoundHttpException $exception, $code)
+{
+    Log::error('NotFoundHttpException Route: ' . Request::url() );
+//    Flash::error('Sorry, the page you were looking for was not found or does not exist.');
+//    return Redirect::home();
+});
+
+
 App::error(function(Exception $exception, $code)
 {
     if ($exception instanceof \Symfony\Component\HttpKernel\Exception\NotFoundHttpException)
     {
         Log::error('NotFoundHttpException Route: ' . Request::url() );
     }
-	Log::error($exception);
+    Flash::error('Sorry, your request could not be completed.');
+    Log::error($exception);
+    //return Redirect::home();
 });
 
 /*
@@ -105,6 +122,7 @@ require app_path().'/filters.php';
 */
 App::missing(function($exception)
 {
+    //return Response::view('errors.error404', array(), 404);
     return Redirect::route('home');
 });
 

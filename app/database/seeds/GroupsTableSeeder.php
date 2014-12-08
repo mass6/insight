@@ -1,4 +1,5 @@
 <?php
+use Insight\Permissions\Group;
 /**
  * Insight Client Management Portal:
  * Date: 7/26/14
@@ -10,13 +11,19 @@ class GroupsTableSeeder extends Seeder {
 
     public function run()
     {
-        Sentry::createGroup(array(
-            'name'        => 'Administrator',
-            'permissions' => array(
-                'admin' => 1,
-                'users' => 1,
-            ),
-        ));
+        if(! Group::count())
+        {
+            Sentry::createGroup(array(
+                'name'        => 'Administrator',
+                'permissions' => array(
+                    'admin' => 1,
+                    'users' => 1,
+                ),
+            ));
+            // delete previous/obsolete relations
+            DB::table('users_groups')->truncate();
+
+        }
     }
 
 }
