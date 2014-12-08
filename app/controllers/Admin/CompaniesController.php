@@ -15,15 +15,15 @@ class CompaniesController extends AdminBaseController {
     /**
      * @var CompanyRepository
      */
-    private $company;
+    private $companyRepository;
     /**
      * @var CompanyForm
      */
     private $companyForm;
 
-    public function __construct(CompanyRepository $company, CompanyForm $companyForm)
+    public function __construct(CompanyRepository $companyRepository, CompanyForm $companyForm)
     {
-        $this->company = $company;
+        $this->companyRepository = $companyRepository;
         $this->companyForm = $companyForm;
     }
 
@@ -34,7 +34,7 @@ class CompaniesController extends AdminBaseController {
 	 */
 	public function index()
 	{
-        $companies = $this->company->getPaginated(10);
+        $companies = $this->companyRepository->getPaginated(10);
 
         return View::make('admin.companies.index', compact('companies'));
 	}
@@ -84,7 +84,7 @@ class CompaniesController extends AdminBaseController {
 	 */
 	public function show($id)
 	{
-		$company = $this->company->findById($id);
+		$company = $this->companyRepository->findById($id);
         foreach($company->customers as $customer)
         {
             var_dump($customer->toArray());
@@ -100,7 +100,7 @@ class CompaniesController extends AdminBaseController {
 	 */
 	public function edit($id)
 	{
-        $company = $this->company->findById($id);
+        $company = $this->companyRepository->findById($id);
         return View::make('admin.companies.edit', compact('company'));
 	}
 
@@ -138,7 +138,7 @@ class CompaniesController extends AdminBaseController {
 	 */
 	public function destroy($id)
 	{
-        $company = $this->company->findById($id);
+        $company = $this->companyRepository->findById($id);
         $this->execute(new DeleteCompanyCommand($company));
 
         Flash::message('Company was successfully deleted.');

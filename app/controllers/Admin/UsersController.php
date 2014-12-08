@@ -20,7 +20,7 @@ class UsersController extends AdminBaseController {
     /**
      * @var \Insight\Users\UserRepository
      */
-    private $user;
+    private $userRepository;
 
     /**
      * @var \Insight\Users\Forms\NewUserForm
@@ -35,26 +35,26 @@ class UsersController extends AdminBaseController {
     /**
      * @var \Insight\Permissions\GroupRepository
      */
-    private $group;
+    private $groupRepository;
 
     /**
      * @var \Insight\Permissions\PermissionRepository
      */
-    private $permission;
+    private $permissionRepository;
     /**
      * @var CompanyRepository
      */
-    private $company;
+    private $companyRepository;
 
-    public function __construct(UserRepositoryInterface $user, GroupRepository $group, CompanyRepository $company, PermissionRepository $permission,
+    public function __construct(UserRepositoryInterface $userRepository, GroupRepository $groupRepository, CompanyRepository $companyRepository, PermissionRepository $permissionRepository,
                                 NewUserForm $newUserForm, UpdateUserForm $updateUserForm)
     {
-        $this->user = $user;
+        $this->userRepository = $userRepository;
         $this->newUserForm = $newUserForm;
         $this->updateUserForm = $updateUserForm;
-        $this->group = $group;
-        $this->permission = $permission;
-        $this->company = $company;
+        $this->groupRepository = $groupRepository;
+        $this->permissionRepository = $permissionRepository;
+        $this->companyRepository = $companyRepository;
     }
 	/**
 	 * Display a listing of the resource.
@@ -64,7 +64,7 @@ class UsersController extends AdminBaseController {
 	public function index()
 	{
 		// get all users
-        $users = $this->user->getPaginated(10);
+        $users = $this->userRepository->getPaginated(10);
 
         return View::make('admin.users.index', compact('users'));
 	}
@@ -77,11 +77,11 @@ class UsersController extends AdminBaseController {
 	 */
 	public function create()
 	{
-        $companies = $this->company->getList();
-        $permissions = $this->permission->getList();
+        $companies = $this->companyRepository->getList();
+        $permissions = $this->permissionRepository->getList();
         $allowedPermissionsDiff = $permissions;
         $deniedPermissionsDiff = $permissions;
-        $groups = $this->group->getList();
+        $groups = $this->groupRepository->getList();
 
         return View::make('admin.users.create', compact('companies',
             'allowedPermissionsDiff', 'deniedPermissionsDiff', 'groups'));
@@ -129,7 +129,7 @@ class UsersController extends AdminBaseController {
 	 */
 	public function show($id)
 	{
-		$user = $this->user->find($id);
+		$user = $this->userRepository->find($id);
         return View::make('admin.users.show', compact('user'));
 	}
 
@@ -142,18 +142,18 @@ class UsersController extends AdminBaseController {
 	 */
 	public function edit($id)
 	{
-        $user = $this->user->find($id);
+        $user = $this->userRepository->find($id);
 
-        $companies = $this->company->getList();
-        $allPermissions = $this->permission->getList();
-        $allowedPermissions = $this->user->getAllowedPermissions($user);
-        $deniedPermissions = $this->user->getDeniedPermissions($user);
+        $companies = $this->companyRepository->getList();
+        $allPermissions = $this->permissionRepository->getList();
+        $allowedPermissions = $this->userRepository->getAllowedPermissions($user);
+        $deniedPermissions = $this->userRepository->getDeniedPermissions($user);
 
         $allowedPermissionsDiff = array_diff($allPermissions, $allowedPermissions);
         $deniedPermissionsDiff = array_diff($allPermissions, $deniedPermissions);
 
-        $allGroups = $this->group->getList();
-        $userGroups = $this->user->getAssignedGroups($user);
+        $allGroups = $this->groupRepository->getList();
+        $userGroups = $this->userRepository->getAssignedGroups($user);
         $groups = array_diff($allGroups, $userGroups);
 
         return View::make('admin.users.edit', compact(
@@ -203,7 +203,7 @@ class UsersController extends AdminBaseController {
 	 */
 	public function destroy($id)
 	{
-        $user = $this->user->find($id);
+        $user = $this->userRepository->find($id);
         //get_class($user);
 		$this->execute(new DeleteUserCommand($user));
 

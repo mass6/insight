@@ -303,7 +303,7 @@
 
                                 {{-- Image 4 --}}
                                 <div id="div-image4" class="col-md-3">
-                                    <h5>{{ isset($customImageLabels['imageLabel4']) ? $customImageLabels['imageLabel4'] : 'Forth Image' }}</h5>
+                                    <h5>{{ isset($customImageLabels['imageLabel4']) ? $customImageLabels['imageLabel4'] : 'Fourth Image' }}</h5>
 
                                     <div id="existing-image4" class="" data-tag="1d" style="display: {{$product->image4->originalFilename() ? "block" : "none"}}">
                                         <article class="image-thumb">
