@@ -890,7 +890,7 @@
               }
             }
         }else if(Insight.customAttributes){
-            //addCustomAttributes(Insight.attributes)
+            addCustomAttributes(Insight.attributes)
         }
 
         function addCustomAttributes(attributes){

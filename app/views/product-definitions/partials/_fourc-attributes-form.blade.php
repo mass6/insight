@@ -285,7 +285,7 @@
                                     <div class="form-group">
                                         {{Form::label('Packaging')}}
                                         {{Form::hidden('attribute-name-packaging', 'Packaging')}}
-                                        <input id="attribute-value-packaging" name="attribute-value-packaging" class="form-control" readonly>
+                                        {{Form::text('attribute-value-packaging', null, ['class'=>'form-control', 'id'=>'attribute-value-packaging', 'readonly']) }}
                                     </div>
                                 </div>
                                 <?php
