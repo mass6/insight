@@ -900,7 +900,7 @@
               if (attributes.hasOwnProperty(key)) {
                     var attributeFieldName = key.toLowerCase();
                     attributeFieldName = attributeFieldName.replace(/\s/g, '');
-                    console.log(attributeFieldName);
+                    //console.log(attributeFieldName);
 
                     var attributeField = document.getElementById('attribute-value-' + attributeFieldName);
                     var fieldValue = attributes[key];
@@ -908,12 +908,14 @@
 
                         for (var val in fieldValue){
                             document.getElementById('attribute-value-' + attributeFieldName + '-' + fieldValue[val]).checked = true;
-                            console.log(fieldValue[val]);
+                            //console.log(fieldValue[val]);
                         }
 
                     } else {
                         if (attributeField.type === 'checkbox') {
-                            attributeField.checked = true;
+                            if(attributes[key] === 'yes'){
+                                attributeField.checked = true;
+                            }
                         } else {
                             attributeField.value = attributes[key];
                         }

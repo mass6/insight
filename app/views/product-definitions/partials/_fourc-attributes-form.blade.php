@@ -117,16 +117,91 @@
                             <br/>
 
                             <div class="row">
-                                <div class="col-md-2">
-                                    {{Form::label('Calories')}}
+                                <div class="col-md-3">
+                                    {{Form::label('Energy (kcal)')}}
                                     <div class="input-group">
-                                        {{Form::hidden('attribute-name-calories', 'Calories')}}
-                                        {{Form::text('attribute-value-calories', null, ['class'=>'form-control', 'id'=>'attribute-value-calories']) }}
-                                        {{ $errors->first('attribute-value-calories', '<span class="label label-danger">:message</span>') }}
+                                        {{Form::hidden('attribute-name-energykcal', 'Energy Kcal')}}
+                                        {{Form::text('attribute-value-energykcal', null, ['class'=>'form-control', 'id'=>'attribute-value-energykcal']) }}
+                                        {{ $errors->first('attribute-value-energykcal', '<span class="label label-danger">:message</span>') }}
+                                        <div class="input-group-addon">kcal</div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    {{Form::label('Energy (kJ)')}}
+                                    <div class="input-group">
+                                        {{Form::hidden('attribute-name-energykj', 'Energy kJ')}}
+                                        {{Form::text('attribute-value-energykj', null, ['class'=>'form-control', 'id'=>'attribute-value-energykj']) }}
+                                        {{ $errors->first('attribute-value-energykj', '<span class="label label-danger">:message</span>') }}
+                                        <div class="input-group-addon">kJ</div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    {{Form::label('Fat')}}
+                                    <div class="input-group">
+                                        {{Form::hidden('attribute-name-fat', 'Fat')}}
+                                        {{Form::text('attribute-value-fat', null, ['class'=>'form-control', 'id'=>'attribute-value-fat']) }}
+                                        {{ $errors->first('attribute-value-fat', '<span class="label label-danger">:message</span>') }}
                                         <div class="input-group-addon">g</div>
                                     </div>
                                 </div>
-                                <div class="col-md-2">
+                                <div class="col-md-3">
+                                    {{Form::label('Saturates')}}
+                                    <div class="input-group">
+                                        {{Form::hidden('attribute-name-saturates', 'Saturates')}}
+                                        {{Form::text('attribute-value-saturates', null, ['class'=>'form-control', 'id'=>'attribute-value-saturates']) }}
+                                        {{ $errors->first('attribute-value-saturates', '<span class="label label-danger">:message</span>') }}
+                                        <div class="input-group-addon">g</div>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <br/>
+
+                            <div class="row">
+
+                                <div class="col-md-3">
+                                    {{Form::label('Carbohydrates')}}
+                                    <div class="input-group">
+                                        {{Form::hidden('attribute-name-carbohydrates', 'Carbohydrates')}}
+                                        {{Form::text('attribute-value-carbohydrates', null, ['class'=>'form-control', 'id'=>'attribute-value-carbohydrates']) }}
+                                        {{ $errors->first('attribute-value-carbohydrates', '<span class="label label-danger">:message</span>') }}
+                                        <div class="input-group-addon">g</div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    {{Form::label('Sugars')}}
+                                    <div class="input-group">
+                                        {{Form::hidden('attribute-name-sugars', 'Sugars')}}
+                                        {{Form::text('attribute-value-sugars', null, ['class'=>'form-control', 'id'=>'attribute-value-sugars']) }}
+                                        {{ $errors->first('attribute-value-sugars', '<span class="label label-danger">:message</span>') }}
+                                        <div class="input-group-addon">g</div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    {{Form::label('Protein')}}
+                                    <div class="input-group">
+                                        {{Form::hidden('attribute-name-protein', 'Protein')}}
+                                        {{Form::text('attribute-value-protein', null, ['class'=>'form-control', 'id'=>'attribute-value-protein']) }}
+                                        {{ $errors->first('attribute-value-protein', '<span class="label label-danger">:message</span>') }}
+                                        <div class="input-group-addon">g</div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    {{Form::label('Salt')}}
+                                    <div class="input-group">
+                                        {{Form::hidden('attribute-name-salt', 'Salt')}}
+                                        {{Form::text('attribute-value-salt', null, ['class'=>'form-control', 'id'=>'attribute-value-salt']) }}
+                                        {{ $errors->first('attribute-value-salt', '<span class="label label-danger">:message</span>') }}
+                                        <div class="input-group-addon">g</div>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <br/>
+
+                            <div class="row">
+
+                                <div class="col-md-3">
                                     {{Form::label('Calories From Fat')}}
                                     <div class="input-group">
                                         {{Form::hidden('attribute-name-caloriesfromfat', 'Calories From Fat')}}
@@ -135,7 +210,7 @@
                                         <div class="input-group-addon">g</div>
                                     </div>
                                 </div>
-                                <div class="col-md-2">
+                                <div class="col-md-3">
                                     {{Form::label('Total Fat')}}
                                     <div class="input-group">
                                         {{Form::hidden('attribute-name-totalfat', 'Total Fat')}}
@@ -144,16 +219,7 @@
                                         <div class="input-group-addon">g</div>
                                     </div>
                                 </div>
-                                <div class="col-md-2">
-                                    {{Form::label('Saturated Fat')}}
-                                    <div class="input-group">
-                                        {{Form::hidden('attribute-name-saturatedfat', 'Saturated Fat')}}
-                                        {{Form::text('attribute-value-saturatedfat', null, ['class'=>'form-control', 'id'=>'attribute-value-saturatedfat']) }}
-                                        {{ $errors->first('attribute-value-saturatedfat', '<span class="label label-danger">:message</span>') }}
-                                        <div class="input-group-addon">g</div>
-                                    </div>
-                                </div>
-                                <div class="col-md-2">
+                                <div class="col-md-3">
                                     {{Form::label('Trans Fat')}}
                                     <div class="input-group">
                                         {{Form::hidden('attribute-name-transfat', 'Trans Fat')}}
@@ -162,7 +228,7 @@
                                         <div class="input-group-addon">g</div>
                                     </div>
                                 </div>
-                                <div class="col-md-2">
+                                <div class="col-md-3">
                                     {{Form::label('Cholesterol')}}
                                     <div class="input-group">
                                         {{Form::hidden('attribute-name-cholesterol', 'Cholesterol')}}
@@ -173,58 +239,12 @@
                                 </div>
                             </div>
 
-                            <div class="row">
-                                <div class="col-md-2">
-                                    {{Form::label('Sodium')}}
-                                    <div class="input-group">
-                                        {{Form::hidden('attribute-name-sodium', 'Sodium')}}
-                                        {{Form::text('attribute-value-sodium', null, ['class'=>'form-control', 'id'=>'attribute-value-sodium']) }}
-                                        {{ $errors->first('attribute-value-sodium', '<span class="label label-danger">:message</span>') }}
-                                        <div class="input-group-addon">g</div>
-                                    </div>
-                                </div>
-                                <div class="col-md-2">
-                                    {{Form::label('Total Carbohydrates')}}
-                                    <div class="input-group">
-                                        {{Form::hidden('attribute-name-totalcarbohydrates', 'Total Carbohydrates')}}
-                                        {{Form::text('attribute-value-totalcarbohydrates', null, ['class'=>'form-control', 'id'=>'attribute-value-totalcarbohydrates']) }}
-                                        {{ $errors->first('attribute-value-totalcarbohydrates', '<span class="label label-danger">:message</span>') }}
-                                        <div class="input-group-addon">g</div>
-                                    </div>
-                                </div>
-                                <div class="col-md-2">
-                                    {{Form::label('Dietary Fiber')}}
-                                    <div class="input-group">
-                                        {{Form::hidden('attribute-name-dietaryfiber', 'Dietary Fiber')}}
-                                        {{Form::text('attribute-value-dietaryfiber', null, ['class'=>'form-control', 'id'=>'attribute-value-dietaryfiber']) }}
-                                        {{ $errors->first('attribute-value-dietaryfiber', '<span class="label label-danger">:message</span>') }}
-                                        <div class="input-group-addon">g</div>
-                                    </div>
-                                </div>
-                                <div class="col-md-2">
-                                    {{Form::label('Sugars')}}
-                                    <div class="input-group">
-                                        {{Form::hidden('attribute-name-sugars', 'Sugars')}}
-                                        {{Form::text('attribute-value-sugars', null, ['class'=>'form-control', 'id'=>'attribute-value-sugars']) }}
-                                        {{ $errors->first('attribute-value-sugars', '<span class="label label-danger">:message</span>') }}
-                                        <div class="input-group-addon">g</div>
-                                    </div>
-                                </div>
-                                <div class="col-md-2">
-                                    {{Form::label('Protein')}}
-                                    <div class="input-group">
-                                        {{Form::hidden('attribute-name-protein', 'Protein')}}
-                                        {{Form::text('attribute-value-protein', null, ['class'=>'form-control', 'id'=>'attribute-value-protein']) }}
-                                        {{ $errors->first('attribute-value-protein', '<span class="label label-danger">:message</span>') }}
-                                        <div class="input-group-addon">g</div>
-                                    </div>
-                                </div>
-                            </div>
+
                             <hr/>
                             <h5 class="text text-info">Percentage of daily nutritional value (based on a 2000 calorie diet).</h5>
                             <br/>
                             <div class="row">
-                                <div class="col-md-2">
+                                <div class="col-md-3">
                                     {{Form::label('Vitamin A')}}
                                     <div class="input-group">
                                         {{Form::hidden('attribute-name-vitamina', 'Vitamin A')}}
@@ -233,7 +253,7 @@
                                         <div class="input-group-addon">%</div>
                                     </div>
                                 </div>
-                                <div class="col-md-2">
+                                <div class="col-md-3">
                                     {{Form::label('Vitamin C')}}
                                     <div class="input-group">
                                         {{Form::hidden('attribute-name-vitaminc', 'Vitamin C')}}
@@ -242,7 +262,7 @@
                                         <div class="input-group-addon">%</div>
                                     </div>
                                 </div>
-                                <div class="col-md-2">
+                                <div class="col-md-3">
                                     {{Form::label('Calcium')}}
                                     <div class="input-group">
                                         {{Form::hidden('attribute-name-calcium', 'Calcium')}}
@@ -251,7 +271,7 @@
                                         <div class="input-group-addon">%</div>
                                     </div>
                                 </div>
-                                <div class="col-md-2">
+                                <div class="col-md-3">
                                     {{Form::label('Iron')}}
                                     <div class="input-group">
                                         {{Form::hidden('attribute-name-iron', 'Iron')}}
@@ -276,7 +296,7 @@
                                         <div class="col-sm-5">
                                             <div class="checkbox checkbox-replace color-primary">
 {{--                                                {{ Form::hidden('attribute-value-allergens[gluten]', 'no')}}--}}
-                                                {{ Form::checkbox('attribute-value-allergens[]', 'gluten', false, ['id'=>'attribute-value-allergens-gluten']) }}
+                                                {{ Form::checkbox('attribute-value-allergens[]', 'Gluten', false, ['id'=>'attribute-value-allergens-gluten']) }}
                                                 {{--<input type="checkbox" name="attribute-value-allergens[gluten]" id="chk-2">--}}
                                                 <label>Gluten</label>
                                             </div>
@@ -317,7 +337,7 @@
                                                 <label>Peanuts</label>
                                             </div>
                                             <div class="checkbox checkbox-replace color-primary">
-                                                {{ Form::checkbox('attribute-value-allergens[]', 'sesameseeds', false, ['id'=>'attribute-value-allergens-sesameseeds']) }}
+                                                {{ Form::checkbox('attribute-value-allergens[]', 'sesame seeds', false, ['id'=>'attribute-value-allergens-sesameseeds']) }}
                                                 <label>Sesame Seeds</label>
                                             </div>
                                             <div class="checkbox checkbox-replace color-primary">

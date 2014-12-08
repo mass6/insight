@@ -866,12 +866,28 @@
             for (var key in attributes) {
 
                 if (attributes.hasOwnProperty(key)) {
-                      var attributeFieldName = key.toLowerCase();
-                      attributeFieldName = attributeFieldName.replace(/\s/g, '');
-                      console.log(attributeFieldName);
+                    var attributeFieldName = key.toLowerCase();
+                    attributeFieldName = attributeFieldName.replace(/\s/g, '');
+                    //console.log(attributeFieldName);
 
-                      var attributeField = document.getElementById('attribute-value-' + attributeFieldName);
-                      attributeField.value = attributes[key];
+                    var attributeField = document.getElementById('attribute-value-' + attributeFieldName);
+                    var fieldValue = attributes[key];
+                    if(fieldValue.constructor === Array) {
+
+                        for (var val in fieldValue){
+                            document.getElementById('attribute-value-' + attributeFieldName + '-' + fieldValue[val]).checked = true;
+                            //console.log(fieldValue[val]);
+                        }
+
+                    } else {
+                        if (attributeField.type === 'checkbox') {
+                            if(attributes[key] === 'yes'){
+                                attributeField.checked = true;
+                            }
+                        } else {
+                            attributeField.value = attributes[key];
+                        }
+                    }
                 }
 
             }
