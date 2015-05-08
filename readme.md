@@ -54,5 +54,45 @@ php artisan migrate
 php artisan db:seed
 ```
 **Step 9** - Login to application. From your browser, go to you local app domain (e.g. http://insight-reporting.dev/), and login using one of the test user credentails.
->admin@admin.com | admin
->johndoe@test.com | password
+  - admin@admin.com | admin
+  - johndoe@test.com | testing
+
+## Migrations ##
+**Note:**
+> If you will be deploying and running new migrations on a server whos migrations were based on a previous schema, then before you migrate, you will need to manually update the server's migration table with the following values. Otherwise you will encounter errors when trying to deploy new mirations or rollbacks.
+
+#### DB Table: migrations ####
+
+| name       |  batch  |
+|:-------------|-----------------------|
+| 2012_12_06_225921_migration_cartalyst_sentry_install_users | 1 |
+| 2012_12_06_225929_migration_cartalyst_sentry_install_groups |	1 |
+| 2012_12_06_225945_migration_cartalyst_sentry_install_users_groups_pivot |	1 |
+| 2012_12_06_225988_migration_cartalyst_sentry_install_throttle |	1 |
+| 2014_07_03_122455_create_companies_table | 2 |
+| 2014_07_27_064914_add_company_to_users_table | 2 |
+| 2014_07_28_091320_create_permissions_table | 2 |
+| 2014_07_29_121740_create_profiles_table | 2 |
+| 2014_07_29_124111_add_avatar_fields_to_profiles_table | 2 |
+| 2014_08_10_105127_create_contracts_table | 2 |
+| 2014_08_17_062933_create_products_table | 2 |
+| 2014_08_18_045530_create_notifications_table | 2 |
+| 2014_08_18_050933_create_notification_user_table | 2 |
+| 2014_10_28_043925_create_system_settings_table | 2 |
+| 2014_11_06_061847_create_product_definition_statuses_table | 2 |
+| 2014_11_06_061901_create_product_definitions_table | 2 |
+| 2014_11_06_105539_create_product_images_table | 2 |
+| 2014_11_06_110207_create_product_attachments_table | 2 |
+| 2014_11_07_205132_create_customer_supplier_table | 2 |
+| 2014_11_16_111630_create_contacts_table | 2 |
+| 2014_11_17_114445_create_attribute_sets_table | 2 |
+| 2014_11_17_114833_create_attributes_table | 2 |
+| 2014_11_17_115721_create_attribute_attribute_set_table | 2 |
+| 2014_11_22_094837_create_comments_table | 2 |
+| 2014_11_23_104024_add_primary_contact_field_to_companies_table | 2 |
+| 2014_11_24_190527_add_settings_to_companies_table | 2 |
+| 2014_12_03_175535_add_image_fields_to_product-definitions_table | 2 |
+| 2014_12_03_183859_add_attachment_fields_to_product-definitions_table | 2 |
+| 2015_03_25_074902_add_magento_customer_id_to_companies_table | 2 |
+
+    
